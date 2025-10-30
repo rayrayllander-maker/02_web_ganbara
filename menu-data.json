@@ -1,0 +1,580 @@
+{
+  "bocadillos": [
+    {
+      "id": 1,
+      "nombre": {
+        "es": "Vegetal de pollo",
+        "eu": "Oilasko begetala"
+      },
+      "descripcion": {
+        "es": "Pechuga, lechuga, tomate, york, queso, mayonesa, atún, huevo cocido",
+        "eu": "Bularreko, letxuga, tomatea, york, gazta, mayonesa, atuna, arrautza egosia"
+      },
+      "precio": 8.00,
+      "imagen": "images/bocadillo-1.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 2,
+      "nombre": {
+        "es": "Tortillas Variadas",
+        "eu": "Tortilla desberdinak"
+      },
+      "descripcion": {
+        "es": "Chorizo, patata, jamón o champis",
+        "eu": "Txorizo, patata, urdaiazpia edo perretxikoak"
+      },
+      "precio": 6.50,
+      "imagen": "images/bocadillo-2.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 3,
+      "nombre": {
+        "es": "Bacon, queso y pimientos",
+        "eu": "Zirikatz, gazta eta piperrak"
+      },
+      "descripcion": {
+        "es": "Bacon, queso, pimientos",
+        "eu": "Zirikatz, gazta, piperrak"
+      },
+      "precio": 7.00,
+      "imagen": "images/bocadillo-3.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 4,
+      "nombre": {
+        "es": "Lomo, queso y pimientos",
+        "eu": "Bizkarreko, gazta eta piperrak"
+      },
+      "descripcion": {
+        "es": "Lomo, queso, pimientos",
+        "eu": "Bizkarreko, gazta, piperrak"
+      },
+      "precio": 7.00,
+      "imagen": "images/bocadillo-4.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 5,
+      "nombre": {
+        "es": "Pechuga, queso y pimientos",
+        "eu": "Bularreko, gazta eta piperrak"
+      },
+      "descripcion": {
+        "es": "Pechuga, queso, pimientos",
+        "eu": "Bularreko, gazta, piperrak"
+      },
+      "precio": 7.00,
+      "imagen": "images/bocadillo-5.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 6,
+      "nombre": {
+        "es": "Pechuga rebozada con alioli, bacon y cebolla",
+        "eu": "Bularreko errebozatua alliolirekin, zirikatz eta tipula"
+      },
+      "descripcion": {
+        "es": "Pechuga rebozada, alioli, bacon, cebolla",
+        "eu": "Bularreko errebozatua, allioli, zirikatz, tipula"
+      },
+      "precio": 7.50,
+      "imagen": "images/bocadillo-6.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 7,
+      "nombre": {
+        "es": "Jamón ibérico, queso, setas y rodajas de tomate a la plancha",
+        "eu": "Iberiar urdaiazpia, gazta, perretxikoak eta tomate xaflak plantxan"
+      },
+      "descripcion": {
+        "es": "Jamón ibérico, queso, setas, tomate a la plancha",
+        "eu": "Iberiar urdaiazpia, gazta, perretxikoak, tomatea plantxan"
+      },
+      "precio": 8.00,
+      "imagen": "images/bocadillo-7.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 8,
+      "nombre": {
+        "es": "Jamón ibérico",
+        "eu": "Iberiar urdaiazpia"
+      },
+      "descripcion": {
+        "es": "Jamón ibérico",
+        "eu": "Iberiar urdaiazpia"
+      },
+      "precio": 7.00,
+      "imagen": "images/bocadillo-8.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 9,
+      "nombre": {
+        "es": "ESPECIAL: Jamón, pimientos verdes, queso Idiazabal y setas",
+        "eu": "BEREZIA: Urdaiazpia, piper berdeak, Idiazabal gazta eta perretxikoak"
+      },
+      "descripcion": {
+        "es": "Jamón, pimientos verdes, queso Idiazabal, setas",
+        "eu": "Urdaiazpia, piper berdeak, Idiazabal gazta, perretxikoak"
+      },
+      "precio": 8.00,
+      "imagen": "images/bocadillo-9.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 10,
+      "nombre": {
+        "es": "Pechuga crujiente con mermelada y queso Camembert",
+        "eu": "Bularreko kurruskaria mermelada eta Camembert gaztarekin"
+      },
+      "descripcion": {
+        "es": "Pechuga crujiente, mermelada, queso Camembert",
+        "eu": "Bularreko kurruskaria, mermelada, Camembert gazta"
+      },
+      "precio": 7.50,
+      "imagen": "images/bocadillo-10.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 11,
+      "nombre": {
+        "es": "VEGETARIANA: Calabacín, pimientos verdes, cebolla morada, tomate, guacamole, huevo y queso danés",
+        "eu": "BEGETARIANOA: Kalabazin, piper berdeak, tipula morea, tomatea, guacamole, arrautza eta daniar gazta"
+      },
+      "descripcion": {
+        "es": "Calabacín, pimientos verdes, cebolla morada, tomate, guacamole, huevo, queso danés",
+        "eu": "Kalabazin, piper berdeak, tipula morea, tomatea, guacamole, arrautza, daniar gazta"
+      },
+      "precio": 7.50,
+      "imagen": "images/bocadillo-11.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    }
+  ],
+  "raciones": [
+    {
+      "id": 1,
+      "nombre": {
+        "es": "Paletilla de jamón ibérico",
+        "eu": "Iberiar urdaiazpiko sorbalda"
+      },
+      "descripcion": {
+        "es": "Paletilla de jamón ibérico",
+        "eu": "Iberiar urdaiazpiko sorbalda"
+      },
+      "precio": 17.00,
+      "mediaRacion": 9.00,
+      "imagen": "images/racion-1.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 2,
+      "nombre": {
+        "es": "Rabas (calamar rebozado)",
+        "eu": "Rabak (txipiroi errebozatua)"
+      },
+      "descripcion": {
+        "es": "Calamar rebozado",
+        "eu": "Txipiroi errebozatua"
+      },
+      "precio": 9.50,
+      "mediaRacion": 5.50,
+      "imagen": "images/racion-2.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 3,
+      "nombre": {
+        "es": "Rabas, cebolla crujiente y alioli",
+        "eu": "Rabak, tipula kurruskaria eta alliolia"
+      },
+      "descripcion": {
+        "es": "Rabas, cebolla crujiente, alioli",
+        "eu": "Rabak, tipula kurruskaria, allioli"
+      },
+      "precio": 10.00,
+      "mediaRacion": null,
+      "imagen": "images/racion-3.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 4,
+      "nombre": {
+        "es": "Patata casera Brava o alioli",
+        "eu": "Etxeko patata Brava edo alliolia"
+      },
+      "descripcion": {
+        "es": "Patata casera, salsa brava o alioli",
+        "eu": "Etxeko patata, saltsa brava edo allioli"
+      },
+      "precio": 6.00,
+      "mediaRacion": null,
+      "imagen": "images/racion-4.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 5,
+      "nombre": {
+        "es": "Patata casera Braviolí",
+        "eu": "Etxeko patata Braviolí"
+      },
+      "descripcion": {
+        "es": "Patata casera, salsa brava y alioli",
+        "eu": "Etxeko patata, saltsa brava eta allioli"
+      },
+      "precio": 7.00,
+      "mediaRacion": null,
+      "imagen": "images/racion-5.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 6,
+      "nombre": {
+        "es": "Croquetas de jamón o de hongos",
+        "eu": "Urdaiazpiko edo perretxikoen kroketak"
+      },
+      "descripcion": {
+        "es": "Croquetas de jamón o de hongos",
+        "eu": "Urdaiazpiko edo perretxikoen kroketak"
+      },
+      "precio": 9.50,
+      "mediaRacion": null,
+      "imagen": "images/racion-6.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 7,
+      "nombre": {
+        "es": "Champis con gambas a la vinagreta",
+        "eu": "Perretxikoak ganbekin vinagretarekin"
+      },
+      "descripcion": {
+        "es": "Champiñones, gambas, vinagreta",
+        "eu": "Perretxikoak, ganbak, vinagreta"
+      },
+      "precio": 8.50,
+      "mediaRacion": null,
+      "imagen": "images/racion-7.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 8,
+      "nombre": {
+        "es": "Pizzas de pollo crujiente con patatas",
+        "eu": "Oilasko kurruskariaren pizzak patatekin"
+      },
+      "descripcion": {
+        "es": "Pollo crujiente, patatas",
+        "eu": "Oilasko kurruskaria, patak"
+      },
+      "precio": 9.50,
+      "mediaRacion": null,
+      "imagen": "images/racion-8.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 9,
+      "nombre": {
+        "es": "Pimientos verdes",
+        "eu": "Piper berdeak"
+      },
+      "descripcion": {
+        "es": "Pimientos verdes a la plancha",
+        "eu": "Piper berdeak planxan"
+      },
+      "precio": 8.50,
+      "mediaRacion": null,
+      "imagen": "images/racion-9.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 10,
+      "nombre": {
+        "es": "Patatas Ganbara",
+        "eu": "Ganbara Patak"
+      },
+      "descripcion": {
+        "es": "Patatas especiales de la casa",
+        "eu": "Etxeko patata bereziak"
+      },
+      "precio": 7.50,
+      "mediaRacion": null,
+      "imagen": "images/racion-10.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 11,
+      "nombre": {
+        "es": "Tequeños de guayaba y queso",
+        "eu": "Guaiaba eta gazta tekegnoak"
+      },
+      "descripcion": {
+        "es": "Tequeños rellenos de guayaba y queso",
+        "eu": "Guaiaba eta gaztaz betetako tekegnoak"
+      },
+      "precio": 9.50,
+      "mediaRacion": null,
+      "imagen": "images/racion-11.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    }
+  ],
+  "hamburguesas": [
+    {
+      "id": 1,
+      "nombre": {
+        "es": "GANBARA",
+        "eu": "GANBARA"
+      },
+      "descripcion": {
+        "es": "180 gr. Angus, doble bacon, queso danés, cebolla caramelizada, huevo, tomate",
+        "eu": "180 gr. Angus, zirikatz bikoitza, daniar gazta, tipula karamelizatua, arraultza, tomatea"
+      },
+      "precio": 13.50,
+      "imagen": "images/hamburguesa-1.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 2,
+      "nombre": {
+        "es": "GOLOSA",
+        "eu": "GOLOSA"
+      },
+      "descripcion": {
+        "es": "180 gr. Angus, doble bacon, queso cheddar, miel y mostaza, lechuga, tomate, cebolla",
+        "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, eztia eta mostaza, letxuga, tomatea, tipula"
+      },
+      "precio": 13.00,
+      "imagen": "images/hamburguesa-2.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 3,
+      "nombre": {
+        "es": "FRANCESA",
+        "eu": "FRANCESA"
+      },
+      "descripcion": {
+        "es": "180 gr. Angus, doble bacon, queso Camembert, champis laminados, cebolla",
+        "eu": "180 gr. Angus, zirikatz bikoitza, Camembert gazta, perretxiko laminatuak, tipula"
+      },
+      "precio": 13.00,
+      "imagen": "images/hamburguesa-3.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 4,
+      "nombre": {
+        "es": "SERRANA",
+        "eu": "SERRANA"
+      },
+      "descripcion": {
+        "es": "180 gr. Angus, jamón, queso danés, cebolla morada, hilos de patata, salsa tártara",
+        "eu": "180 gr. Angus, urdaiazpiko, daniar gazta, tipula morea, patata hariak, saltsa tartara"
+      },
+      "precio": 13.00,
+      "imagen": "images/hamburguesa-4.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 5,
+      "nombre": {
+        "es": "EMMY",
+        "eu": "EMMY"
+      },
+      "descripcion": {
+        "es": "180 gr. Angus, doble bacon, queso cheddar, cebolla caramelizada, pepinillos, huevo, salsa Emmy",
+        "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, tipula karamelizatua, pepiniloak, arraultza, Emmy saltsa"
+      },
+      "precio": 13.50,
+      "imagen": "images/hamburguesa-5.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 6,
+      "nombre": {
+        "es": "COLOMBIANA",
+        "eu": "COLOMBIANA"
+      },
+      "descripcion": {
+        "es": "180 gr. Angus, doble bacon, queso cheddar, hilos de patata, 70 gr. carne mechada, salsa de piña",
+        "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, patata hariak, 70 gr. haragia mechada, anana saltsa"
+      },
+      "precio": 14.50,
+      "imagen": "images/hamburguesa-6.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 7,
+      "nombre": {
+        "es": "BACONESSA",
+        "eu": "BACONESSA"
+      },
+      "descripcion": {
+        "es": "180 gr. Angus, doble queso danés, doble bacon, bacon crispy, cebolla crispy, huevo, salsa Bacón",
+        "eu": "180 gr. Angus, daniar gazta bikoitza, zirikatz bikoitza, zirikatz crispy, tipula crispy, arraultza, Bacón saltsa"
+      },
+      "precio": 14.00,
+      "imagen": "images/hamburguesa-7.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 8,
+      "nombre": {
+        "es": "BBQ",
+        "eu": "BBQ"
+      },
+      "descripcion": {
+        "es": "180 gr. Angus, doble bacon, queso danés, cebolla, chaskis, salsa Barbacoa",
+        "eu": "180 gr. Angus, zirikatz bikoitza, daniar gazta, tipula, chaskis, Barbacoa saltsa"
+      },
+      "precio": 13.00,
+      "imagen": "images/hamburguesa-8.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 9,
+      "nombre": {
+        "es": "AZTECA",
+        "eu": "AZTECA"
+      },
+      "descripcion": {
+        "es": "180 gr. Angus, queso cheddar, cebolla crispy, jalapeño, guacamole, nachos, salsa de jalapeño asado",
+        "eu": "180 gr. Angus, cheddar gazta, tipula crispy, jalapeño, guacamole, nachos, jalapeño errearen saltsa"
+      },
+      "precio": 13.50,
+      "imagen": "images/hamburguesa-9.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 10,
+      "nombre": {
+        "es": "CLASICA",
+        "eu": "KLASIKOA"
+      },
+      "descripcion": {
+        "es": "180 gr. Angus, doble bacon, queso cheddar, Salsa Burger",
+        "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, Burger Saltsa"
+      },
+      "precio": 12.50,
+      "imagen": "images/hamburguesa-10.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 11,
+      "nombre": {
+        "es": "VEGETARIANA",
+        "eu": "BERDEETARIA"
+      },
+      "descripcion": {
+        "es": "Carne Eura (Vegetariana), queso cheddar, lechuga, tomate, cebolla morada, huevo",
+        "eu": "Eura haragia (Berdeetaria), cheddar gazta, letxuga, tomatea, tipula morea, arraultza"
+      },
+      "precio": 12.50,
+      "imagen": "images/hamburguesa-11.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    }
+  ],
+  "chuleta": [
+    {
+      "id": 1,
+      "nombre": {
+        "es": "GANBARA TURBO",
+        "eu": "GANBARA TURBO"
+      },
+      "descripcion": {
+        "es": "200 gr. Txuleta, doble bacon, queso cheddar, cebolla caramelizada, 70 gr. carne mechada, salsa guasacaca",
+        "eu": "200 gr. Txuleta, zirikatz bikoitza, cheddar gazta, tipula karamelizatua, 70 gr. haragia mechada, guasacaca saltsa"
+      },
+      "precio": 15.00,
+      "precioPorKg": null,
+      "imagen": "assets/ganbaraturbo.png",
+      "categoria": "chuleta",
+      "disponible": true
+    },
+    {
+      "id": 2,
+      "nombre": {
+        "es": "EUSKALDUNA",
+        "eu": "EUSKALDUNA"
+      },
+      "descripcion": {
+        "es": "200 gr. Txuleta, doble bacon, queso Idiazabal, huevo",
+        "eu": "200 gr. Txuleta, zirikatz bikoitza, Idiazabal gazta, arraultza"
+      },
+      "precio": 14.50,
+      "precioPorKg": null,
+      "imagen": "images/chuleta-2.jpg",
+      "categoria": "chuleta",
+      "disponible": true
+    }
+  ],
+  "postres": [
+    {
+      "id": 1,
+      "nombre": {
+        "es": "Tarta de queso",
+        "eu": "Gazta tarta"
+      },
+      "descripcion": {
+        "es": "Tarta de queso casera",
+        "eu": "Etxeko gazta tarta"
+      },
+      "precio": 5.50,
+      "imagen": "images/postre-1.jpg",
+      "categoria": "postres",
+      "disponible": true
+    },
+    {
+      "id": 2,
+      "nombre": {
+        "es": "Coulant de chocolate",
+        "eu": "Txokolate coulant"
+      },
+      "descripcion": {
+        "es": "Coulant de chocolate con helado",
+        "eu": "Txokolate coulant izozkiarekin"
+      },
+      "precio": 6.00,
+      "imagen": "images/postre-2.jpg",
+      "categoria": "postres",
+      "disponible": true
+    }
+  ]
+}

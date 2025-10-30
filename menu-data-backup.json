@@ -1,0 +1,588 @@
+{
+  "bocadillos": [
+    {
+      "id": 1,
+      "nombre": {
+        "es": "Pollo rebozado con bacon y queso fundido",
+        "eu": "Oilaskoa zirikatzarekin eta gazta urtuarekin"
+      },
+      "descripcion": {
+        "es": "Pollo rebozado, bacon, queso fundido",
+        "eu": "Oilasko errebozatua, zirikatz, gazta urtua"
+      },
+      "precio": 8.50,
+      "imagen": "images/bocadillo-1.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 2,
+      "nombre": {
+        "es": "Pollo rebozado con mermelada y queso de cabra",
+        "eu": "Oilaskoa mermelada eta ahuntz gaztarekin"
+      },
+      "descripcion": {
+        "es": "Pollo rebozado, mermelada, queso de cabra",
+        "eu": "Oilasko errebozatua, mermelada, ahuntz gazta"
+      },
+      "precio": 8.50,
+      "imagen": "images/bocadillo-2.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 3,
+      "nombre": {
+        "es": "Carrillera de ternera en salsa",
+        "eu": "Txahalaren masaila saltsan"
+      },
+      "descripcion": {
+        "es": "Carrillera de ternera, salsa especial",
+        "eu": "Txahalaren masaila, saltsa berezia"
+      },
+      "precio": 9.00,
+      "imagen": "images/bocadillo-3.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 4,
+      "nombre": {
+        "es": "Carrillera de ternera con queso de cabra",
+        "eu": "Txahalaren masaila ahuntz gaztarekin"
+      },
+      "descripcion": {
+        "es": "Carrillera de ternera, queso de cabra",
+        "eu": "Txahalaren masaila, ahuntz gazta"
+      },
+      "precio": 9.50,
+      "imagen": "images/bocadillo-4.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 5,
+      "nombre": {
+        "es": "Lomo con pimientos, tomate y queso",
+        "eu": "Bizkarreko piperra, tomatea eta gaztarekin"
+      },
+      "descripcion": {
+        "es": "Lomo, pimientos, tomate, queso",
+        "eu": "Bizkarreko, piperra, tomatea, gazta"
+      },
+      "precio": 7.50,
+      "imagen": "images/bocadillo-5.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 6,
+      "nombre": {
+        "es": "Lomo con queso de cabra",
+        "eu": "Bizkarreko ahuntz gaztarekin"
+      },
+      "descripcion": {
+        "es": "Lomo, queso de cabra",
+        "eu": "Bizkarreko, ahuntz gazta"
+      },
+      "precio": 7.50,
+      "imagen": "images/bocadillo-6.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 7,
+      "nombre": {
+        "es": "Presa Ibérica con parrilla de verduras",
+        "eu": "Iberiar presa barazki parrilarekin"
+      },
+      "descripcion": {
+        "es": "Presa Ibérica, parrilla de verduras",
+        "eu": "Iberiar presa, barazki parrila"
+      },
+      "precio": 9.50,
+      "imagen": "images/bocadillo-7.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 8,
+      "nombre": {
+        "es": "Presa Ibérica con pimientos y queso fundido",
+        "eu": "Iberiar presa piperra eta gazta urtuarekin"
+      },
+      "descripcion": {
+        "es": "Presa Ibérica, pimientos, queso fundido",
+        "eu": "Iberiar presa, piperra, gazta urtua"
+      },
+      "precio": 9.50,
+      "imagen": "images/bocadillo-8.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 9,
+      "nombre": {
+        "es": "Presa Ibérica con queso Camembert y cebolla caramelizada",
+        "eu": "Iberiar presa Camembert gazta eta tipula karamelizatua"
+      },
+      "descripcion": {
+        "es": "Presa Ibérica, queso Camembert, cebolla caramelizada",
+        "eu": "Iberiar presa, Camembert gazta, tipula karamelizatua"
+      },
+      "precio": 10.00,
+      "imagen": "images/bocadillo-9.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 10,
+      "nombre": {
+        "es": "Sepia de lonja a la plancha con ajetes",
+        "eu": "Txibia ajoagaz"
+      },
+      "descripcion": {
+        "es": "Sepia de lonja, ajetes",
+        "eu": "Txibia, ajoagaz"
+      },
+      "precio": 9.50,
+      "imagen": "images/bocadillo-10.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    },
+    {
+      "id": 11,
+      "nombre": {
+        "es": "Vegetal con parrilla de verduras",
+        "eu": "Begetala barazki parrilarekin"
+      },
+      "descripcion": {
+        "es": "Parrilla de verduras, ingredientes vegetales",
+        "eu": "Barazki parrila, osagai begetalak"
+      },
+      "precio": 7.00,
+      "imagen": "images/bocadillo-11.jpg",
+      "categoria": "bocadillos",
+      "disponible": true
+    }
+  ],
+  "raciones": [
+    {
+      "id": 1,
+      "nombre": {
+        "es": "Calamares a la romana",
+        "eu": "Txipiroi erromatar eran"
+      },
+      "descripcion": {
+        "es": "Calamares rebozados, estilo romana",
+        "eu": "Txipiroi errebozatuak, erromatar estiloan"
+      },
+      "precio": 12.00,
+      "mediaRacion": 7.00,
+      "imagen": "images/racion-1.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 2,
+      "nombre": {
+        "es": "Calamares en su tinta",
+        "eu": "Txipiroi kiluska"
+      },
+      "descripcion": {
+        "es": "Calamares cocinados en su tinta",
+        "eu": "Txipiroiak bere tintan prestatuak"
+      },
+      "precio": 14.00,
+      "mediaRacion": 8.00,
+      "imagen": "images/racion-2.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 3,
+      "nombre": {
+        "es": "Carrilleras de ternera en salsa",
+        "eu": "Txahalaren masailak saltsan"
+      },
+      "descripcion": {
+        "es": "Carrilleras de ternera tiernas en salsa",
+        "eu": "Txahalaren masail gozoak saltsan"
+      },
+      "precio": 15.00,
+      "mediaRacion": 9.00,
+      "imagen": "images/racion-3.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 4,
+      "nombre": {
+        "es": "Chipirones a la plancha",
+        "eu": "Txipiron plantxan"
+      },
+      "descripcion": {
+        "es": "Chipirones frescos a la plancha",
+        "eu": "Txipiron freskoak plantxan"
+      },
+      "precio": 16.00,
+      "mediaRacion": null,
+      "imagen": "images/racion-4.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 5,
+      "nombre": {
+        "es": "Huevos rotos con jamón y patatas",
+        "eu": "Arrautza apurtuak urdaiazpiarekin eta patatekin"
+      },
+      "descripcion": {
+        "es": "Huevos rotos, jamón ibérico, patatas fritas",
+        "eu": "Arrautza apurtuak, iberiar urdaiazpia, patata frijituak"
+      },
+      "precio": 12.00,
+      "mediaRacion": null,
+      "imagen": "images/racion-5.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 6,
+      "nombre": {
+        "es": "Patatas bravas",
+        "eu": "Patata bravak"
+      },
+      "descripcion": {
+        "es": "Patatas fritas con salsa brava",
+        "eu": "Patata frijituak saltsa bravarekin"
+      },
+      "precio": 8.00,
+      "mediaRacion": null,
+      "imagen": "images/racion-6.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 7,
+      "nombre": {
+        "es": "Setas con gamba y vinagreta",
+        "eu": "Perretxikoak ganba vinagretarekin"
+      },
+      "descripcion": {
+        "es": "Setas salteadas, gamba, vinagreta",
+        "eu": "Perretxikoak, ganba, vinagreta"
+      },
+      "precio": 14.00,
+      "mediaRacion": null,
+      "imagen": "images/racion-7.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 8,
+      "nombre": {
+        "es": "Pulpo a la brasa",
+        "eu": "Olagarro brasan"
+      },
+      "descripcion": {
+        "es": "Pulpo a la brasa con patatas",
+        "eu": "Olagarro brasan patatekin"
+      },
+      "precio": 18.00,
+      "mediaRacion": null,
+      "imagen": "images/racion-8.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 9,
+      "nombre": {
+        "es": "Pulpo a la gallega",
+        "eu": "Olagarro galego moduan"
+      },
+      "descripcion": {
+        "es": "Pulpo a la gallega con patatas y pimentón",
+        "eu": "Olagarro galego moduan patata eta piperropilarekin"
+      },
+      "precio": 18.00,
+      "mediaRacion": null,
+      "imagen": "images/racion-9.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 10,
+      "nombre": {
+        "es": "Sepia a la plancha",
+        "eu": "Txibia plantxan"
+      },
+      "descripcion": {
+        "es": "Sepia fresca a la plancha con guarnición",
+        "eu": "Txibia freskoa plantxan"
+      },
+      "precio": 16.00,
+      "mediaRacion": null,
+      "imagen": "images/racion-10.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 11,
+      "nombre": {
+        "es": "Zamburiñas",
+        "eu": "Zamburiñak"
+      },
+      "descripcion": {
+        "es": "Zamburiñas frescas gratinadas",
+        "eu": "Zamburiña freskoak gratinatuak"
+      },
+      "precio": 16.00,
+      "mediaRacion": null,
+      "imagen": "images/racion-11.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    }
+  ],
+  "hamburguesas": [
+    {
+      "id": 1,
+      "nombre": {
+        "es": "Ternera con bacon, cebolla, tomate, lechuga y queso",
+        "eu": "Txahala zirikatz, tipula, tomatea, letxuga eta gaztarekin"
+      },
+      "descripcion": {
+        "es": "Ternera, bacon, cebolla, tomate, lechuga, queso",
+        "eu": "Txahala, zirikatz, tipula, tomatea, letxuga, gazta"
+      },
+      "precio": 10.00,
+      "imagen": "images/hamburguesa-1.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 2,
+      "nombre": {
+        "es": "Ternera con bacon, queso de cabra y cebolla caramelizada",
+        "eu": "Txahala zirikatz, ahuntz gazta eta tipula karamelizatuarekin"
+      },
+      "descripcion": {
+        "es": "Ternera, bacon, queso de cabra, cebolla caramelizada",
+        "eu": "Txahala, zirikatz, ahuntz gazta, tipula karamelizatua"
+      },
+      "precio": 11.00,
+      "imagen": "images/hamburguesa-2.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 3,
+      "nombre": {
+        "es": "Ternera con bacon, huevo, cebolla frita y queso",
+        "eu": "Txahala zirikatz, arrautza, tipula frijitua eta gaztarekin"
+      },
+      "descripcion": {
+        "es": "Ternera, bacon, huevo, cebolla frita, queso",
+        "eu": "Txahala, zirikatz, arrautza, tipula frijitua, gazta"
+      },
+      "precio": 11.00,
+      "imagen": "images/hamburguesa-3.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 4,
+      "nombre": {
+        "es": "Ternera con bacon, mermelada, queso de cabra y nueces",
+        "eu": "Txahala zirikatz, mermelada, ahuntz gazta eta intxaurrekin"
+      },
+      "descripcion": {
+        "es": "Ternera, bacon, mermelada, queso de cabra, nueces",
+        "eu": "Txahala, zirikatz, mermelada, ahuntz gazta, intxaur"
+      },
+      "precio": 11.00,
+      "imagen": "images/hamburguesa-4.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 5,
+      "nombre": {
+        "es": "Ternera con bacon, pimientos de padrón, queso Camembert y miel",
+        "eu": "Txahala zirikatz, Padron piperrak, Camembert gazta eta eztiarekin"
+      },
+      "descripcion": {
+        "es": "Ternera, bacon, pimientos de padrón, queso Camembert, miel",
+        "eu": "Txahala, zirikatz, Padron piperrak, Camembert gazta, eztia"
+      },
+      "precio": 11.50,
+      "imagen": "images/hamburguesa-5.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 6,
+      "nombre": {
+        "es": "Ternera con bacon, pimientos verdes, queso Camembert y salsa roquefort",
+        "eu": "Txahala zirikatz, piper berde, Camembert gazta eta roquefort saltsarekin"
+      },
+      "descripcion": {
+        "es": "Ternera, bacon, pimientos verdes, queso Camembert, salsa roquefort",
+        "eu": "Txahala, zirikatz, piper berde, Camembert gazta, roquefort saltsa"
+      },
+      "precio": 11.50,
+      "imagen": "images/hamburguesa-6.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 7,
+      "nombre": {
+        "es": "Ternera con bacon, queso y jalapeños",
+        "eu": "Txahala zirikatz, gazta eta jalapeñoekin"
+      },
+      "descripcion": {
+        "es": "Ternera, bacon, queso, jalapeños",
+        "eu": "Txahala, zirikatz, gazta, jalapeño"
+      },
+      "precio": 10.50,
+      "imagen": "images/hamburguesa-7.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 8,
+      "nombre": {
+        "es": "Ternera con bacon, salsa barbacoa, cebolla frita y queso",
+        "eu": "Txahala zirikatz, barbakoa saltsa, tipula frijitua eta gaztarekin"
+      },
+      "descripcion": {
+        "es": "Ternera, bacon, salsa barbacoa, cebolla frita, queso",
+        "eu": "Txahala, zirikatz, barbakoa saltsa, tipula frijitua, gazta"
+      },
+      "precio": 10.50,
+      "imagen": "images/hamburguesa-8.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 9,
+      "nombre": {
+        "es": "Pechuga crujiente con bacon, tomate, lechuga y queso",
+        "eu": "Bularreko kurruskaria zirikatz, tomatea, letxuga eta gaztarekin"
+      },
+      "descripcion": {
+        "es": "Pechuga crujiente, bacon, tomate, lechuga, queso",
+        "eu": "Bularreko kurruskaria, zirikatz, tomatea, letxuga, gazta"
+      },
+      "precio": 10.00,
+      "imagen": "images/hamburguesa-9.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 10,
+      "nombre": {
+        "es": "Pechuga crujiente con mermelada y queso Camembert",
+        "eu": "Bularreko kurruskaria mermelada eta Camembert gaztarekin"
+      },
+      "descripcion": {
+        "es": "Pechuga crujiente, mermelada, queso Camembert",
+        "eu": "Bularreko kurruskaria, mermelada, Camembert gazta"
+      },
+      "precio": 10.50,
+      "imagen": "images/hamburguesa-10.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    },
+    {
+      "id": 11,
+      "nombre": {
+        "es": "Vegetal con cebolla caramelizada, tomate seco y queso de cabra",
+        "eu": "Begetala tipula karamelizatuarekin, tomate lehorra eta ahuntz gaztarekin"
+      },
+      "descripcion": {
+        "es": "Hamburguesa vegetal, cebolla caramelizada, tomate seco, queso de cabra",
+        "eu": "Barazki hamburgesa, tipula karamelizatua, tomate lehorra, ahuntz gazta"
+      },
+      "precio": 9.50,
+      "imagen": "images/hamburguesa-11.jpg",
+      "categoria": "hamburguesas",
+      "disponible": true
+    }
+  ],
+  "chuleta": [
+    {
+      "id": 1,
+      "nombre": {
+        "es": "Chuletón de ternera",
+        "eu": "Txahalaren txuleta"
+      },
+      "descripcion": {
+        "es": "Chuletón de ternera a la parrilla (peso variable según pieza)",
+        "eu": "Txahalaren txuleta parrillan (pieza araberako pisua)"
+      },
+      "precio": null,
+      "precioPorKg": 65.00,
+      "imagen": "images/chuleta-1.jpg",
+      "categoria": "chuleta",
+      "disponible": true,
+      "nota": {
+        "es": "Precio por kilogramo. Peso variable según pieza.",
+        "eu": "Prezio kilogramoko. Pieza araberako pisua."
+      }
+    },
+    {
+      "id": 2,
+      "nombre": {
+        "es": "Chuletón de buey",
+        "eu": "Idien txuleta"
+      },
+      "descripcion": {
+        "es": "Chuletón de buey a la parrilla (peso variable según pieza)",
+        "eu": "Idien txuleta parrillan (pieza araberako pisua)"
+      },
+      "precio": null,
+      "precioPorKg": 85.00,
+      "imagen": "images/chuleta-2.jpg",
+      "categoria": "chuleta",
+      "disponible": true,
+      "nota": {
+        "es": "Precio por kilogramo. Peso variable según pieza.",
+        "eu": "Prezio kilogramoko. Pieza araberako pisua."
+      }
+    }
+  ],
+  "postres": [
+    {
+      "id": 1,
+      "nombre": {
+        "es": "Tarta de queso",
+        "eu": "Gazta tarta"
+      },
+      "descripcion": {
+        "es": "Tarta de queso casera",
+        "eu": "Etxeko gazta tarta"
+      },
+      "precio": 5.50,
+      "imagen": "images/postre-1.jpg",
+      "categoria": "postres",
+      "disponible": true
+    },
+    {
+      "id": 2,
+      "nombre": {
+        "es": "Coulant de chocolate",
+        "eu": "Txokolate coulant"
+      },
+      "descripcion": {
+        "es": "Coulant de chocolate con helado",
+        "eu": "Txokolate coulant izozkiarekin"
+      },
+      "precio": 6.00,
+      "imagen": "images/postre-2.jpg",
+      "categoria": "postres",
+      "disponible": true
+    }
+  ]
+}

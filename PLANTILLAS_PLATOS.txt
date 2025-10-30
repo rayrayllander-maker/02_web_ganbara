@@ -1,0 +1,177 @@
+// ============================================
+// PLANTILLAS PARA AÑADIR NUEVOS PLATOS
+// ============================================
+
+// Copia una de estas plantillas según el tipo de plato
+// Rellena los valores y pégala en menu-data.json en la categoría correspondiente
+
+// ============================================
+// PLANTILLA: BOCADILLO / HAMBURGUESA ESTÁNDAR
+// ============================================
+{
+  "id": 999,  // ← Cambia por el siguiente número disponible
+  "nombre": {
+    "es": "NOMBRE EN ESPAÑOL",
+    "eu": "IZENA EUSKERAZ"
+  },
+  "descripcion": {
+    "es": "Ingrediente1, ingrediente2, ingrediente3",
+    "eu": "Osagaia1, osagaia2, osagaia3"
+  },
+  "precio": 8.50,  // ← Precio en euros
+  "imagen": "images/nombre-del-archivo.jpg",  // ← Nombre de tu imagen
+  "categoria": "bocadillos",  // ← bocadillos, hamburguesas, raciones, chuleta, postres
+  "disponible": true
+}
+
+// ============================================
+// PLANTILLA: RACIÓN CON MEDIA RACIÓN
+// ============================================
+{
+  "id": 999,
+  "nombre": {
+    "es": "NOMBRE EN ESPAÑOL",
+    "eu": "IZENA EUSKERAZ"
+  },
+  "descripcion": {
+    "es": "Ingrediente1, ingrediente2",
+    "eu": "Osagaia1, osagaia2"
+  },
+  "precio": 14.00,  // ← Precio ración completa
+  "mediaRacion": 8.00,  // ← Precio media ración
+  "imagen": "images/nombre-del-archivo.jpg",
+  "categoria": "raciones",
+  "disponible": true
+}
+
+// ============================================
+// PLANTILLA: CHULETA (PRECIO POR KG)
+// ============================================
+{
+  "id": 999,
+  "nombre": {
+    "es": "Chuletón de TIPO",
+    "eu": "TIPO txuleta"
+  },
+  "descripcion": {
+    "es": "Chuletón de TIPO a la parrilla (peso variable según pieza)",
+    "eu": "TIPO txuleta parrillan (pieza araberako pisua)"
+  },
+  "precio": null,  // ← Siempre null para chuletas
+  "precioPorKg": 75.00,  // ← Precio por kilogramo
+  "imagen": "images/chuleta-X.jpg",
+  "categoria": "chuleta",
+  "disponible": true,
+  "nota": {
+    "es": "Precio por kilogramo. Peso variable según pieza.",
+    "eu": "Prezio kilogramoko. Pieza araberako pisua."
+  }
+}
+
+// ============================================
+// PLANTILLA: POSTRE SIMPLE
+// ============================================
+{
+  "id": 999,
+  "nombre": {
+    "es": "NOMBRE DEL POSTRE",
+    "eu": "POSTRE IZENA"
+  },
+  "descripcion": {
+    "es": "Descripción breve del postre",
+    "eu": "Postrearen deskribapen labur"
+  },
+  "precio": 5.50,
+  "imagen": "images/postre-X.jpg",
+  "categoria": "postres",
+  "disponible": true
+}
+
+// ============================================
+// VOCABULARIO ÚTIL - ESPAÑOL → EUSKERA
+// ============================================
+
+/*
+CARNES Y PROTEÍNAS:
+- Pollo → Oilaskoa
+- Ternera → Txahala
+- Pechuga → Bularreko
+- Lomo → Bizkarreko
+- Jamón → Urdaiazpia
+- Bacon → Zirikatz
+- Chorizo → Txorizo
+- Sepia → Txibia
+- Calamar → Txipiroi
+- Gamba → Ganba
+- Pulpo → Olagarro
+- Atún → Atuna
+
+VERDURAS:
+- Lechuga → Letxuga
+- Tomate → Tomatea
+- Cebolla → Tipula
+- Pimientos → Piperrak
+- Calabacín → Kalabazin
+- Champiñones → Perretxikoak
+- Setas → Perretxikoak
+- Ajetes → Ajoagaz
+
+QUESOS:
+- Queso → Gazta
+- Queso de cabra → Ahuntz gazta
+- Queso fundido → Gazta urtua
+- Camembert → Camembert gazta
+- Idiazabal → Idiazabal gazta
+
+OTROS:
+- Huevo → Arrautza
+- Pan → Ogia
+- Patatas → Patak
+- Salsa → Saltsa
+- A la plancha → Plantxan
+- Rebozado → Errebozatua
+- Frito → Frijitua
+- Crujiente → Kurruskaria
+- Parrilla → Parrila
+- Mermelada → Mermelada
+- Miel → Eztia
+- Vinagreta → Vinagreta
+
+PREPARACIONES:
+- Con → -rekin / -arekin
+- De → -ko
+- A la plancha → Plantxan
+- En salsa → Saltsan
+- Caramelizado → Karamelizatua
+- Fresco → Freskoa
+*/
+
+// ============================================
+// INSTRUCCIONES DE USO:
+// ============================================
+
+/*
+1. Copia la plantilla que necesites
+2. Rellena todos los campos:
+   - id: Usa el siguiente número disponible
+   - nombre: En español y euskera
+   - descripcion: Lista de ingredientes
+   - precio: Sin símbolo €, usa punto para decimales (8.50)
+   - imagen: Ruta al archivo en carpeta images/
+   - categoria: Una de las 5 categorías
+   - disponible: true para mostrar, false para ocultar
+
+3. Añade tu plato en menu-data.json:
+   - Abre el archivo menu-data.json
+   - Busca la categoría correcta
+   - Pega tu nuevo plato ANTES del corchete de cierre ]
+   - Asegúrate de añadir una coma , después del plato anterior
+   
+4. Guarda y recarga la página (F5)
+
+IMPORTANTE:
+- Respeta las comillas dobles ""
+- No olvides las comas entre campos
+- El último elemento NO lleva coma final
+- Valida el JSON en https://jsonlint.com/ si hay errores
+*/

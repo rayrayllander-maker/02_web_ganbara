@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganbara - Restaurante</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&family=Texturina:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Preloader Overlay -->
+    <div id="preloader" aria-hidden="true">
+        <div class="preloader-content">
+            <img src="assets/Logo_color_ganbara.png" alt="Ganbara" class="preloader-logo" width="64" height="64" loading="eager" decoding="async">
+            <img src="assets/spinner.svg" alt="Cargando" class="preloader-spinner" width="48" height="48" loading="eager" decoding="async">
+            <p class="preloader-text" data-es="Cargando..." data-eu="Kargatzen...">Cargando...</p>
+        </div>
+    </div>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="assets/Logo_color_ganbara.png" alt="Logo Ganbara" class="logo-img" width="44" height="44" loading="eager" decoding="async" fetchpriority="high">
+                    <h2>Ganbara</h2>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="#home" class="nav-link" data-es="Inicio" data-eu="Hasiera">Inicio</a></li>
+                    <li class="nav-item"><a href="#menu" class="nav-link" data-es="Menú" data-eu="Menua">Menú</a></li>
+                    <li class="nav-item"><a href="#about" class="nav-link" data-es="Nosotros" data-eu="Guri buruz">Nosotros</a></li>
+                    <li class="nav-item"><a href="#contact" class="nav-link" data-es="Contacto" data-eu="Kontaktua">Contacto</a></li>
+                </ul>
+                <button class="lang-toggle" aria-label="Cambiar idioma" title="Cambiar idioma">
+                    <span class="lang-text">EU</span>
+                </button>
+                <button class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title" data-es="Experiencia Gastronómica Única" data-eu="Esperientzia Gastronomiko Bakarra">Experiencia Gastronómica Única</h1>
+            <p class="hero-subtitle" data-es="Descubre sabores auténticos en un ambiente acogedor" data-eu="Ezagutu zapore autentikoak giro atsegin batean">Descubre sabores auténticos en un ambiente acogedor</p>
+            <a href="#menu" class="cta-button" data-es="Ver Menú" data-eu="Ikusi Menua">Ver Menú</a>
+        </div>
+        <div class="hero-image">
+            <div class="image-placeholder"></div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="menu-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title" data-es="Nuestro Menú" data-eu="Gure Menua">Nuestro Menú</h2>
+                <p class="section-subtitle" data-es="Platos preparados con ingredientes frescos y de la más alta calidad" data-eu="Osagai freskoekin eta kalitate handienarekin prestatutako platera">Platos preparados con ingredientes frescos y de la más alta calidad</p>
+            </div>
+
+            <!-- Menu Categories -->
+            <div class="menu-categories">
+                <button class="category-btn active" data-category="all">
+                    <i class="fas fa-th-large"></i>
+                    <span class="category-name" data-es="Todos" data-eu="Guztiak">Todos</span>
+                </button>
+                <button class="category-btn" data-category="bocadillos">
+                    <i class="fas fa-bread-slice"></i>
+                    <span class="category-name" data-es="Bocadillos" data-eu="Ogitartekoak">Bocadillos</span>
+                </button>
+                <button class="category-btn" data-category="raciones">
+                    <i class="fas fa-utensils"></i>
+                    <span class="category-name" data-es="Raciones" data-eu="Hasierakoak">Raciones</span>
+                </button>
+                <button class="category-btn" data-category="hamburguesas">
+                    <i class="fas fa-hamburger"></i>
+                    <span class="category-name" data-es="Hamburguesas" data-eu="Hanburgesak">Hamburguesas</span>
+                </button>
+                <button class="category-btn" data-category="chuleta">
+                    <i class="fas fa-drumstick-bite"></i>
+                    <span class="category-name" data-es="Chuleta" data-eu="Txuleta">Chuleta</span>
+                </button>
+                <button class="category-btn" data-category="postres">
+                    <i class="fas fa-ice-cream"></i>
+                    <span class="category-name" data-es="Postres" data-eu="Postreak">Postres</span>
+                </button>
+            </div>
+
+            <!-- Menu Items -->
+            <div class="menu-grid">
+                <!-- Items will be loaded dynamically from menu-data.json -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">Nuestra Historia</h2>
+                    <p>En Ganbara, creemos que la comida es mucho más que nutrición. Es cultura, tradición y una forma de conectar con las personas que amamos. Desde 1985, hemos estado sirviendo platos auténticos que capturan la esencia de la cocina española.</p>
+                    <p>Nuestro chef ejecutivo, con más de 20 años de experiencia, combina técnicas tradicionales con toques modernos para crear una experiencia gastronómica única.</p>
+                    <div class="features">
+                        <div class="feature">
+                            <i class="fas fa-leaf"></i>
+                            <span>Ingredientes Frescos</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-award"></i>
+                            <span>Calidad Premium</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-heart"></i>
+                            <span>Tradición Familiar</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="image-placeholder"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Contacto</h2>
+                <p class="section-subtitle">Ven a visitarnos o haz tu reserva</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Dirección</h3>
+                            <p>Calle Mayor 123<br>Madrid, España</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Teléfono</h3>
+                            <p>+34 91 123 45 67</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h3>Horarios</h3>
+                            <p>Lun-Dom: 13:00 - 23:00</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>info@ganbara.es</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="reservation-form">
+                    <h3>Hacer Reserva</h3>
+                    <form>
+                        <div class="form-group">
+                            <input type="text" placeholder="Nombre completo" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" placeholder="Teléfono" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="date" required>
+                        </div>
+                        <div class="form-group">
+                            <select required>
+                                <option value="">Hora</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="20:00">20:00</option>
+                                <option value="21:00">21:00</option>
+                                <option value="22:00">22:00</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select required>
+                                <option value="">Número de personas</option>
+                                <option value="1">1 persona</option>
+                                <option value="2">2 personas</option>
+                                <option value="3">3 personas</option>
+                                <option value="4">4 personas</option>
+                                <option value="5">5+ personas</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="submit-btn">Enviar Reserva</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Ganbara</h3>
+                    <p>Tradición y sabor en cada plato</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces</h4>
+                    <ul>
+                        <li><a href="#home">Inicio</a></li>
+                        <li><a href="#menu">Menú</a></li>
+                        <li><a href="#about">Nosotros</a></li>
+                        <li><a href="#contact">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Horarios</h4>
+                    <p>Lunes - Domingo<br>13:00 - 23:00</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p>Calle Mayor 123<br>Madrid, España<br>+34 91 123 45 67</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ganbara. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="translations.js"></script>
+    <script src="menu-translations.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
