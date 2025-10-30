@@ -901,12 +901,12 @@ html {
 /* ========================= */
 body.dark-mode {
     --color-text: rgba(255,255,255,0.92);
-    /* Fondo un poco más cálido y de marca */
-    background: radial-gradient(1200px 800px at 20% 10%, var(--color-dark) 0%, var(--color-primary) 50%, #12070a 100%);
+    /* Fondo más oscuro con tonos profundos */
+    background: radial-gradient(1200px 800px at 20% 10%, #1a0a04 0%, #0f0502 50%, #080301 100%);
 }
 
 body.dark-mode .header {
-    background: rgba(10, 10, 10, 0.9);
+    background: rgba(8, 5, 4, 0.92);
     border-bottom-color: var(--color-secondary);
 }
 
@@ -921,13 +921,13 @@ body.dark-mode .section-subtitle { color: rgba(255,255,255,0.8); }
 
 body.dark-mode .menu-section,
 body.dark-mode .about-section,
-body.dark-mode .contact-section { background-color: rgba(33, 15, 4, 0.35); }
+body.dark-mode .contact-section { background-color: rgba(15, 8, 3, 0.5); }
 
 body.dark-mode .menu-item,
 body.dark-mode .reservation-form { 
-    background: #1a0f12; 
+    background: #0d0709; 
     border-color: rgba(205, 93, 103, 0.25); /* tono del color secundario */
-    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.7);
 }
 
 body.dark-mode .menu-item-title { color: var(--color-light); }
@@ -998,17 +998,17 @@ body.dark-mode .theme-toggle:hover {
 
 /* Sticky menu categories in dark mode */
 body.dark-mode .menu-categories {
-    background: rgba(20,20,20,0.85); /* Fondo oscuro semitransparente */
+    background: rgba(10,8,6,0.88); /* Fondo más oscuro semitransparente */
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     border: 1px solid rgba(255,255,255,0.06);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 body.dark-mode .hero-image .image-placeholder {
-    background: linear-gradient(135deg, #2c1116, #3a141b);
+    background: linear-gradient(135deg, #150809, #1d0a0d);
 }
 
 body.dark-mode .menu-item-image .image-placeholder {
-    background: linear-gradient(135deg, #2b1015, #3a151b);
+    background: linear-gradient(135deg, #140708, #1c090c);
 }
