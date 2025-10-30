@@ -174,10 +174,10 @@ window.addEventListener('scroll', () => {
     const header = document.querySelector('.header');
     const isDark = document.body.classList.contains('dark-mode');
     if (window.scrollY > 100) {
-        header.style.background = isDark ? 'rgba(10,10,10,0.9)' : 'rgba(255,255,255,0.98)';
+        header.style.background = isDark ? 'rgba(8,5,4,0.95)' : 'rgba(255,255,255,0.98)';
         header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
     } else {
-        header.style.background = isDark ? 'rgba(10,10,10,0.85)' : 'rgba(255,255,255,0.95)';
+        header.style.background = isDark ? 'rgba(8,5,4,0.88)' : 'rgba(255,255,255,0.95)';
         header.style.boxShadow = 'none';
     }
 });
