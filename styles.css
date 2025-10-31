@@ -947,6 +947,13 @@ body.dark-mode .logo-img {
     }
 }
 
+/* Desktop: Center category buttons horizontally */
+@media (min-width: 769px) {
+    .menu-categories {
+        justify-content: center;
+    }
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {
