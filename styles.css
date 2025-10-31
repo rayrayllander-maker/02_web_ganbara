@@ -384,6 +384,7 @@ body.dark-mode .logo-img {
     height: 28px;
     display: inline-block;
     flex-shrink: 0;
+    filter: brightness(0) invert(1);
 }
 
 .category-btn .category-name {
@@ -466,7 +467,7 @@ body.dark-mode .logo-img {
 }
 
 .menu-category h3 i {
-    color: var(--color-accent);
+    color: #ffffff;
 }
 
 .menu-category.highlighted h3 {
@@ -1039,7 +1040,7 @@ body.dark-mode .menu-category h3 {
     border-bottom-color: var(--color-secondary);
 }
 body.dark-mode .menu-category h3 i {
-    color: var(--color-accent);
+    color: #ffffff;
 }
 
 body.dark-mode .contact-item h3 { color: var(--color-light); }
