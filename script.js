@@ -831,22 +831,21 @@ function animateMenuItems() {
 // Call animation on page load
 document.addEventListener('DOMContentLoaded', animateMenuItems);
 
-// Parallax effect for hero section (optional enhancement)
+// Parallax effect for hero section - subtle zoom effect on scroll
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
-    const heroImage = document.querySelector('.hero-image');
     const hero = document.querySelector('.hero');
     
-    if (heroImage && hero) {
-        const heroBottom = hero.offsetTop + hero.offsetHeight;
+    if (hero) {
+        const heroHeight = hero.offsetHeight;
         
-        // Solo aplicar parallax cuando estamos dentro de la sección hero
-        if (scrolled < heroBottom) {
-            const parallaxValue = scrolled * 0.3;
-            heroImage.style.transform = `translateY(${parallaxValue}px)`;
+        // Solo aplicar efecto cuando estamos en la sección hero
+        if (scrolled < heroHeight) {
             // Reducir opacidad al hacer scroll para transición suave
-            const opacity = Math.max(0, 1 - (scrolled / heroBottom) * 0.5);
-            heroImage.style.opacity = opacity;
+            const opacity = Math.max(0.3, 1 - (scrolled / heroHeight) * 0.7);
+            hero.style.opacity = opacity;
+        } else {
+            hero.style.opacity = '1';
         }
     }
 });
