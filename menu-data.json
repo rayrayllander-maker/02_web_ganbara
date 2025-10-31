@@ -431,7 +431,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, patata hariak, 70 gr. haragia mechada, anana saltsa"
       },
       "precio": 14.50,
-      "imagen": "images/hamburguesa-6.jpg",
+      "imagen": "assets/colombiana.png",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -461,7 +461,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, daniar gazta, tipula, chaskis, Barbacoa saltsa"
       },
       "precio": 13.00,
-      "imagen": "images/hamburguesa-8.jpg",
+      "imagen": "assets/bbq.png",
       "categoria": "hamburguesas",
       "disponible": true
     },

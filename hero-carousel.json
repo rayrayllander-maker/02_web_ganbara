@@ -1,0 +1,61 @@
+{
+  "slides": [
+    {
+      "image": "assets/ganbaraturbo.png",
+      "title": {
+        "es": "Ganbara Turbo",
+        "eu": "Ganbara Turbo"
+      },
+      "subtitle": {
+        "es": "200 g de txuleta con carne mechada y salsa guasacaca",
+        "eu": "200 g txuleta haragi xehatuarekin eta guasacaca saltsarekin"
+      },
+      "alt": {
+        "es": "Hamburguesa Ganbara Turbo con carne mechada",
+        "eu": "Ganbara Turbo hanburgesa haragi xehatuarekin"
+      },
+      "target": {
+        "category": "chuleta",
+        "itemId": 1
+      }
+    },
+    {
+      "image": "assets/bbq.png",
+      "title": {
+        "es": "BBQ Artesanal",
+        "eu": "BBQ Artisaua"
+      },
+      "subtitle": {
+        "es": "Salsa barbacoa ahumada, chaskis y doble bacon",
+        "eu": "Barbakoa ketu saltsa, chaskis eta hirugihar bikoitza"
+      },
+      "alt": {
+        "es": "Hamburguesa BBQ con salsa barbacoa",
+        "eu": "BBQ hanburgesa barbakoa saltsarekin"
+      },
+      "target": {
+        "category": "hamburguesas",
+        "itemId": 8
+      }
+    },
+    {
+      "image": "assets/colombiana.png",
+      "title": {
+        "es": "Colombiana Dulce y Salada",
+        "eu": "Kolonbiarra Gozo eta Gazi"
+      },
+      "subtitle": {
+        "es": "Salsa de piña, carne mechada y patatas crujientes",
+        "eu": "Anana saltsa, haragi xehatua eta patata kurruskariak"
+      },
+      "alt": {
+        "es": "Hamburguesa Colombiana con salsa de piña",
+        "eu": "Kolonbiar hanburgesa anana saltsarekin"
+      },
+      "target": {
+        "category": "hamburguesas",
+        "itemId": 6
+      }
+    }
+  ]
+}

@@ -1,6 +1,19 @@
 // Load and render menu from JSON
 let menuData = null;
 
+// Hero carousel state
+const heroDefaults = {
+    title: { es: '', eu: '' },
+    subtitle: { es: '', eu: '' }
+};
+let heroSlides = [];
+let heroSlideElements = [];
+let heroCurrentIndex = 0;
+let heroCarouselTimer = null;
+let heroCarouselInterval = 5000;
+let heroHighlightTimeout = null;
+let heroLastHighlightedItem = null;
+
 // Preloader helpers
 function showPreloader() {
     const pre = document.getElementById('preloader');
@@ -58,8 +71,47 @@ function renderMenu() {
     
     menuGrid.innerHTML = ''; // Clear existing content
     
-    // Category icons mapping
-    const categoryIcons = {
+    // Category icon assets for separators
+    const categoryIconAssets = {
+        bocadillos: {
+            src: 'assets/bocadillos.svg',
+            alt: {
+                es: 'Icono bocadillos',
+                eu: 'Ogitarteko ikonoa'
+            }
+        },
+        raciones: {
+            src: 'assets/raciones.svg',
+            alt: {
+                es: 'Icono raciones',
+                eu: 'Hasierako ikonoa'
+            }
+        },
+        hamburguesas: {
+            src: 'assets/hamburguesas.svg',
+            alt: {
+                es: 'Icono hamburguesas',
+                eu: 'Hanburgesa ikonoa'
+            }
+        },
+        chuleta: {
+            src: 'assets/h_chuleta.svg',
+            alt: {
+                es: 'Icono chuleta',
+                eu: 'Txuleta ikonoa'
+            }
+        },
+        postres: {
+            src: 'assets/postre.svg',
+            alt: {
+                es: 'Icono postres',
+                eu: 'Postre ikonoa'
+            }
+        }
+    };
+
+    // Fallback Font Awesome classes (for categories without SVG)
+    const categoryIconClasses = {
         bocadillos: 'fa-bread-slice',
         raciones: 'fa-utensils',
         hamburguesas: 'fa-hamburger',
@@ -79,7 +131,23 @@ function renderMenu() {
     // Render each category
     Object.keys(menuData).forEach(category => {
         // Add visible separator inside the grid (section marker)
-        const icon = categoryIcons[category] || 'fa-utensils';
+        const iconAsset = categoryIconAssets[category];
+        const iconClass = categoryIconClasses[category] || 'fa-utensils';
+        let iconMarkup = `<i class="fas ${iconClass}"></i>`;
+
+        if (iconAsset?.src) {
+            const altEs = iconAsset.alt?.es || '';
+            const altEu = iconAsset.alt?.eu || altEs;
+            const altText = currentLang === 'eu' ? (altEu || altEs) : altEs;
+            iconMarkup = `
+                <img 
+                    src="${iconAsset.src}"
+                    alt="${altText}"
+                    class="category-title-icon"
+                    data-alt-es="${altEs}"
+                    data-alt-eu="${altEu}"
+                >`;
+        }
         const esName = categoryNames[category]?.es || category;
         const euName = categoryNames[category]?.eu || category;
         const separator = document.createElement('div');
@@ -87,7 +155,7 @@ function renderMenu() {
         separator.setAttribute('data-category', category);
         separator.innerHTML = `
             <h3>
-                <i class="fas ${icon}"></i>
+                ${iconMarkup}
                 <span class="category-label" data-category="${category}" data-es="${esName}" data-eu="${euName}">${esName}</span>
             </h3>`;
         menuGrid.appendChild(separator);
@@ -194,13 +262,23 @@ function applyTheme(theme) {
 }
 
 // Initialize theme based on saved preference or system preference
-document.addEventListener('DOMContentLoaded', () => {
-    // Load menu data first
+document.addEventListener('DOMContentLoaded', async () => {
+    captureHeroDefaults();
+
+    const heroDataPromise = loadHeroCarouselData();
     loadMenuData();
     
     const saved = localStorage.getItem('theme');
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     applyTheme(saved ? saved : (prefersDark ? 'dark' : 'light'));
+
+    try {
+        await heroDataPromise;
+    } catch (error) {
+        console.error('Error waiting for hero carousel data:', error);
+    }
+
+    startHeroCarousel();
 });
 
 // Toggle theme on button click
@@ -216,6 +294,18 @@ if (themeToggle) {
 const langToggle = document.querySelector('.lang-toggle');
 let currentLang = 'es';
 
+function getLocalizedValue(value, lang = currentLang) {
+    if (!value) return '';
+    if (typeof value === 'string') return value;
+    if (typeof value === 'object') {
+        if (value[lang]) return value[lang];
+        if (lang !== 'es' && value.es) return value.es;
+        const first = Object.values(value).find(v => typeof v === 'string');
+        return first || '';
+    }
+    return '';
+}
+
 function applyLanguage(lang) {
     currentLang = lang;
     
@@ -229,6 +319,13 @@ function applyLanguage(lang) {
             } else {
                 element.textContent = text;
             }
+        }
+    });
+
+    document.querySelectorAll('[data-alt-es][data-alt-eu]').forEach(element => {
+        const altText = element.getAttribute(`data-alt-${lang}`);
+        if (altText) {
+            element.setAttribute('alt', altText);
         }
     });
     
@@ -317,6 +414,8 @@ function applyLanguage(lang) {
         langToggle.setAttribute('aria-label', lang === 'es' ? 'Cambiar a euskera' : 'Aldatu espainolera');
         langToggle.title = lang === 'es' ? 'Cambiar a euskera' : 'Aldatu espainolera';
     }
+
+    updateHeroText();
 }
 
 // Toggle language on button click
@@ -326,6 +425,225 @@ if (langToggle) {
         applyLanguage(newLang);
         localStorage.setItem('language', newLang);
     });
+}
+
+function captureHeroDefaults() {
+    const heroTitle = document.querySelector('.hero-title');
+    if (heroTitle) {
+        heroDefaults.title.es = heroTitle.getAttribute('data-es') || heroTitle.textContent.trim();
+        heroDefaults.title.eu = heroTitle.getAttribute('data-eu') || heroDefaults.title.es;
+    }
+
+    const heroSubtitle = document.querySelector('.hero-subtitle');
+    if (heroSubtitle) {
+        heroDefaults.subtitle.es = heroSubtitle.getAttribute('data-es') || heroSubtitle.textContent.trim();
+        heroDefaults.subtitle.eu = heroSubtitle.getAttribute('data-eu') || heroDefaults.subtitle.es;
+    }
+}
+
+async function loadHeroCarouselData() {
+    try {
+        const response = await fetch('hero-carousel.json');
+        const data = await response.json();
+        const slides = Array.isArray(data.slides) ? data.slides : [];
+        heroSlides = slides.filter(slide => slide && slide.image);
+        heroCurrentIndex = 0;
+        renderHeroCarousel();
+    } catch (error) {
+        console.error('Error loading hero carousel data:', error);
+        heroSlides = [];
+        renderHeroCarousel();
+    }
+}
+
+function renderHeroCarousel() {
+    const container = document.querySelector('.hero-image .image-placeholder');
+    if (!container) return;
+
+    container.innerHTML = '';
+    heroSlideElements = [];
+
+    heroSlides.forEach((slide, idx) => {
+        const img = document.createElement('img');
+        img.src = slide.image;
+        img.loading = idx === 0 ? 'eager' : 'lazy';
+        img.decoding = 'async';
+        img.className = 'carousel-item';
+        if (idx === heroCurrentIndex) img.classList.add('is-active');
+
+        const altEs = getLocalizedValue(slide.alt, 'es') || getLocalizedValue(slide.title, 'es') || heroDefaults.title.es;
+        const altEu = getLocalizedValue(slide.alt, 'eu') || getLocalizedValue(slide.title, 'eu') || altEs;
+        img.setAttribute('data-alt-es', altEs);
+        img.setAttribute('data-alt-eu', altEu);
+        img.alt = currentLang === 'eu' ? altEu : altEs;
+
+        if (slide.target) {
+            if (slide.target.category) {
+                img.dataset.targetCategory = slide.target.category;
+            }
+            if (slide.target.itemId !== undefined) {
+                img.dataset.targetItemId = String(slide.target.itemId);
+            }
+        }
+
+        img.addEventListener('click', () => {
+            const wasActive = idx === heroCurrentIndex;
+            if (!wasActive) {
+                setHeroSlide(idx);
+            } else {
+                restartHeroCarouselTimer();
+            }
+            focusHeroSlideTarget(idx);
+        });
+
+        container.appendChild(img);
+        heroSlideElements.push(img);
+    });
+
+    setHeroSlide(heroCurrentIndex, { restartTimer: false });
+}
+
+function updateHeroText() {
+    const heroTitle = document.querySelector('.hero-title');
+    const heroSubtitle = document.querySelector('.hero-subtitle');
+
+    const slide = heroSlides[heroCurrentIndex];
+
+    const titleEs = slide ? (getLocalizedValue(slide.title, 'es') || heroDefaults.title.es) : heroDefaults.title.es;
+    const titleEu = slide ? (getLocalizedValue(slide.title, 'eu') || titleEs) : (heroDefaults.title.eu || titleEs);
+    const subtitleEs = slide ? (getLocalizedValue(slide.subtitle, 'es') || heroDefaults.subtitle.es) : heroDefaults.subtitle.es;
+    const subtitleEu = slide ? (getLocalizedValue(slide.subtitle, 'eu') || subtitleEs) : (heroDefaults.subtitle.eu || subtitleEs);
+
+    if (heroTitle) {
+        heroTitle.setAttribute('data-es', titleEs);
+        heroTitle.setAttribute('data-eu', titleEu);
+        heroTitle.textContent = currentLang === 'eu' ? titleEu : titleEs;
+    }
+
+    if (heroSubtitle) {
+        heroSubtitle.setAttribute('data-es', subtitleEs);
+        heroSubtitle.setAttribute('data-eu', subtitleEu);
+        heroSubtitle.textContent = currentLang === 'eu' ? subtitleEu : subtitleEs;
+    }
+
+    heroSlideElements.forEach((img, idx) => {
+        const slideData = heroSlides[idx];
+        const altEs = slideData ? (getLocalizedValue(slideData.alt, 'es') || getLocalizedValue(slideData.title, 'es') || heroDefaults.title.es) : heroDefaults.title.es;
+        const altEu = slideData ? (getLocalizedValue(slideData.alt, 'eu') || getLocalizedValue(slideData.title, 'eu') || altEs) : (heroDefaults.title.eu || altEs);
+        img.setAttribute('data-alt-es', altEs);
+        img.setAttribute('data-alt-eu', altEu);
+        img.alt = currentLang === 'eu' ? altEu : altEs;
+    });
+}
+
+function setHeroSlide(index, options = {}) {
+    if (!heroSlides.length) {
+        updateHeroText();
+        return;
+    }
+
+    const { restartTimer = true } = options;
+    const total = heroSlides.length;
+    heroCurrentIndex = ((index % total) + total) % total;
+
+    clearHeroHighlight();
+
+    heroSlideElements.forEach((img, idx) => {
+        img.classList.toggle('is-active', idx === heroCurrentIndex);
+    });
+
+    updateHeroText();
+
+    if (restartTimer) restartHeroCarouselTimer();
+}
+
+function restartHeroCarouselTimer() {
+    stopHeroCarousel();
+    if (heroSlides.length <= 1) return;
+
+    heroCarouselTimer = setInterval(() => {
+        setHeroSlide(heroCurrentIndex + 1, { restartTimer: false });
+    }, heroCarouselInterval);
+}
+
+function stopHeroCarousel() {
+    if (heroCarouselTimer) {
+        clearInterval(heroCarouselTimer);
+        heroCarouselTimer = null;
+    }
+}
+
+function startHeroCarousel(intervalMs = 5000) {
+    heroCarouselInterval = intervalMs;
+    if (heroSlides.length) {
+        setHeroSlide(heroCurrentIndex, { restartTimer: false });
+    }
+    restartHeroCarouselTimer();
+}
+
+function focusHeroSlideTarget(index, attempt = 0) {
+    if (attempt > 8) return;
+    const slide = heroSlides[index];
+    if (!slide || !slide.target) return;
+
+    const category = slide.target.category;
+    const itemId = slide.target.itemId;
+    if (!category) return;
+
+    let selector = `.menu-category[data-category="${category}"]`;
+    if (itemId !== undefined) {
+        selector = `.menu-item[data-category="${category}"][data-item-id="${itemId}"]`;
+    }
+
+    const targetElement = document.querySelector(selector);
+    if (!targetElement) {
+        setTimeout(() => focusHeroSlideTarget(index, attempt + 1), 250);
+        return;
+    }
+
+    const header = document.querySelector('.header');
+    const categoriesBar = document.querySelector('.menu-categories');
+    const headerHeight = header ? header.offsetHeight : 0;
+    const barHeight = categoriesBar ? categoriesBar.offsetHeight : 0;
+    const offset = headerHeight + barHeight + 24;
+    const elementRect = targetElement.getBoundingClientRect();
+    const targetTop = Math.max(0, window.scrollY + elementRect.top - offset);
+
+    window.scrollTo({ top: targetTop, behavior: 'smooth' });
+    setTimeout(() => highlightMenuElement(targetElement), 260);
+}
+
+function highlightMenuElement(element) {
+    if (!element || !document.body.contains(element)) return;
+
+    if (heroLastHighlightedItem && heroLastHighlightedItem !== element) {
+        heroLastHighlightedItem.classList.remove('highlighted');
+    }
+
+    element.classList.add('highlighted');
+    heroLastHighlightedItem = element;
+
+    if (heroHighlightTimeout) {
+        clearTimeout(heroHighlightTimeout);
+    }
+
+    heroHighlightTimeout = setTimeout(() => {
+        element.classList.remove('highlighted');
+        if (heroLastHighlightedItem === element) {
+            heroLastHighlightedItem = null;
+        }
+    }, 3500);
+}
+
+function clearHeroHighlight() {
+    if (heroHighlightTimeout) {
+        clearTimeout(heroHighlightTimeout);
+        heroHighlightTimeout = null;
+    }
+    if (heroLastHighlightedItem) {
+        heroLastHighlightedItem.classList.remove('highlighted');
+        heroLastHighlightedItem = null;
+    }
 }
 
 // Menu filtering functionality
