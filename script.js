@@ -172,16 +172,29 @@ function renderMenu() {
             // Price formatting
             let priceHTML = '';
             if (item.precioPorKg) {
-                priceHTML = `<span class="menu-item-price">€${item.precioPorKg.toFixed(2)}/kg</span>`;
+                priceHTML = `<div class="menu-item-prices"><span class="menu-item-price">€${item.precioPorKg.toFixed(2)}/kg</span></div>`;
             } else if (item.precio) {
-                priceHTML = `<span class="menu-item-price">€${item.precio.toFixed(2)}</span>`;
+                // If media racion exists, show both prices side by side
+                if (item.mediaRacion) {
+                    priceHTML = `
+                        <div class="menu-item-prices">
+                            <div class="price-item">
+                                <span class="price-label" data-es="Ración" data-eu="Errazioa">Ración</span>
+                                <span class="menu-item-price">€${item.precio.toFixed(2)}</span>
+                            </div>
+                            <div class="price-item">
+                                <span class="price-label" data-es="Media" data-eu="Erdia">Media</span>
+                                <span class="menu-item-price">€${item.mediaRacion.toFixed(2)}</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    priceHTML = `<div class="menu-item-prices"><span class="menu-item-price">€${item.precio.toFixed(2)}</span></div>`;
+                }
             }
             
-            // Media ración note
+            // Media ración note - no longer needed as it's shown inline
             let mediaRacionHTML = '';
-            if (item.mediaRacion) {
-                mediaRacionHTML = `<span class="media-racion" data-es="Media ración: €${item.mediaRacion.toFixed(2)}" data-eu="Erdi errazio: €${item.mediaRacion.toFixed(2)}">Media ración: €${item.mediaRacion.toFixed(2)}</span>`;
-            }
             
             // Special note
             let noteHTML = '';
@@ -196,7 +209,6 @@ function renderMenu() {
                 <div class="menu-item-content">
                     <h3 class="menu-item-title" data-es="${item.nombre.es}" data-eu="${item.nombre.eu}">${item.nombre.es}</h3>
                     <p class="menu-item-description" data-es="${item.descripcion.es}" data-eu="${item.descripcion.eu}">${item.descripcion.es}</p>
-                    ${mediaRacionHTML}
                     ${noteHTML}
                     ${priceHTML}
                 </div>
