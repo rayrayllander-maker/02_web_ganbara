@@ -258,7 +258,7 @@
         "eu": "Urdaiazpiko edo perretxikoen kroketak"
       },
       "precio": 9.50,
-      "mediaRacion": null,
+      "mediaRacion": 5.50,
       "imagen": "images/racion-6.jpg",
       "categoria": "raciones",
       "disponible": true
@@ -274,7 +274,7 @@
         "eu": "Perretxikoak, ganbak, vinagreta"
       },
       "precio": 8.50,
-      "mediaRacion": null,
+      "mediaRacion": 5.00,
       "imagen": "images/racion-7.jpg",
       "categoria": "raciones",
       "disponible": true
@@ -306,7 +306,7 @@
         "eu": "Piper berdeak planxan"
       },
       "precio": 8.50,
-      "mediaRacion": null,
+      "mediaRacion": 5.00,
       "imagen": "images/racion-9.jpg",
       "categoria": "raciones",
       "disponible": true
