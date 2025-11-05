@@ -573,6 +573,28 @@ body.dark-mode .logo-img {
     opacity: 0.8;
 }
 
+.menu-item-prices {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.menu-item-prices .price-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.menu-item-prices .price-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--color-dark);
+    letter-spacing: 0.5px;
+}
+
 .menu-item-price {
     font-size: 1.2rem;
     font-weight: 600;
@@ -1032,6 +1054,7 @@ body.dark-mode .menu-item-description { color: rgba(255,255,255,0.8); }
 body.dark-mode .menu-item-price { color: var(--color-accent); }
 body.dark-mode .media-racion { color: var(--color-secondary); }
 body.dark-mode .menu-item-note { color: rgba(255,255,255,0.7); }
+body.dark-mode .price-label { color: rgba(255,255,255,0.7); }
 
 body.dark-mode .category-section-title { 
     color: var(--color-light); 
