@@ -195,7 +195,7 @@
       },
       "precio": 9.50,
       "mediaRacion": 5.50,
-      "imagen": "images/racion-2.jpg",
+      "imagen": "assets/rabas.png",
       "categoria": "raciones",
       "disponible": true
     },
@@ -259,7 +259,7 @@
       },
       "precio": 9.50,
       "mediaRacion": null,
-      "imagen": "images/racion-6.jpg",
+      "imagen": "assets/croquetas.png",
       "categoria": "raciones",
       "disponible": true
     },
