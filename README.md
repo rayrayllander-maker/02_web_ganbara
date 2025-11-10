@@ -1,6 +1,6 @@
 # Ganbara Restaurant Website
 
-Una página web moderna y responsiva para el restaurante Ganbara, diseñada con HTML, CSS y JavaScript vanilla.
+Una página web moderna y responsiva para el restaurante Ganbara, diseñada con HTML, CSS y JavaScript vanilla, con sistema de analítica de clicks integrado.
 
 ## 🚀 Características
 
@@ -10,15 +10,38 @@ Una página web moderna y responsiva para el restaurante Ganbara, diseñada con 
 - **Formulario de Reservas**: Sistema de validación en tiempo real
 - **Animaciones**: Efectos visuales atractivos y transiciones suaves
 - **SEO Optimizado**: Estructura semántica y metadatos apropiados
+- **🆕 Sistema de Analítica**: Rastreo automático de clicks en hamburguesas con integración a Google Sheets
+
+## 📊 Sistema de Analítica (Nuevo)
+
+El sitio incluye un sistema back-end simplificado para rastrear clicks en las hamburguesas y enviar los datos a Google Sheets.
+
+### Inicio Rápido
+```bash
+npm install
+npm start
+```
+
+Visita http://localhost:3000 para ver el sitio en acción.
+
+Para más información:
+- 📖 [Guía Rápida](QUICKSTART.md)
+- 📚 [Documentación Completa](ANALYTICS_README.md)
 
 ## 📁 Estructura del Proyecto
 
 ```
-web_ganbara_02/
+02_web_ganbara/
 ├── index.html          # Página principal
 ├── styles.css          # Estilos CSS
 ├── script.js           # Funcionalidad JavaScript
-└── README.md           # Documentación
+├── analytics.js        # Sistema de rastreo de clicks
+├── server.js           # Servidor Node.js/Express
+├── package.json        # Dependencias del proyecto
+├── .env.example        # Plantilla de configuración
+├── README.md           # Este archivo
+├── QUICKSTART.md       # Guía de inicio rápido
+└── ANALYTICS_README.md # Documentación del sistema de analítica
 ```
 
 ## 🎨 Secciones de la Página
@@ -126,16 +149,39 @@ La página está optimizada para:
 
 ## 🚀 Cómo Usar
 
+### Desarrollo con Servidor (Recomendado)
+
+1. **Instalar dependencias**:
+   ```bash
+   npm install
+   ```
+
+2. **Iniciar el servidor**:
+   ```bash
+   npm start
+   ```
+
+3. **Abrir en el navegador**: http://localhost:3000
+
+### Solo Front-end (Sin Analítica)
+
 1. **Abrir la página**: Simplemente abre `index.html` en tu navegador
 2. **Personalizar contenido**: 
    - Edita el texto en `index.html`
    - Modifica estilos en `styles.css`
    - Añade funcionalidades en `script.js`
 3. **Añadir imágenes**: Reemplaza los placeholders con imágenes reales
-4. **Configurar formulario**: Conecta el formulario a un backend para procesar reservas
 
-## 🔧 Mejoras Futuras
+## 🔧 Características Implementadas y Futuras
 
+### ✅ Implementado
+- [x] Sistema de analítica de clicks para hamburguesas
+- [x] Integración con Google Sheets
+- [x] API REST para rastreo de datos
+- [x] Modo multi-idioma (ES/EU)
+- [x] Tema claro/oscuro
+
+### 🚀 Mejoras Futuras
 - [ ] Integración con sistema de reservas real
 - [ ] Galería de imágenes
 - [ ] Testimonios de clientes
