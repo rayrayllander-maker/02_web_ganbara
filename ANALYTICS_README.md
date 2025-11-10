@@ -95,13 +95,20 @@ npm install
 
 ## 🎮 Uso
 
-### Iniciar el Servidor
+### Construir y Iniciar el Servidor
 
 ```bash
 npm start
 ```
 
+Este comando construirá automáticamente el directorio público y iniciará el servidor.
+
 El servidor iniciará en `http://localhost:3000`
+
+**Nota:** El comando `npm start` ejecuta automáticamente `npm run build` antes de iniciar el servidor. El script de construcción:
+1. Crea el directorio `public/` con subdirectorios `assets/` e `images/`
+2. Copia todos los archivos públicos necesarios al directorio `public/`
+3. Los archivos sensibles (`.env`, `server.js`, etc.) permanecen en el directorio raíz y no son accesibles públicamente
 
 ### Acceder a la Página Web
 

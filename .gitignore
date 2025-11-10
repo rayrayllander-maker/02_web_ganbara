@@ -7,6 +7,9 @@ node_modules/
 # Logs
 *.log
 
+# Generated public directory (created from root files)
+public/
+
 # OS files
 .DS_Store
 Thumbs.db

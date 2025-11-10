@@ -4,8 +4,9 @@
   "description": "Una página web moderna y responsiva para el restaurante Ganbara, diseñada con HTML, CSS y JavaScript vanilla.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
+    "build": "mkdir -p public/assets public/images && cp index.html styles.css script.js translations.js menu-translations.js analytics.js menu-data.json hero-carousel.json public/ && cp -r assets/* public/assets/ 2>/dev/null || true && cp -r images/* public/images/ 2>/dev/null || true",
+    "start": "npm run build && node server.js",
+    "dev": "npm run build && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
