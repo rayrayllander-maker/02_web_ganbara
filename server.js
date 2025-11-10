@@ -9,7 +9,30 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('.'));
+
+// Middleware to block access to sensitive files
+app.use((req, res, next) => {
+    // Block access to dotfiles, sensitive files, and directories
+    const blockedPatterns = [
+        /^\/.env/,              // .env files
+        /^\/\.git/,             // .git directory
+        /^\/node_modules/,      // node_modules
+        /^\/package(-lock)?\.json$/, // package files
+        /^\/server\.js$/,       // server file
+        /\.log$/,               // log files
+        /^\/\..*$/              // any other dotfiles
+    ];
+    
+    if (blockedPatterns.some(pattern => pattern.test(req.path))) {
+        return res.status(403).send('Access forbidden');
+    }
+    next();
+});
+
+// Serve static files
+app.use(express.static('.', {
+    index: 'index.html'
+}));
 
 // Google Sheets configuration
 const SPREADSHEET_ID = process.env.GOOGLE_SPREADSHEET_ID;
