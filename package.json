@@ -1,0 +1,20 @@
+{
+  "name": "02_web_ganbara",
+  "version": "1.0.0",
+  "description": "Una página web moderna y responsiva para el restaurante Ganbara, diseñada con HTML, CSS y JavaScript vanilla.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "googleapis": "^165.0.0"
+  }
+}
