@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ganbara - Restaurante</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&family=Texturina:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@400;700&family=Poppins:wght@400;500;600&family=Texturina:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -142,32 +142,56 @@
             </div>
             <div class="contact-content">
                 <div class="contact-info">
-                    <div class="contact-item">
+                    <div class="contact-item contact-item-address">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <h3>Dirección</h3>
-                            <p>Calle Mayor 123<br>Madrid, España</p>
+                            <p>Domingo Irala Kalea, 6<br>20570 Guipúzcoa, Gipuzkoa</p>
                         </div>
                     </div>
-                    <div class="contact-item">
+                    <div class="contact-item contact-item-phone">
                         <i class="fas fa-phone"></i>
                         <div>
                             <h3>Teléfono</h3>
-                            <p>+34 91 123 45 67</p>
+                            <p>943 765 184</p>
                         </div>
                     </div>
-                    <div class="contact-item">
+                    <div class="contact-item contact-item-hours">
                         <i class="fas fa-clock"></i>
                         <div>
-                            <h3>Horarios</h3>
-                            <p>Lun-Dom: 13:00 - 23:00</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h3>Email</h3>
-                            <p>info@ganbara.es</p>
+                            <h3 data-es="Horarios" data-eu="Ordutegia">Horarios</h3>
+                            <table class="contact-hours-table" aria-label="Horario semanal">
+                                <tbody>
+                                    <tr>
+                                        <td><span data-es="Lunes" data-eu="Astelehena">Lunes</span></td>
+                                        <td><span class="numeric-font" data-es="9:00 - 00:30" data-eu="9:00 - 00:30">9:00 - 00:30</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span data-es="Martes" data-eu="Asteartea">Martes</span></td>
+                                        <td><span class="numeric-font" data-es="9:00 - 00:30" data-eu="9:00 - 00:30">9:00 - 00:30</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span data-es="Miércoles" data-eu="Asteazkena">Miércoles</span></td>
+                                        <td><span class="numeric-font" data-es="9:00 - 00:30" data-eu="9:00 - 00:30">9:00 - 00:30</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span data-es="Jueves" data-eu="Osteguna">Jueves</span></td>
+                                        <td><span class="numeric-font" data-es="9:00 - 00:30" data-eu="9:00 - 00:30">9:00 - 00:30</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span data-es="Viernes" data-eu="Ostirala">Viernes</span></td>
+                                        <td><span class="numeric-font" data-es="9:00 - 00:30" data-eu="9:00 - 00:30">9:00 - 00:30</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span data-es="Sábado" data-eu="Larunbata">Sábado</span></td>
+                                        <td><span class="numeric-font" data-es="9:00 - 04:00" data-eu="9:00 - 04:00">9:00 - 04:00</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span data-es="Domingo" data-eu="Igandea">Domingo</span></td>
+                                        <td><span class="numeric-font" data-es="9:00 - 00:30" data-eu="9:00 - 00:30">9:00 - 00:30</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -222,9 +246,7 @@
                     <h3>Ganbara</h3>
                     <p>Tradición y sabor en cada plato</p>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/ganbarataberna/?hl=es"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -237,12 +259,30 @@
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Horarios</h4>
-                    <p>Lunes - Domingo<br>13:00 - 23:00</p>
+                    <h4 data-es="Horario cocina" data-eu="Sukalde ordutegia">Horario cocina</h4>
+                    <table class="footer-hours-table" aria-label="Horario cocina">
+                        <tbody>
+                            <tr>
+                                <td><span data-es="Lunes" data-eu="Astelehena">Lunes</span></td>
+                                <td><span data-es="Cerrada" data-eu="Itxita">Cerrada</span></td>
+                            </tr>
+                            <tr>
+                                <td><span data-es="Martes - Jueves" data-eu="Asteartea - Osteguna">Martes - Jueves</span></td>
+                                <td><span class="numeric-font" data-es="20:00 - 23:00" data-eu="20:00 - 23:00">20:00 - 23:00</span></td>
+                            </tr>
+                            <tr>
+                                <td><span data-es="Viernes - Domingo" data-eu="Ostirala - Igandea">Viernes - Domingo</span></td>
+                                <td>
+                                    <span class="numeric-font" data-es="12:00 - 15:30" data-eu="12:00 - 15:30">12:00 - 15:30</span><br>
+                                    <span class="numeric-font" data-es="20:00 - 23:00" data-eu="20:00 - 23:00">20:00 - 23:00</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="footer-section">
                     <h4>Contacto</h4>
-                    <p>Calle Mayor 123<br>Madrid, España<br>+34 91 123 45 67</p>
+                    <p>Domingo Irala Kalea, 6<br>20570 Guipúzcoa, Gipuzkoa<br>943 765 184</p>
                 </div>
             </div>
             <div class="footer-bottom">

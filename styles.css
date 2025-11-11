@@ -14,6 +14,7 @@
     --color-accent: #BB6B00;   /* amber/orange accent */
     --color-text: #333;
     --color-light: #f5f5f5;
+    --font-numeric: 'Poppins', 'Texturina', serif;
 }
 
 body {
@@ -387,6 +388,26 @@ body.dark-mode .logo-img {
     filter: brightness(0) invert(1);
 }
 
+.numeric-font {
+    font-family: var(--font-numeric);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.015em;
+}
+
+.menu-item-price,
+.media-racion,
+.contact-item p,
+.contact-item h3,
+.reservation-form input,
+.reservation-form select,
+.footer-section p,
+.footer-bottom p,
+.menu-category h3 span,
+.category-btn,
+.menu-category h3 {
+    font-family: var(--font-numeric);
+}
+
 .category-btn .category-name {
     display: inline;
 }
@@ -693,6 +714,57 @@ body.dark-mode .logo-img {
 .contact-item p {
     color: var(--color-dark);
     line-height: 1.6;
+}
+
+.contact-hours-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    margin-top: 0.25rem;
+}
+
+.contact-hours-table td {
+    padding: 0.35rem 0.5rem 0.35rem 0;
+    color: var(--color-dark);
+}
+
+.contact-hours-table td:first-child {
+    font-weight: 600;
+    white-space: nowrap;
+    padding-right: 1.25rem;
+}
+
+.contact-hours-table .numeric-font {
+    letter-spacing: 0.02em;
+}
+
+body.dark-mode .contact-hours-table td {
+    color: var(--color-light);
+}
+
+.footer-hours-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.footer-hours-table td {
+    padding: 0.35rem 0;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.footer-hours-table td:first-child {
+    font-weight: 600;
+    padding-right: 1.25rem;
+    white-space: nowrap;
+}
+
+.footer-hours-table .numeric-font {
+    letter-spacing: 0.02em;
+}
+
+body.dark-mode .footer-hours-table td {
+    color: rgba(255, 255, 255, 0.85);
 }
 
 .reservation-form {

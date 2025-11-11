@@ -13,7 +13,7 @@ const translations = {
         contactTitle: "Contacto",
         contactSubtitle: "Ven a visitarnos o haz tu reserva",
         addressTitle: "Dirección",
-        addressText: "Calle Mayor 123<br>Madrid, España",
+    addressText: "Domingo Irala Kalea, 6<br>20570 Guipúzcoa, Gipuzkoa",
         phoneTitle: "Teléfono",
         hoursTitle: "Horarios",
         hoursText: "Lun-Dom: 13:00 - 23:00",
@@ -36,7 +36,7 @@ const translations = {
         // Footer
         footerTagline: "Tradición y sabor en cada plato",
         footerLinks: "Enlaces",
-        footerHours: "Horarios",
+    footerHours: "Horario cocina",
         footerContact: "Contacto",
         footerCopyright: "Todos los derechos reservados."
     },
@@ -53,7 +53,7 @@ const translations = {
         contactTitle: "Kontaktua",
         contactSubtitle: "Etorri gure bisitara edo egin zure erreserba",
         addressTitle: "Helbidea",
-        addressText: "Calle Mayor 123<br>Madril, Espainia",
+    addressText: "Domingo Irala Kalea, 6<br>20570 Gipuzkoa",
         phoneTitle: "Telefonoa",
         hoursTitle: "Ordutegia",
         hoursText: "Al-Ig: 13:00 - 23:00",
@@ -76,7 +76,7 @@ const translations = {
         // Footer
         footerTagline: "Tradizioa eta zaporea plater bakoitzean",
         footerLinks: "Estekak",
-        footerHours: "Ordutegia",
+    footerHours: "Sukalde ordutegia",
         footerContact: "Kontaktua",
         footerCopyright: "Eskubide guztiak erreserbatuak."
     }

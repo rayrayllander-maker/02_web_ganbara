@@ -172,7 +172,7 @@ function renderMenu() {
             // Price formatting
             let priceHTML = '';
             if (item.precioPorKg) {
-                priceHTML = `<div class="menu-item-prices"><span class="menu-item-price">€${item.precioPorKg.toFixed(2)}/kg</span></div>`;
+                priceHTML = `<div class="menu-item-prices"><span class="menu-item-price numeric-font">${item.precioPorKg.toFixed(2)} €/kg</span></div>`;
             } else if (item.precio) {
                 // If media racion exists, show both prices side by side
                 if (item.mediaRacion) {
@@ -180,16 +180,16 @@ function renderMenu() {
                         <div class="menu-item-prices">
                             <div class="price-item">
                                 <span class="price-label" data-es="Ración" data-eu="Errazioa">Ración</span>
-                                <span class="menu-item-price">€${item.precio.toFixed(2)}</span>
+                                <span class="menu-item-price numeric-font">${item.precio.toFixed(2)} €</span>
                             </div>
                             <div class="price-item">
                                 <span class="price-label" data-es="Media" data-eu="Erdia">Media</span>
-                                <span class="menu-item-price">€${item.mediaRacion.toFixed(2)}</span>
+                                <span class="menu-item-price numeric-font">${item.mediaRacion.toFixed(2)} €</span>
                             </div>
                         </div>
                     `;
                 } else {
-                    priceHTML = `<div class="menu-item-prices"><span class="menu-item-price">€${item.precio.toFixed(2)}</span></div>`;
+                    priceHTML = `<div class="menu-item-prices"><span class="menu-item-price numeric-font">${item.precio.toFixed(2)} €</span></div>`;
                 }
             }
             
@@ -377,9 +377,14 @@ function applyLanguage(lang) {
         if (contactTitles[2]) contactTitles[2].textContent = t.hoursTitle;
         if (contactTitles[3]) contactTitles[3].textContent = t.emailTitle;
         
-        const contactTexts = document.querySelectorAll('.contact-item p');
-        if (contactTexts[0]) contactTexts[0].innerHTML = t.addressText;
-        if (contactTexts[2]) contactTexts[2].textContent = t.hoursText;
+    const contactAddress = document.querySelector('.contact-item-address p');
+    if (contactAddress) contactAddress.innerHTML = t.addressText;
+
+    const contactPhone = document.querySelector('.contact-item-phone p');
+    if (contactPhone && t.phoneText) contactPhone.textContent = t.phoneText;
+
+    const contactEmail = document.querySelector('.contact-item-email p');
+    if (contactEmail && t.emailText) contactEmail.textContent = t.emailText;
         
         // Reservation form
         const reservationTitle = document.querySelector('.reservation-form h3');
