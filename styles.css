@@ -385,7 +385,7 @@ body.dark-mode .logo-img {
     height: 28px;
     display: inline-block;
     flex-shrink: 0;
-    filter: brightness(0);
+    filter: brightness(0) invert(1);
 }
 
 .numeric-font {
@@ -1143,9 +1143,6 @@ body.dark-mode .menu-category h3 {
 }
 body.dark-mode .menu-category h3 i {
     color: #ffffff;
-}
-body.dark-mode .category-title-icon {
-    filter: brightness(0) invert(1);
 }
 
 body.dark-mode .contact-item h3 { color: var(--color-light); }
