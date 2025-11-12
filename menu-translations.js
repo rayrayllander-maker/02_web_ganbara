@@ -50,10 +50,10 @@ const menuTranslations = {
             descEu: "Urdaiazpiko iberikoa"
         },
         9: {
-            es: "ESPECIAL: Jamón, pimientos verdes, queso Idiazabal y setas",
-            eu: "BEREZIA: Urdaiazpikoa, piper berdeak, Idiazabal gazta eta perretxikoak",
-            descEs: "Jamón, pimientos verdes, queso Idiazabal, setas",
-            descEu: "Urdaiazpikoa, piper berdeak, Idiazabal gazta, perretxikoak"
+            es: "Especial",
+            eu: "Berezia",
+            descEs: "Jamón, pimientos verdes, queso Idiazabal y setas",
+            descEu: "Urdaiazpikoa, piper berdeak, Idiazabal gazta eta perretxikoak"
         },
         10: {
             es: "Pechuga crujiente con mermelada y queso Camembert",
@@ -62,8 +62,8 @@ const menuTranslations = {
             descEu: "Bularreko kurruskaria, mermelada, Camembert gazta"
         },
         11: {
-            es: "VEGETARIANA",
-            eu: "BEGETARIANOA",
+            es: "Vegetariana",
+            eu: "Begetarianoa",
             descEs: "Calabacín, pimientos verdes, cebolla morada, tomate, guacamole, huevo y queso danés",
             descEu: "Kalabazina, piper berdeak, tipula morea, tomatea, guacamole, arrautza eta gazta daniarra"
         }
