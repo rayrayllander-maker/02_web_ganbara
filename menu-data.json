@@ -123,8 +123,8 @@
     {
       "id": 9,
       "nombre": {
-        "es": "ESPECIAL: Jamón, pimientos verdes, queso Idiazabal y setas",
-        "eu": "BEREZIA: Urdaiazpia, piper berdeak, Idiazabal gazta eta perretxikoak"
+        "es": "Especial",
+        "eu": "Berezia"
       },
       "descripcion": {
         "es": "Jamón, pimientos verdes, queso Idiazabal, setas",
@@ -153,12 +153,12 @@
     {
       "id": 11,
       "nombre": {
-        "es": "VEGETARIANA: Calabacín, pimientos verdes, cebolla morada, tomate, guacamole, huevo y queso danés",
-        "eu": "BEGETARIANOA: Kalabazin, piper berdeak, tipula morea, tomatea, guacamole, arrautza eta daniar gazta"
+        "es": "Vegetariana",
+        "eu": "Begetarianoa"
       },
       "descripcion": {
-        "es": "Calabacín, pimientos verdes, cebolla morada, tomate, guacamole, huevo, queso danés",
-        "eu": "Kalabazin, piper berdeak, tipula morea, tomatea, guacamole, arrautza, daniar gazta"
+        "es": "Calabacín, pimientos verdes, cebolla morada, tomate, guacamole, huevo y queso danés",
+        "eu": "Kalabazin, piper berdeak, tipula morea, tomatea, guacamole, arrautza eta daniar gazta"
       },
       "precio": 7.50,
       "imagen": "images/bocadillo-11.jpg",
