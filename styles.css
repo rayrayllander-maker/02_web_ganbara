@@ -391,7 +391,8 @@ body.dark-mode .logo-img {
     height: 28px;
     display: inline-block;
     flex-shrink: 0;
-    filter: brightness(0) invert(1);
+    /* Darker color for light mode visibility */
+    filter: brightness(0) saturate(100%) invert(17%) sepia(20%) saturate(3000%) hue-rotate(10deg);
 }
 
 .numeric-font {
@@ -495,7 +496,8 @@ body.dark-mode .logo-img {
 }
 
 .menu-category h3 i {
-    color: #ffffff;
+    /* Darker color for better visibility in light mode */
+    color: var(--color-primary);
 }
 
 .menu-category.highlighted h3 {
@@ -1150,6 +1152,11 @@ body.dark-mode .menu-category h3 {
 }
 body.dark-mode .menu-category h3 i {
     color: #ffffff;
+}
+
+/* Category title icons in dark mode - white filter */
+body.dark-mode .category-title-icon {
+    filter: brightness(0) invert(1);
 }
 
 body.dark-mode .contact-item h3 { color: var(--color-light); }
