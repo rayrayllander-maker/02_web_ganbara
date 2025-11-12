@@ -664,11 +664,17 @@ function clearHeroHighlight() {
 }
 
 // Menu filtering functionality
+let isUserScrolling = false;
+let scrollTimeout = null;
+
 function initializeCategoryButtons() {
     const categoryButtons = document.querySelectorAll('.category-btn');
     
     categoryButtons.forEach(button => {
         button.addEventListener('click', () => {
+            // Disable scroll observer temporarily when user clicks
+            isUserScrolling = false;
+            
             // Active state
             categoryButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
@@ -698,7 +704,58 @@ function initializeCategoryButtons() {
                     window.scrollTo({ top: scrollY, behavior: 'smooth' });
                 }, 60);
             }
+            
+            // Re-enable scroll observer after a delay
+            setTimeout(() => {
+                isUserScrolling = true;
+            }, 1000);
         });
+    });
+    
+    // Initialize scroll observer
+    initializeCategoryScrollObserver();
+}
+
+function initializeCategoryScrollObserver() {
+    const categoryButtons = document.querySelectorAll('.category-btn');
+    const categorySections = document.querySelectorAll('.menu-category');
+    
+    if (!categorySections.length) return;
+    
+    // Enable user scrolling after initial load
+    setTimeout(() => {
+        isUserScrolling = true;
+    }, 500);
+    
+    // Create intersection observer
+    const observerOptions = {
+        root: null,
+        rootMargin: '-100px 0px -60% 0px', // Trigger when section is near top of viewport
+        threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        if (!isUserScrolling) return;
+        
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const category = entry.target.getAttribute('data-category');
+                
+                // Find and activate the corresponding button
+                categoryButtons.forEach(btn => {
+                    const btnCategory = btn.getAttribute('data-category');
+                    if (btnCategory === category) {
+                        categoryButtons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, observerOptions);
+    
+    // Observe all category sections
+    categorySections.forEach(section => {
+        observer.observe(section);
     });
 }
 
