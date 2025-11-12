@@ -727,10 +727,10 @@ function initializeCategoryScrollObserver() {
         isUserScrolling = true;
     }, 500);
     
-    // Create intersection observer
+    // Create intersection observer with optimized settings for smooth category detection
     const observerOptions = {
         root: null,
-        rootMargin: '-100px 0px -60% 0px', // Trigger when section is near top of viewport
+        rootMargin: '-120px 0px -50% 0px', // Optimized: triggers when category header is clearly visible
         threshold: 0
     };
     
