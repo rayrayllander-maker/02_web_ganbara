@@ -31,6 +31,7 @@ Visita http://localhost:3000 para ver el sitio en acción.
 ├── index.html          # Página principal
 ├── styles.css          # Estilos CSS
 ├── script.js           # Funcionalidad JavaScript
+├── firebase-init.js    # Inicialización de Firebase (Auth)
 ├── analytics.js        # Sistema de rastreo de clicks
 ├── server.js           # Servidor Node.js/Express
 ├── package.json        # Dependencias del proyecto
