@@ -24,10 +24,6 @@ npm start
 
 Visita http://localhost:3000 para ver el sitio en acción.
 
-Para más información:
-- 📖 [Guía Rápida](QUICKSTART.md)
-- 📚 [Documentación Completa](ANALYTICS_README.md)
-
 ## 📁 Estructura del Proyecto
 
 ```
@@ -39,9 +35,7 @@ Para más información:
 ├── server.js           # Servidor Node.js/Express
 ├── package.json        # Dependencias del proyecto
 ├── .env.example        # Plantilla de configuración
-├── README.md           # Este archivo
-├── QUICKSTART.md       # Guía de inicio rápido
-└── ANALYTICS_README.md # Documentación del sistema de analítica
+└── README.md           # Este archivo
 ```
 
 ## 🎨 Secciones de la Página

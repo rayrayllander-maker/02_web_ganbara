@@ -446,7 +446,7 @@
         "eu": "180 gr. Angus, daniar gazta bikoitza, zirikatz bikoitza, zirikatz crispy, tipula crispy, arraultza, Bacón saltsa"
       },
       "precio": 14.00,
-      "imagen": "images/hamburguesa-7.jpg",
+      "imagen": "assets/baconessa.png",
       "categoria": "hamburguesas",
       "disponible": true
     },

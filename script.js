@@ -6,6 +6,7 @@ const heroDefaults = {
     title: { es: '', eu: '' },
     subtitle: { es: '', eu: '' }
 };
+let heroRawSlides = [];
 let heroSlides = [];
 let heroSlideElements = [];
 let heroCurrentIndex = 0;

@@ -56,6 +56,25 @@
         "category": "hamburguesas",
         "itemId": 6
       }
+    },
+    {
+      "image": "assets/emmy.png",
+      "title": {
+        "es": "Emmy",
+        "eu": "Emmy"
+      },
+      "subtitle": {
+        "es": "Salsa emmy, queso cheddar y bacon crujiente",
+        "eu": "Emmy saltsa, cheddar gazta eta bacon kurruskaria"
+      },
+      "alt": {
+        "es": "Hamburguesa Emmy con salsa emmy",
+        "eu": "Emmy hanburgesa Emmy saltsarekin"
+      },
+      "target": {
+        "category": "hamburguesas",
+        "itemId": 5
+      }
     }
   ]
 }
