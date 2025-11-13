@@ -1268,6 +1268,64 @@ function animateMenuItems() {
 // Call animation on page load
 document.addEventListener('DOMContentLoaded', animateMenuItems);
 
+function initFirebaseAuthUI() {
+    const services = window.firebaseServices;
+    if (!services || !services.auth) return;
+
+    const { auth, provider, onAuthStateChanged, signInWithPopup, signOut } = services;
+    const googleBtn = document.getElementById('google-signin');
+    const logoutBtn = document.getElementById('logout-btn');
+    const privateSection = document.querySelector('.solo-usuarios');
+    const subtitle = privateSection?.querySelector('.section-subtitle');
+    const defaultSubtitle = subtitle?.getAttribute('data-auth-default') || subtitle?.textContent || '';
+
+    const updateUI = (user) => {
+        const logged = Boolean(user);
+        googleBtn?.classList.toggle('hidden', logged);
+        logoutBtn?.classList.toggle('hidden', !logged);
+        privateSection?.classList.toggle('hidden', !logged);
+
+        if (subtitle) {
+            if (logged) {
+                const name = user.displayName || user.email || '';
+                subtitle.textContent = name ? `Hola ${name}, disfruta del panel privado.` : defaultSubtitle;
+            } else {
+                subtitle.textContent = defaultSubtitle;
+            }
+        }
+    };
+
+    onAuthStateChanged(auth, updateUI);
+
+    googleBtn?.addEventListener('click', async () => {
+        try {
+            addLoadingState(googleBtn);
+            await signInWithPopup(auth, provider);
+            showNotification('Sesión iniciada correctamente.', 'success');
+        } catch (error) {
+            console.error('Google sign-in error', error);
+            showNotification('No se pudo iniciar sesión con Google.', 'error');
+        } finally {
+            removeLoadingState(googleBtn);
+        }
+    });
+
+    logoutBtn?.addEventListener('click', async () => {
+        try {
+            addLoadingState(logoutBtn);
+            await signOut(auth);
+            showNotification('Sesión cerrada.', 'info');
+        } catch (error) {
+            console.error('Logout error', error);
+            showNotification('No se pudo cerrar la sesión.', 'error');
+        } finally {
+            removeLoadingState(logoutBtn);
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initFirebaseAuthUI);
+
 // Parallax effect for hero section (optional enhancement)
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;

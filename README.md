@@ -11,6 +11,7 @@ Una página web moderna y responsiva para el restaurante Ganbara, diseñada con 
 - **Animaciones**: Efectos visuales atractivos y transiciones suaves
 - **SEO Optimizado**: Estructura semántica y metadatos apropiados
 - **🆕 Sistema de Analítica**: Rastreo automático de clicks en hamburguesas con integración a Google Sheets
+- **🆕 Autenticación**: Inicio de sesión con Google gracias a Firebase Authentication
 
 ## 📊 Sistema de Analítica (Nuevo)
 
