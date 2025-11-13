@@ -10,6 +10,12 @@ node_modules/
 # Generated public directory (created from root files)
 public/
 
+# Image optimization backups
+assets-original/
+
+# Build scripts (temporary)
+optimize-images.mjs
+
 # OS files
 .DS_Store
 Thumbs.db
