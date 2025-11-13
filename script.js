@@ -9,6 +9,10 @@ const heroDefaults = {
 let heroRawSlides = [];
 let heroSlides = [];
 let heroSlideElements = [];
+let heroPrevButton = null;
+let heroNextButton = null;
+let heroIndicatorsContainer = null;
+let heroIndicatorButtons = [];
 let heroCurrentIndex = 0;
 let heroCarouselTimer = null;
 let heroCarouselInterval = 5000;
@@ -54,6 +58,8 @@ async function loadMenuData() {
         // Apply current language after menu is loaded
         const savedLang = localStorage.getItem('language') || 'es';
         applyLanguage(savedLang);
+
+        resolveHeroSlides();
 
         // Wait for images to finish loading then hide preloader
         await waitForImages(8000);
@@ -319,6 +325,97 @@ function getLocalizedValue(value, lang = currentLang) {
     return '';
 }
 
+function normalizeLocalized(value, fallback = { es: '', eu: '' }) {
+    if (!value) {
+        return {
+            es: fallback?.es || '',
+            eu: fallback?.eu || fallback?.es || ''
+        };
+    }
+
+    if (typeof value === 'string') {
+        return {
+            es: value,
+            eu: fallback?.eu || value
+        };
+    }
+
+    if (typeof value === 'object') {
+        const es = value.es ?? fallback?.es ?? '';
+        const eu = value.eu ?? fallback?.eu ?? es ?? '';
+        return {
+            es: es || '',
+            eu: eu || es || ''
+        };
+    }
+
+    return {
+        es: fallback?.es || '',
+        eu: fallback?.eu || fallback?.es || ''
+    };
+}
+
+function mergeLocalized(baseValue, overrideValue, fallback = { es: '', eu: '' }) {
+    const base = normalizeLocalized(baseValue, fallback);
+
+    if (!overrideValue) {
+        return base;
+    }
+
+    if (typeof overrideValue === 'string') {
+        return {
+            es: overrideValue,
+            eu: overrideValue
+        };
+    }
+
+    const override = normalizeLocalized(overrideValue, base);
+    return {
+        es: override.es || base.es,
+        eu: override.eu || base.eu || override.es || base.es
+    };
+}
+
+function findMenuItemData(category, itemId, itemName) {
+    if (!menuData) return null;
+
+    const normalizedName = typeof itemName === 'string' ? itemName.trim().toLowerCase() : null;
+    const hasId = itemId !== undefined && itemId !== null && itemId !== '';
+
+    const categoriesToSearch = [];
+    if (category && menuData[category]) {
+        categoriesToSearch.push(category);
+    }
+    Object.keys(menuData).forEach(cat => {
+        if (!categoriesToSearch.includes(cat)) {
+            categoriesToSearch.push(cat);
+        }
+    });
+
+    for (const cat of categoriesToSearch) {
+        const items = Array.isArray(menuData[cat]) ? menuData[cat] : [];
+        if (hasId) {
+            const foundById = items.find(item => String(item.id) === String(itemId));
+            if (foundById) {
+                return { item: foundById, category: cat };
+            }
+        }
+
+        if (normalizedName) {
+            const foundByName = items.find(item => {
+                const nameEs = (item.nombre?.es || item.nombre || '').toLowerCase();
+                const nameEu = (item.nombre?.eu || '').toLowerCase();
+                return nameEs === normalizedName || nameEu === normalizedName;
+            });
+            if (foundByName) {
+                return { item: foundByName, category: cat };
+            }
+        }
+    }
+
+    return null;
+}
+
 function applyLanguage(lang) {
     currentLang = lang;
     
@@ -433,6 +530,7 @@ function applyLanguage(lang) {
         langToggle.title = lang === 'es' ? 'Cambiar a euskera' : 'Aldatu espainolera';
     }
 
+    updateHeroControlLabels(lang);
     updateHeroText();
 }
 
@@ -459,16 +557,270 @@ function captureHeroDefaults() {
     }
 }
 
+function buildHeroSlide(rawSlide) {
+    if (!rawSlide || typeof rawSlide !== 'object') return null;
+
+    const refCategory = rawSlide.category ?? rawSlide.target?.category ?? rawSlide.reference?.category;
+    const refId = rawSlide.id ?? rawSlide.itemId ?? rawSlide.target?.itemId ?? rawSlide.reference?.id ?? rawSlide.reference?.itemId;
+    const refName = rawSlide.name ?? rawSlide.itemName ?? rawSlide.reference?.name;
+
+    const overrides = { ...(rawSlide.overrides || {}) };
+
+    if (rawSlide.image !== undefined) overrides.image = rawSlide.image;
+    if (rawSlide.title !== undefined) overrides.title = rawSlide.title;
+    if (rawSlide.subtitle !== undefined) overrides.subtitle = rawSlide.subtitle;
+    if (rawSlide.alt !== undefined) overrides.alt = rawSlide.alt;
+    if (rawSlide.target !== undefined) overrides.target = rawSlide.target;
+
+    const needsMenuData = refCategory !== undefined || refId !== undefined || typeof refName === 'string';
+
+    if (needsMenuData && !menuData) {
+        return 'pending';
+    }
+
+    let resolvedItem = null;
+    let resolvedCategory = refCategory || null;
+
+    if (needsMenuData && menuData) {
+        const lookup = findMenuItemData(refCategory, refId, refName);
+        if (!lookup) {
+            console.warn('Hero carousel: no se encontró el elemento referenciado en menu-data.json', rawSlide);
+            return null;
+        }
+        resolvedItem = lookup.item;
+        resolvedCategory = lookup.category;
+
+        if (resolvedItem && resolvedItem.disponible === false) {
+            console.warn('Hero carousel: el elemento referenciado está marcado como no disponible', rawSlide);
+        }
+    }
+
+    const image = overrides.image ?? (resolvedItem ? (resolvedItem.heroImage || resolvedItem.imagen) : null);
+    if (!image) {
+        console.warn('Hero carousel: no se encontró imagen para la diapositiva', rawSlide);
+        return null;
+    }
+
+    const title = mergeLocalized(
+        resolvedItem ? resolvedItem.nombre : null,
+        overrides.title,
+        heroDefaults.title
+    );
+
+    const subtitle = mergeLocalized(
+        resolvedItem ? resolvedItem.descripcion : null,
+        overrides.subtitle,
+        heroDefaults.subtitle
+    );
+
+    const alt = mergeLocalized(
+        { es: title.es, eu: title.eu },
+        overrides.alt,
+        { es: title.es, eu: title.eu }
+    );
+
+    const target = overrides.target || (resolvedItem ? {
+        category: resolvedCategory,
+        itemId: resolvedItem.id
+    } : null);
+
+    return {
+        image,
+        title,
+        subtitle,
+        alt,
+        target
+    };
+}
+
+function ensureHeroControls() {
+    const heroImage = document.querySelector('.hero-image');
+    if (!heroImage) return;
+
+    let controlsWrapper = heroImage.querySelector('.hero-controls');
+    if (!controlsWrapper) {
+        controlsWrapper = document.createElement('div');
+        controlsWrapper.className = 'hero-controls';
+        heroImage.appendChild(controlsWrapper);
+    }
+
+    let prevButton = controlsWrapper.querySelector('.hero-control-prev');
+    if (!prevButton) {
+        prevButton = document.createElement('button');
+        prevButton.type = 'button';
+        prevButton.className = 'hero-control hero-control-prev';
+        prevButton.innerHTML = '<i class="fas fa-chevron-left" aria-hidden="true"></i>';
+        controlsWrapper.appendChild(prevButton);
+        prevButton.addEventListener('click', () => setHeroSlide(heroCurrentIndex - 1));
+    }
+
+    let nextButton = controlsWrapper.querySelector('.hero-control-next');
+    if (!nextButton) {
+        nextButton = document.createElement('button');
+        nextButton.type = 'button';
+        nextButton.className = 'hero-control hero-control-next';
+        nextButton.innerHTML = '<i class="fas fa-chevron-right" aria-hidden="true"></i>';
+        controlsWrapper.appendChild(nextButton);
+        nextButton.addEventListener('click', () => setHeroSlide(heroCurrentIndex + 1));
+    }
+
+    let indicatorsWrapper = heroImage.querySelector('.hero-indicators');
+    if (!indicatorsWrapper) {
+        indicatorsWrapper = document.createElement('div');
+        indicatorsWrapper.className = 'hero-indicators';
+        indicatorsWrapper.setAttribute('role', 'tablist');
+        heroImage.appendChild(indicatorsWrapper);
+    }
+
+    heroPrevButton = prevButton;
+    heroNextButton = nextButton;
+    heroIndicatorsContainer = indicatorsWrapper;
+
+    updateHeroControlLabels();
+}
+
+function updateHeroControlsState() {
+    const multipleSlides = heroSlides.length > 1;
+    const hasSlides = heroSlides.length > 0;
+
+    if (heroPrevButton) {
+        heroPrevButton.disabled = !multipleSlides;
+        heroPrevButton.classList.toggle('is-disabled', !multipleSlides);
+        heroPrevButton.setAttribute('tabindex', multipleSlides ? '0' : '-1');
+    }
+
+    if (heroNextButton) {
+        heroNextButton.disabled = !multipleSlides;
+        heroNextButton.classList.toggle('is-disabled', !multipleSlides);
+        heroNextButton.setAttribute('tabindex', multipleSlides ? '0' : '-1');
+    }
+
+    if (heroIndicatorsContainer) {
+        heroIndicatorsContainer.classList.toggle('is-hidden', !multipleSlides);
+        heroIndicatorsContainer.classList.toggle('is-empty', !hasSlides);
+    }
+}
+
+function renderHeroIndicators() {
+    if (!heroIndicatorsContainer) return;
+
+    heroIndicatorsContainer.innerHTML = '';
+    heroIndicatorButtons = [];
+
+    if (!heroSlides.length) {
+        updateHeroControlsState();
+        return;
+    }
+
+    heroSlides.forEach((_, idx) => {
+        const indicator = document.createElement('button');
+        indicator.type = 'button';
+        indicator.className = 'hero-indicator';
+        indicator.setAttribute('role', 'tab');
+        indicator.dataset.index = String(idx);
+        indicator.addEventListener('click', () => setHeroSlide(idx));
+        heroIndicatorsContainer.appendChild(indicator);
+        heroIndicatorButtons.push(indicator);
+    });
+
+    updateHeroControlLabels();
+    updateHeroIndicatorsActive();
+    updateHeroControlsState();
+}
+
+function updateHeroIndicatorsActive() {
+    if (!heroIndicatorButtons.length) {
+        updateHeroControlsState();
+        return;
+    }
+
+    heroIndicatorButtons.forEach((button, idx) => {
+        const isActive = idx === heroCurrentIndex;
+        button.classList.toggle('is-active', isActive);
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        button.setAttribute('tabindex', isActive ? '0' : '-1');
+        button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    updateHeroControlsState();
+}
+
+function updateHeroControlLabels(lang = currentLang) {
+    const labels = lang === 'eu'
+        ? {
+            prev: 'Aurreko irudia',
+            next: 'Hurrengo irudia',
+            indicators: 'Diapositiben hautatzailea',
+            slide: (idx) => `Diapositiba ${idx}`
+        }
+        : {
+            prev: 'Imagen anterior',
+            next: 'Imagen siguiente',
+            indicators: 'Selector de diapositivas',
+            slide: (idx) => `Diapositiva ${idx}`
+        };
+
+    if (heroPrevButton) {
+        heroPrevButton.setAttribute('aria-label', labels.prev);
+        heroPrevButton.title = labels.prev;
+    }
+
+    if (heroNextButton) {
+        heroNextButton.setAttribute('aria-label', labels.next);
+        heroNextButton.title = labels.next;
+    }
+
+    if (heroIndicatorsContainer) {
+        heroIndicatorsContainer.setAttribute('aria-label', labels.indicators);
+    }
+
+    heroIndicatorButtons.forEach((button, idx) => {
+        const label = labels.slide(idx + 1);
+        button.setAttribute('aria-label', label);
+        button.title = label;
+    });
+}
+
+function resolveHeroSlides() {
+    if (!Array.isArray(heroRawSlides)) return;
+
+    const resolvedSlides = [];
+    let pendingMenuData = false;
+
+    heroRawSlides.forEach(rawSlide => {
+        const builtSlide = buildHeroSlide(rawSlide);
+        if (builtSlide === 'pending') {
+            pendingMenuData = true;
+        } else if (builtSlide) {
+            resolvedSlides.push(builtSlide);
+        }
+    });
+
+    if (pendingMenuData) {
+        return;
+    }
+
+    heroSlides = resolvedSlides;
+    heroCurrentIndex = 0;
+
+    if (heroSlides.length === 0) {
+        renderHeroCarousel();
+        return;
+    }
+
+    renderHeroCarousel();
+    restartHeroCarouselTimer();
+}
+
 async function loadHeroCarouselData() {
     try {
         const response = await fetch('hero-carousel.json');
         const data = await response.json();
-        const slides = Array.isArray(data.slides) ? data.slides : [];
-        heroSlides = slides.filter(slide => slide && slide.image);
-        heroCurrentIndex = 0;
-        renderHeroCarousel();
+        heroRawSlides = Array.isArray(data.slides) ? data.slides : [];
+        resolveHeroSlides();
     } catch (error) {
         console.error('Error loading hero carousel data:', error);
+        heroRawSlides = [];
         heroSlides = [];
         renderHeroCarousel();
     }
@@ -480,6 +832,14 @@ function renderHeroCarousel() {
 
     container.innerHTML = '';
     heroSlideElements = [];
+
+    ensureHeroControls();
+
+    if (!heroSlides.length) {
+        renderHeroIndicators();
+        updateHeroIndicatorsActive();
+        return;
+    }
 
     heroSlides.forEach((slide, idx) => {
         const img = document.createElement('img');
@@ -518,6 +878,7 @@ function renderHeroCarousel() {
         heroSlideElements.push(img);
     });
 
+    renderHeroIndicators();
     setHeroSlide(heroCurrentIndex, { restartTimer: false });
 }
 
@@ -571,6 +932,7 @@ function setHeroSlide(index, options = {}) {
     });
 
     updateHeroText();
+    updateHeroIndicatorsActive();
 
     if (restartTimer) restartHeroCarouselTimer();
 }

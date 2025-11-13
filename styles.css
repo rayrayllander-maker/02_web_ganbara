@@ -316,6 +316,87 @@ body.dark-mode .logo-img {
     opacity: 1;
 }
 
+.hero-controls {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    pointer-events: none;
+}
+
+.hero-control {
+    background: rgba(33, 33, 33, 0.55);
+    color: #fff;
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    pointer-events: auto;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.hero-control:hover {
+    background: rgba(33, 33, 33, 0.78);
+    transform: scale(1.05);
+}
+
+.hero-control:focus-visible {
+    outline: 2px solid var(--color-red);
+    outline-offset: 2px;
+}
+
+.hero-control.is-disabled {
+    opacity: 0.35;
+    cursor: default;
+    pointer-events: none;
+}
+
+.hero-indicators {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    pointer-events: auto;
+}
+
+.hero-indicators.is-hidden,
+.hero-indicators.is-empty {
+    display: none;
+}
+
+.hero-indicator {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.7);
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.hero-indicator:hover,
+.hero-indicator:focus-visible {
+    transform: scale(1.15);
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(0, 0, 0, 0.35);
+    outline: none;
+}
+
+.hero-indicator.is-active {
+    background: var(--color-red);
+    border-color: var(--color-red);
+}
+
 /* Menu Section */
 .menu-section {
     padding: 80px 0;
@@ -1118,6 +1199,25 @@ body.dark-mode .nav-link::after { background-color: var(--color-secondary); }
 
 body.dark-mode .section-title { color: var(--color-light); }
 body.dark-mode .section-subtitle { color: rgba(255,255,255,0.8); }
+
+body.dark-mode .hero-control {
+    background: rgba(0, 0, 0, 0.65);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+body.dark-mode .hero-control:hover {
+    background: rgba(0, 0, 0, 0.85);
+}
+
+body.dark-mode .hero-indicator {
+    background: rgba(255, 255, 255, 0.32);
+    border-color: rgba(255, 255, 255, 0.35);
+}
+
+body.dark-mode .hero-indicator.is-active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+}
 
 body.dark-mode .menu-section,
 body.dark-mode .about-section,

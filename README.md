@@ -134,6 +134,20 @@ Reemplaza los placeholders con imágenes reales:
 2. Menú: Fotos de cada plato
 3. About: Foto del chef o interior del restaurante
 
+### Carrusel Hero
+Edita `hero-carousel.json` para elegir qué platos aparecen en el carrusel. Basta con indicar la categoría y el identificador (o el nombre) del plato tal como aparece en `menu-data.json`; los textos e imagen se completan automáticamente.
+
+```json
+{
+  "category": "hamburguesas",
+  "id": 6
+}
+```
+
+También puedes usar `"name": "COLOMBIANA"` (coincidiendo con `nombre.es` o `nombre.eu`) y añadir overrides opcionales como `image`, `title`, `subtitle` o `alt` si deseas personalizar el resultado.
+
+El carrusel incluye botones laterales y marcadores clicables para pasar manualmente entre diapositivas; en móviles funcionan igual con toques.
+
 ## 📱 Responsividad
 
 La página está optimizada para:
