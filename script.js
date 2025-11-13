@@ -222,9 +222,70 @@ function renderMenu() {
                     ${priceHTML}
                 </div>
             `;
+
+            const itemNameEs = item.nombre?.es || item.nombre || '';
+            const itemNameEu = item.nombre?.eu || '';
+            if (itemNameEs) {
+                menuItem.setAttribute('data-label-es', itemNameEs);
+            }
+            if (itemNameEu) {
+                menuItem.setAttribute('data-label-eu', itemNameEu);
+            }
+
+            menuItem.setAttribute('role', 'button');
+            menuItem.tabIndex = 0;
+            setMenuItemAriaLabel(menuItem);
+            enhanceMenuItemInteractivity(menuItem, item, category);
             
             menuGrid.appendChild(menuItem);
         });
+    });
+}
+
+function setMenuItemAriaLabel(menuItem, lang = currentLang) {
+    if (!menuItem) return;
+
+    const labelEs = menuItem.getAttribute('data-label-es') || '';
+    const labelEu = menuItem.getAttribute('data-label-eu') || labelEs;
+    const selectedLabel = lang === 'eu' ? (labelEu || labelEs) : labelEs;
+
+    if (selectedLabel) {
+        menuItem.setAttribute('aria-label', selectedLabel);
+    } else {
+        menuItem.removeAttribute('aria-label');
+    }
+}
+
+function enhanceMenuItemInteractivity(menuItem, itemData = null, categoryOverride = null) {
+    if (!menuItem) return;
+
+    menuItem.classList.add('menu-item-interactive');
+
+    const activate = () => {
+        highlightMenuElement(menuItem);
+
+        const detail = {
+            id: menuItem.getAttribute('data-item-id') || null,
+            category: categoryOverride || menuItem.getAttribute('data-category') || null,
+            name: {
+                es: menuItem.getAttribute('data-label-es') || '',
+                eu: menuItem.getAttribute('data-label-eu') || ''
+            },
+            data: itemData
+        };
+
+        menuItem.dispatchEvent(new CustomEvent('menuitem:activated', {
+            bubbles: true,
+            detail
+        }));
+    };
+
+    menuItem.addEventListener('click', activate);
+    menuItem.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            activate();
+        }
     });
 }
 
@@ -445,6 +506,10 @@ function applyLanguage(lang) {
     document.querySelectorAll('.category-label').forEach(label => {
         const text = label.getAttribute(`data-${lang}`);
         if (text) label.textContent = text;
+    });
+
+    document.querySelectorAll('.menu-item[data-label-es]').forEach(item => {
+        setMenuItemAriaLabel(item, lang);
     });
     
     // Update translations from translations.js if available

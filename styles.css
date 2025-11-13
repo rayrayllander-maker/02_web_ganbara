@@ -882,11 +882,28 @@ body.modal-open {
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease;
     display: block;
+    cursor: pointer;
+    position: relative;
 }
 
 .menu-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.menu-item:focus {
+    outline: none;
+}
+
+.menu-item-interactive:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 4px;
+    transform: translateY(-5px);
+    box-shadow: 0 16px 40px rgba(187, 107, 0, 0.32);
+}
+
+.menu-item-interactive:active {
+    transform: translateY(-3px);
 }
 
 .menu-item.highlighted {
