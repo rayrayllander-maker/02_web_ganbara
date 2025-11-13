@@ -416,7 +416,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, tipula karamelizatua, pepiniloak, arraultza, Emmy saltsa"
       },
       "precio": 13.50,
-      "imagen": "images/hamburguesa-5.jpg",
+      "imagen": "assets/emmy.png",
       "categoria": "hamburguesas",
       "disponible": true
     },
