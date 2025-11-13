@@ -303,6 +303,19 @@ function getUserLikeDocRef(firestore, category, itemId, userId) {
     return firestore.doc(firestore.db, LIKE_COLLECTION, getLikeDocId(category, itemId), 'userLikes', userId);
 }
 
+function coerceItemIdForWrite(rawValue) {
+    if (rawValue === undefined || rawValue === null) return null;
+    const numericValue = Number(rawValue);
+    if (Number.isFinite(numericValue)) {
+        return numericValue;
+    }
+    if (typeof rawValue === 'string') {
+        const trimmed = rawValue.trim();
+        return trimmed.length ? trimmed : null;
+    }
+    return rawValue;
+}
+
 function getFirestoreServices() {
     const services = window.firebaseServices;
     if (!services || !services.firestore || !services.firestore.db) return null;
@@ -323,11 +336,11 @@ function initializeLikeControls() {
     const firestore = getFirestoreServices();
 
     buttons.forEach(button => {
-        const itemId = String(button.dataset.itemId || '').trim();
-        if (!itemId) return;
+        const rawItemId = String(button.dataset.itemId || '').trim();
+        if (!rawItemId) return;
 
         const category = (button.dataset.category || 'general').trim() || 'general';
-        const controlKey = buildControlKey(category, itemId);
+        const controlKey = buildControlKey(category, rawItemId);
 
         let control = likeControls.get(controlKey);
         if (!control) {
@@ -337,10 +350,12 @@ function initializeLikeControls() {
 
             const nameEs = button.dataset.nameEs || '';
             const nameEu = button.dataset.nameEu || nameEs;
+            const itemIdForWrite = coerceItemIdForWrite(rawItemId);
 
             const newControl = {
                 key: controlKey,
-                itemId,
+                itemId: rawItemId,
+                itemIdForWrite,
                 category,
                 button,
                 countEl,
@@ -488,6 +503,11 @@ async function handleLikeToggle(control) {
             const likeSnap = await transaction.get(likeRef);
             const userSnap = await transaction.get(userRef);
 
+            const itemIdForWrite = control.itemIdForWrite ?? coerceItemIdForWrite(control.itemId);
+            if (itemIdForWrite === null || itemIdForWrite === '') {
+                throw new Error('Identificador de elemento no válido.');
+            }
+
             const baseData = likeSnap.exists() ? likeSnap.data() : null;
             let count = baseData && typeof baseData.count === 'number' ? baseData.count : 0;
             let liked;
@@ -497,7 +517,7 @@ async function handleLikeToggle(control) {
                 : new Date().toISOString();
             const metadata = {
                 category: control.category,
-                itemId: control.itemId,
+                itemId: itemIdForWrite,
                 name: control.name
             };
 
@@ -523,7 +543,7 @@ async function handleLikeToggle(control) {
                 const payload = {
                     liked: true,
                     category: control.category,
-                    itemId: control.itemId,
+                    itemId: itemIdForWrite,
                     name: control.name,
                     userId: currentUser.uid,
                     updatedAt: timestamp
