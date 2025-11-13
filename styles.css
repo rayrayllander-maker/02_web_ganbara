@@ -906,6 +906,60 @@ body.modal-open {
     transform: translateY(-3px);
 }
 
+.menu-item-actions {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.like-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(235, 115, 76, 0.4);
+    background: rgba(235, 115, 76, 0.08);
+    color: var(--color-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.like-toggle:hover {
+    background: rgba(235, 115, 76, 0.16);
+    box-shadow: 0 8px 18px rgba(235, 115, 76, 0.18);
+}
+
+.like-toggle:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+}
+
+.like-toggle[aria-pressed="true"] {
+    background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 10px 24px rgba(235, 115, 76, 0.35);
+}
+
+.like-toggle[aria-pressed="true"] .like-icon {
+    transform: scale(1.1);
+}
+
+.like-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+.like-count {
+    font-weight: 700;
+    color: var(--color-secondary);
+    min-width: 2rem;
+}
+
 .menu-item.highlighted {
     transform: translateY(-6px);
     box-shadow: 0 20px 45px rgba(187, 107, 0, 0.35), 0 0 0 4px rgba(187, 107, 0, 0.3);

@@ -10,6 +10,13 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  runTransaction,
+  onSnapshot,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAkWU3kLpYVEUG1U5_1UKFTPIawYQbKpR8",
@@ -22,6 +29,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: "select_account" });
 
@@ -40,5 +48,12 @@ window.firebaseServices = {
   signInWithPopup,
   signOut,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  firestore: {
+    db,
+    doc,
+    runTransaction,
+    onSnapshot,
+    serverTimestamp
+  }
 };

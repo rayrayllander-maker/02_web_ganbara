@@ -21,6 +21,13 @@ let heroLastHighlightedItem = null;
 
 let modalKeydownAttached = false;
 
+// Like system state
+const LIKE_COLLECTION = 'menuLikes';
+const likeControls = new Map();
+let likesInitialized = false;
+let currentUser = null;
+let likeRetryTimer = null;
+
 // Preloader helpers
 function showPreloader() {
     const pre = document.getElementById('preloader');
@@ -53,34 +60,27 @@ async function loadMenuData() {
         const response = await fetch('menu-data.json');
         menuData = await response.json();
         renderMenu();
-        
-        // Initialize category buttons AFTER menu is rendered
         initializeCategoryButtons();
-        
-        // Apply current language after menu is loaded
         const savedLang = localStorage.getItem('language') || 'es';
         applyLanguage(savedLang);
-
         resolveHeroSlides();
-
-        // Wait for images to finish loading then hide preloader
         await waitForImages(8000);
-        hidePreloader();
     } catch (error) {
         console.error('Error loading menu data:', error);
+    } finally {
         hidePreloader();
     }
 }
 
 function renderMenu() {
     if (!menuData) return;
-    
+
     const menuGrid = document.querySelector('.menu-grid');
     if (!menuGrid) return;
-    
-    menuGrid.innerHTML = ''; // Clear existing content
-    
-    // Category icon assets for separators
+
+    cleanupLikeControls();
+    menuGrid.innerHTML = '';
+
     const categoryIconAssets = {
         bocadillos: {
             src: 'assets/bocadillos.svg',
@@ -119,7 +119,6 @@ function renderMenu() {
         }
     };
 
-    // Fallback Font Awesome classes (for categories without SVG)
     const categoryIconClasses = {
         bocadillos: 'fa-bread-slice',
         raciones: 'fa-utensils',
@@ -127,8 +126,7 @@ function renderMenu() {
         chuleta: 'fa-drumstick-bite',
         postres: 'fa-ice-cream'
     };
-    
-    // Category names for titles
+
     const categoryNames = {
         bocadillos: { es: 'Bocadillos', eu: 'Ogitartekoak' },
         raciones: { es: 'Raciones', eu: 'Hasierakoak' },
@@ -136,10 +134,9 @@ function renderMenu() {
         chuleta: { es: 'Chuleta', eu: 'Txuleta' },
         postres: { es: 'Postres', eu: 'Postreak' }
     };
-    
-    // Render each category
+
     Object.keys(menuData).forEach(category => {
-        // Add visible separator inside the grid (section marker)
+        const items = Array.isArray(menuData[category]) ? menuData[category] : [];
         const iconAsset = categoryIconAssets[category];
         const iconClass = categoryIconClasses[category] || 'fa-utensils';
         let iconMarkup = `<i class="fas ${iconClass}"></i>`;
@@ -149,7 +146,7 @@ function renderMenu() {
             const altEu = iconAsset.alt?.eu || altEs;
             const altText = currentLang === 'eu' ? (altEu || altEs) : altEs;
             iconMarkup = `
-                <img 
+                <img
                     src="${iconAsset.src}"
                     alt="${altText}"
                     class="category-title-icon"
@@ -157,8 +154,10 @@ function renderMenu() {
                     data-alt-eu="${altEu}"
                 >`;
         }
+
         const esName = categoryNames[category]?.es || category;
         const euName = categoryNames[category]?.eu || category;
+
         const separator = document.createElement('div');
         separator.className = 'menu-category';
         separator.setAttribute('data-category', category);
@@ -168,23 +167,26 @@ function renderMenu() {
                 <span class="category-label" data-category="${category}" data-es="${esName}" data-eu="${euName}">${esName}</span>
             </h3>`;
         menuGrid.appendChild(separator);
-        
-        // Render items in this category
-        menuData[category].forEach(item => {
-            if (!item.disponible) return; // Skip unavailable items
-            
+
+        items.forEach(item => {
+            if (!item || item.disponible === false) return;
+
             const menuItem = document.createElement('div');
             menuItem.className = 'menu-item';
             menuItem.setAttribute('data-category', category);
-            menuItem.setAttribute('data-item-id', item.id);
-            
-            // Price formatting
+            if (item.id !== undefined) {
+                menuItem.setAttribute('data-item-id', item.id);
+            }
+
+            const itemName = normalizeLocalized(item?.nombre, { es: '', eu: '' });
+            const description = normalizeLocalized(item?.descripcion, { es: '', eu: itemName.es });
+            const note = normalizeLocalized(item?.nota, { es: '', eu: '' });
+
             let priceHTML = '';
-            if (item.precioPorKg) {
+            if (typeof item?.precioPorKg === 'number') {
                 priceHTML = `<div class="menu-item-prices"><span class="menu-item-price numeric-font">${item.precioPorKg.toFixed(2)} €/kg</span></div>`;
-            } else if (item.precio) {
-                // If media racion exists, show both prices side by side
-                if (item.mediaRacion) {
+            } else if (typeof item?.precio === 'number') {
+                if (typeof item?.mediaRacion === 'number') {
                     priceHTML = `
                         <div class="menu-item-prices">
                             <div class="price-item">
@@ -201,45 +203,349 @@ function renderMenu() {
                     priceHTML = `<div class="menu-item-prices"><span class="menu-item-price numeric-font">${item.precio.toFixed(2)} €</span></div>`;
                 }
             }
-            
-            // Media ración note - no longer needed as it's shown inline
-            let mediaRacionHTML = '';
-            
-            // Special note
+
             let noteHTML = '';
-            if (item.nota) {
-                noteHTML = `<p class="menu-item-note" data-es="${item.nota.es}" data-eu="${item.nota.eu}">${item.nota.es}</p>`;
+            const noteTextEs = note.es?.trim();
+            if (noteTextEs) {
+                const noteTextEu = note.eu?.trim() || noteTextEs;
+                noteHTML = `<p class="menu-item-note" data-es="${noteTextEs}" data-eu="${noteTextEu}">${noteTextEs}</p>`;
             }
-            
+
+            const imageSrc = item?.imagen;
+            const imageAltEs = itemName.es || '';
+            const imageAltEu = itemName.eu || imageAltEs;
+            const imageHTML = imageSrc
+                ? `<img src="${imageSrc}" alt="${imageAltEs}" data-alt-es="${imageAltEs}" data-alt-eu="${imageAltEu}" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder\\'></div>'">`
+                : `<div class="image-placeholder"></div>`;
+
+            const showLikeControls = category === 'hamburguesas';
+            const likeControlsHTML = showLikeControls ? `
+                <div class="menu-item-actions">
+                    <button class="like-toggle" type="button" data-item-id="${item.id}" data-category="${category}" data-name-es="${itemName.es}" data-name-eu="${itemName.eu}" aria-pressed="false">
+                        <span class="like-icon" aria-hidden="true">&#10084;</span>
+                        <span class="like-label" data-es="Me gusta" data-eu="Gustatzen zait">Me gusta</span>
+                    </button>
+                    <span class="like-count" data-item-id="${item.id}" data-category="${category}" aria-live="polite">0</span>
+                </div>
+            ` : '';
+
             menuItem.innerHTML = `
                 <div class="menu-item-image">
-                    <img src="${item.imagen}" alt="${item.nombre.es}" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder\\'></div>'">
+                    ${imageHTML}
                 </div>
                 <div class="menu-item-content">
-                    <h3 class="menu-item-title" data-es="${item.nombre.es}" data-eu="${item.nombre.eu}">${item.nombre.es}</h3>
-                    <p class="menu-item-description" data-es="${item.descripcion.es}" data-eu="${item.descripcion.eu}">${item.descripcion.es}</p>
+                    <h3 class="menu-item-title" data-es="${itemName.es}" data-eu="${itemName.eu}">${itemName.es}</h3>
+                    <p class="menu-item-description" data-es="${description.es}" data-eu="${description.eu}">${description.es}</p>
                     ${noteHTML}
                     ${priceHTML}
+                    ${likeControlsHTML}
                 </div>
             `;
 
-            const itemNameEs = item.nombre?.es || item.nombre || '';
-            const itemNameEu = item.nombre?.eu || '';
-            if (itemNameEs) {
-                menuItem.setAttribute('data-label-es', itemNameEs);
+            if (itemName.es) {
+                menuItem.setAttribute('data-label-es', itemName.es);
             }
-            if (itemNameEu) {
-                menuItem.setAttribute('data-label-eu', itemNameEu);
+            if (itemName.eu) {
+                menuItem.setAttribute('data-label-eu', itemName.eu);
             }
 
             menuItem.setAttribute('role', 'button');
             menuItem.tabIndex = 0;
             setMenuItemAriaLabel(menuItem);
             enhanceMenuItemInteractivity(menuItem, item, category);
-            
+
             menuGrid.appendChild(menuItem);
         });
     });
+
+    initializeLikeControls();
+}
+
+function cleanupLikeControls() {
+    likeControls.forEach(control => {
+        if (!control) return;
+        if (typeof control.unsubCount === 'function') {
+            control.unsubCount();
+        }
+        if (typeof control.unsubUser === 'function') {
+            control.unsubUser();
+        }
+        if (control.button && control.handler) {
+            control.button.removeEventListener('click', control.handler);
+            control.button.dataset.likeInitialized = '';
+        }
+    });
+    likeControls.clear();
+    likesInitialized = false;
+    if (likeRetryTimer) {
+        clearTimeout(likeRetryTimer);
+        likeRetryTimer = null;
+    }
+}
+
+function buildControlKey(category, itemId) {
+    const safeCategory = (category || 'general').toString().trim() || 'general';
+    return `${safeCategory}::${itemId}`;
+}
+
+function getLikeDocId(category, itemId) {
+    const safeCategory = (category || 'general').toString().trim() || 'general';
+    return `${safeCategory}__${itemId}`;
+}
+
+function getLikeDocRef(firestore, category, itemId) {
+    if (!firestore || !firestore.doc || !firestore.db) return null;
+    return firestore.doc(firestore.db, LIKE_COLLECTION, getLikeDocId(category, itemId));
+}
+
+function getUserLikeDocRef(firestore, category, itemId, userId) {
+    if (!firestore || !firestore.doc || !firestore.db || !userId) return null;
+    return firestore.doc(firestore.db, LIKE_COLLECTION, getLikeDocId(category, itemId), 'userLikes', userId);
+}
+
+function getFirestoreServices() {
+    const services = window.firebaseServices;
+    if (!services || !services.firestore || !services.firestore.db) return null;
+    return services.firestore;
+}
+
+function initializeLikeControls() {
+    const buttons = document.querySelectorAll('.like-toggle[data-item-id]');
+    if (!buttons.length) {
+        likesInitialized = false;
+        if (likeRetryTimer) {
+            clearTimeout(likeRetryTimer);
+            likeRetryTimer = null;
+        }
+        return;
+    }
+
+    const firestore = getFirestoreServices();
+
+    buttons.forEach(button => {
+        const itemId = String(button.dataset.itemId || '').trim();
+        if (!itemId) return;
+
+        const category = (button.dataset.category || 'general').trim() || 'general';
+        const controlKey = buildControlKey(category, itemId);
+
+        let control = likeControls.get(controlKey);
+        if (!control) {
+            const container = button.closest('.menu-item-actions');
+            const countEl = container?.querySelector('.like-count');
+            if (!countEl) return;
+
+            const nameEs = button.dataset.nameEs || '';
+            const nameEu = button.dataset.nameEu || nameEs;
+
+            const newControl = {
+                key: controlKey,
+                itemId,
+                category,
+                button,
+                countEl,
+                name: { es: nameEs, eu: nameEu },
+                unsubCount: null,
+                unsubUser: null,
+                handler: null
+            };
+
+            const handler = (event) => {
+                event.preventDefault();
+                handleLikeToggle(newControl);
+            };
+
+            newControl.handler = handler;
+            button.addEventListener('click', handler);
+            button.dataset.likeInitialized = 'true';
+            likeControls.set(controlKey, newControl);
+            control = newControl;
+        }
+
+        if (control?.button) {
+            control.button.classList.toggle('requires-auth', !currentUser);
+        }
+    });
+
+    likesInitialized = likeControls.size > 0;
+
+    if (!firestore) {
+        if (likesInitialized && !likeRetryTimer) {
+            likeRetryTimer = setTimeout(() => {
+                likeRetryTimer = null;
+                initializeLikeControls();
+            }, 800);
+        }
+        refreshLikeButtonsForUser(currentUser);
+        return;
+    }
+
+    likeControls.forEach(control => subscribeToLikeCount(control));
+    refreshLikeButtonsForUser(currentUser);
+}
+
+function subscribeToLikeCount(control) {
+    if (!control) return;
+
+    const firestore = getFirestoreServices();
+    if (!firestore) return;
+
+    if (typeof control.unsubCount === 'function') {
+        control.unsubCount();
+        control.unsubCount = null;
+    }
+
+    const docRef = getLikeDocRef(firestore, control.category, control.itemId);
+    if (!docRef) return;
+
+    control.unsubCount = firestore.onSnapshot(docRef, snapshot => {
+        const data = snapshot.exists() ? snapshot.data() : null;
+        const count = (data && typeof data.count === 'number') ? data.count : 0;
+        if (control.countEl) {
+            control.countEl.textContent = count;
+        }
+    }, error => {
+        console.error('Error subscribing to like count:', error);
+    });
+}
+
+function refreshLikeButtonsForUser(user) {
+    currentUser = user || null;
+    const firestore = getFirestoreServices();
+
+    likeControls.forEach(control => {
+        if (typeof control.unsubUser === 'function') {
+            control.unsubUser();
+            control.unsubUser = null;
+        }
+
+        if (control.button) {
+            control.button.classList.toggle('requires-auth', !currentUser);
+        }
+
+        if (!currentUser || !firestore) {
+            updateLikeButtonState(control, false);
+            return;
+        }
+
+        const userDocRef = getUserLikeDocRef(firestore, control.category, control.itemId, currentUser.uid);
+        if (!userDocRef) {
+            updateLikeButtonState(control, false);
+            return;
+        }
+
+        control.unsubUser = firestore.onSnapshot(userDocRef, snapshot => {
+            updateLikeButtonState(control, snapshot.exists());
+        }, error => {
+            console.error('Error subscribing to user like state:', error);
+        });
+    });
+}
+
+function updateLikeButtonState(control, liked) {
+    if (!control || !control.button) return;
+    control.button.setAttribute('aria-pressed', liked ? 'true' : 'false');
+    control.button.classList.toggle('is-liked', Boolean(liked));
+    const icon = control.button.querySelector('.like-icon');
+    if (icon) {
+        icon.classList.toggle('is-active', Boolean(liked));
+    }
+}
+
+async function handleLikeToggle(control) {
+    if (!control || !control.button) return;
+
+    if (!currentUser) {
+        showNotification('Inicia sesión para valorar las hamburguesas.', 'info');
+        const trigger = document.getElementById('open-auth-modal');
+        trigger?.focus();
+        trigger?.click();
+        return;
+    }
+
+    const firestore = getFirestoreServices();
+    if (!firestore) {
+        showNotification('El servicio de valoraciones no está disponible.', 'error');
+        return;
+    }
+
+    const { db, runTransaction, serverTimestamp } = firestore;
+    if (typeof runTransaction !== 'function') {
+        showNotification('No se pudo acceder a la base de datos.', 'error');
+        return;
+    }
+
+    control.button.disabled = true;
+
+    try {
+        const result = await runTransaction(db, async (transaction) => {
+            const likeRef = getLikeDocRef(firestore, control.category, control.itemId);
+            const userRef = getUserLikeDocRef(firestore, control.category, control.itemId, currentUser.uid);
+            if (!likeRef || !userRef) {
+                throw new Error('No se pudo preparar la referencia de la valoración.');
+            }
+
+            const likeSnap = await transaction.get(likeRef);
+            const userSnap = await transaction.get(userRef);
+
+            const baseData = likeSnap.exists() ? likeSnap.data() : null;
+            let count = baseData && typeof baseData.count === 'number' ? baseData.count : 0;
+            let liked;
+
+            const timestamp = typeof serverTimestamp === 'function'
+                ? serverTimestamp()
+                : new Date().toISOString();
+            const metadata = {
+                category: control.category,
+                itemId: control.itemId,
+                name: control.name
+            };
+
+            if (userSnap.exists()) {
+                liked = false;
+                count = Math.max(0, count - 1);
+                transaction.set(likeRef, {
+                    ...metadata,
+                    count,
+                    updatedAt: timestamp,
+                    lastUserId: currentUser.uid
+                }, { merge: true });
+                transaction.delete(userRef);
+            } else {
+                liked = true;
+                count += 1;
+                transaction.set(likeRef, {
+                    ...metadata,
+                    count,
+                    updatedAt: timestamp,
+                    lastUserId: currentUser.uid
+                }, { merge: true });
+                const payload = {
+                    liked: true,
+                    category: control.category,
+                    itemId: control.itemId,
+                    name: control.name,
+                    userId: currentUser.uid,
+                    updatedAt: timestamp
+                };
+                transaction.set(userRef, payload, { merge: true });
+            }
+
+            return { liked, count };
+        });
+
+        updateLikeButtonState(control, result.liked);
+        if (control.countEl) {
+            control.countEl.textContent = result.count;
+        }
+        const message = result.liked ? '¡Gracias por tu like!' : 'Has retirado tu like.';
+        showNotification(message, 'success');
+    } catch (error) {
+        console.error('Error toggling like:', error);
+        showNotification('No se pudo actualizar tu valoración.', 'error');
+    } finally {
+        control.button.disabled = false;
+    }
 }
 
 function setMenuItemAriaLabel(menuItem, lang = currentLang) {
@@ -1536,7 +1842,10 @@ function initFirebaseAuthUI() {
         }
     };
 
-    onAuthStateChanged(auth, updateUI);
+    onAuthStateChanged(auth, user => {
+        updateUI(user);
+        refreshLikeButtonsForUser(user);
+    });
 
     openBtn?.addEventListener('click', () => {
         openModal();
