@@ -1274,14 +1274,118 @@ function initFirebaseAuthUI() {
     const services = window.firebaseServices;
     if (!services || !services.auth) return;
 
-    const { auth, provider, onAuthStateChanged, signInWithPopup, signOut } = services;
+    const {
+        auth,
+        provider,
+        googleProvider: exposedGoogleProvider,
+        appleProvider,
+        onAuthStateChanged,
+        signInWithPopup,
+        signOut,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword
+    } = services;
+    const googleProvider = exposedGoogleProvider || provider;
     const openBtn = document.getElementById('open-auth-modal');
     const googleBtn = document.getElementById('google-signin');
+    const appleBtn = document.getElementById('apple-signin');
     const logoutBtn = document.getElementById('logout-btn');
     const modal = document.getElementById('auth-modal');
+    const emailForm = document.getElementById('auth-email-form');
+    const emailInput = document.getElementById('auth-email');
+    const passwordInput = document.getElementById('auth-password');
+    const confirmInput = document.getElementById('auth-confirm-password');
+    const emailSubmitBtn = document.getElementById('auth-email-submit');
+    const emailSubmitText = document.getElementById('auth-email-submit-text');
+    const emailError = document.getElementById('auth-email-error');
+    const emailModeToggle = document.getElementById('auth-email-mode-toggle');
+    const emailModeText = document.getElementById('auth-email-mode-text');
+    const confirmField = document.querySelector('.auth-field-confirm');
     const privateSection = document.querySelector('.solo-usuarios');
     const subtitle = privateSection?.querySelector('.section-subtitle');
     const defaultSubtitle = subtitle?.getAttribute('data-auth-default') || subtitle?.textContent || '';
+
+    let lastFocusedElement = null;
+    let isEmailRegisterMode = false;
+
+    const getFriendlyAuthError = (error) => {
+        const code = typeof error === 'string' ? error : error?.code;
+        switch (code) {
+            case 'auth/account-exists-with-different-credential':
+                return 'Ya existe una cuenta con ese correo usando otro proveedor.';
+            case 'auth/popup-blocked':
+                return 'El navegador bloqueó la ventana emergente. Permite las ventanas emergentes e inténtalo de nuevo.';
+            case 'auth/popup-closed-by-user':
+            case 'auth/cancelled-popup-request':
+                return 'El proceso de autenticación se canceló antes de completarse.';
+            case 'auth/invalid-email':
+                return 'El correo electrónico no es válido.';
+            case 'auth/missing-email':
+                return 'Ingresa un correo electrónico.';
+            case 'auth/user-not-found':
+                return 'No se encontró ninguna cuenta con ese correo.';
+            case 'auth/wrong-password':
+                return 'La contraseña no es correcta.';
+            case 'auth/email-already-in-use':
+                return 'Ya existe una cuenta con ese correo electrónico.';
+            case 'auth/weak-password':
+                return 'La contraseña debe tener al menos 6 caracteres.';
+            default:
+                return 'No se pudo completar la autenticación. Inténtalo nuevamente.';
+        }
+    };
+
+    const clearEmailError = () => {
+        if (emailError) {
+            emailError.textContent = '';
+            emailError.classList.add('hidden');
+        }
+    };
+
+    const showEmailError = (message) => {
+        if (emailError) {
+            emailError.textContent = message;
+            emailError.classList.remove('hidden');
+        } else {
+            showNotification(message, 'error');
+        }
+    };
+
+    const updateEmailFormMode = () => {
+        const submitText = isEmailRegisterMode ? 'Crear cuenta' : 'Iniciar sesión';
+        if (emailSubmitText) {
+            emailSubmitText.textContent = submitText;
+        } else if (emailSubmitBtn) {
+            emailSubmitBtn.textContent = submitText;
+        }
+        if (emailModeText) {
+            emailModeText.textContent = isEmailRegisterMode ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?';
+        }
+        if (emailModeToggle) {
+            emailModeToggle.textContent = isEmailRegisterMode ? 'Inicia sesión' : 'Crear una ahora';
+        }
+        if (confirmField) {
+            confirmField.classList.toggle('hidden', !isEmailRegisterMode);
+        }
+        if (confirmInput) {
+            confirmInput.required = isEmailRegisterMode;
+            if (!isEmailRegisterMode) {
+                confirmInput.value = '';
+            }
+        }
+        if (passwordInput) {
+            passwordInput.setAttribute('autocomplete', isEmailRegisterMode ? 'new-password' : 'current-password');
+        }
+    };
+
+    const resetEmailForm = () => {
+        isEmailRegisterMode = false;
+        emailForm?.reset();
+        clearEmailError();
+        updateEmailFormMode();
+    };
+
+    updateEmailFormMode();
 
     const focusTrapElements = () => {
         if (!modal) return [];
@@ -1289,12 +1393,11 @@ function initFirebaseAuthUI() {
             .filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
     };
 
-    let lastFocusedElement = null;
-
     const closeModal = () => {
         if (!modal) return;
         modal.classList.add('hidden');
         document.body.classList.remove('modal-open');
+        resetEmailForm();
         if (lastFocusedElement) {
             lastFocusedElement.focus();
             lastFocusedElement = null;
@@ -1303,6 +1406,7 @@ function initFirebaseAuthUI() {
 
     const openModal = () => {
         if (!modal) return;
+        resetEmailForm();
         lastFocusedElement = document.activeElement;
         modal.classList.remove('hidden');
         document.body.classList.add('modal-open');
@@ -1353,6 +1457,8 @@ function initFirebaseAuthUI() {
         privateSection?.classList.toggle('hidden', !logged);
         if (logged) {
             closeModal();
+        } else {
+            resetEmailForm();
         }
 
         if (subtitle) {
@@ -1372,15 +1478,106 @@ function initFirebaseAuthUI() {
     });
 
     googleBtn?.addEventListener('click', async () => {
+        if (!googleProvider) {
+            showNotification('El proveedor de Google no está configurado.', 'error');
+            return;
+        }
         try {
             addLoadingState(googleBtn);
-            await signInWithPopup(auth, provider);
+            await signInWithPopup(auth, googleProvider);
             showNotification('Sesión iniciada correctamente.', 'success');
         } catch (error) {
             console.error('Google sign-in error', error);
-            showNotification('No se pudo iniciar sesión con Google.', 'error');
+            showNotification(getFriendlyAuthError(error), 'error');
         } finally {
             removeLoadingState(googleBtn);
+        }
+    });
+
+    appleBtn?.addEventListener('click', async () => {
+        if (!appleProvider) {
+            showNotification('El proveedor de Apple no está configurado.', 'error');
+            return;
+        }
+        try {
+            addLoadingState(appleBtn);
+            await signInWithPopup(auth, appleProvider);
+            showNotification('Sesión iniciada correctamente.', 'success');
+        } catch (error) {
+            console.error('Apple sign-in error', error);
+            showNotification(getFriendlyAuthError(error), 'error');
+        } finally {
+            removeLoadingState(appleBtn);
+        }
+    });
+
+    emailModeToggle?.addEventListener('click', () => {
+        isEmailRegisterMode = !isEmailRegisterMode;
+        updateEmailFormMode();
+        clearEmailError();
+        if (isEmailRegisterMode) {
+            (confirmInput || passwordInput || emailInput)?.focus();
+        } else {
+            (emailInput || passwordInput)?.focus();
+        }
+    });
+
+    emailForm?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!emailSubmitBtn) return;
+
+        const email = emailInput?.value.trim() || '';
+        const password = passwordInput?.value || '';
+        const confirmPassword = confirmInput?.value || '';
+
+        clearEmailError();
+
+        if (!email || !isValidEmail(email)) {
+            showEmailError('Introduce un correo electrónico válido.');
+            emailInput?.focus();
+            return;
+        }
+
+        if (!password || password.length < 6) {
+            showEmailError('La contraseña debe tener al menos 6 caracteres.');
+            passwordInput?.focus();
+            return;
+        }
+
+        if (isEmailRegisterMode) {
+            if (!confirmPassword) {
+                showEmailError('Confirma tu contraseña.');
+                confirmInput?.focus();
+                return;
+            }
+            if (password !== confirmPassword) {
+                showEmailError('Las contraseñas no coinciden.');
+                confirmInput?.focus();
+                return;
+            }
+            if (typeof createUserWithEmailAndPassword !== 'function') {
+                showEmailError('El registro con correo electrónico no está disponible.');
+                return;
+            }
+        } else if (typeof signInWithEmailAndPassword !== 'function') {
+            showEmailError('El acceso con correo electrónico no está disponible.');
+            return;
+        }
+
+        try {
+            addLoadingState(emailSubmitBtn);
+            if (isEmailRegisterMode) {
+                await createUserWithEmailAndPassword(auth, email, password);
+                showNotification('Cuenta creada correctamente.', 'success');
+            } else {
+                await signInWithEmailAndPassword(auth, email, password);
+                showNotification('Sesión iniciada correctamente.', 'success');
+            }
+        } catch (error) {
+            console.error('Email auth error', error);
+            showEmailError(getFriendlyAuthError(error));
+        } finally {
+            removeLoadingState(emailSubmitBtn);
         }
     });
 
