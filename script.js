@@ -16,8 +16,6 @@ let heroIndicatorButtons = [];
 let heroCurrentIndex = 0;
 let heroCarouselTimer = null;
 let heroCarouselInterval = 5000;
-let heroHighlightTimeout = null;
-let heroLastHighlightedItem = null;
 
 let modalKeydownAttached = false;
 
@@ -673,8 +671,6 @@ function enhanceMenuItemInteractivity(menuItem, itemData = null, categoryOverrid
     menuItem.classList.add('menu-item-interactive');
 
     const activate = () => {
-        highlightMenuElement(menuItem);
-
         const detail = {
             id: menuItem.getAttribute('data-item-id') || null,
             category: categoryOverride || menuItem.getAttribute('data-category') || null,
@@ -1410,8 +1406,6 @@ function setHeroSlide(index, options = {}) {
     const total = heroSlides.length;
     heroCurrentIndex = ((index % total) + total) % total;
 
-    clearHeroHighlight();
-
     heroSlideElements.forEach((img, idx) => {
         img.classList.toggle('is-active', idx === heroCurrentIndex);
     });
@@ -1475,40 +1469,6 @@ function focusHeroSlideTarget(index, attempt = 0) {
     const targetTop = Math.max(0, window.scrollY + elementRect.top - offset);
 
     window.scrollTo({ top: targetTop, behavior: 'smooth' });
-    setTimeout(() => highlightMenuElement(targetElement), 260);
-}
-
-function highlightMenuElement(element) {
-    if (!element || !document.body.contains(element)) return;
-
-    if (heroLastHighlightedItem && heroLastHighlightedItem !== element) {
-        heroLastHighlightedItem.classList.remove('highlighted');
-    }
-
-    element.classList.add('highlighted');
-    heroLastHighlightedItem = element;
-
-    if (heroHighlightTimeout) {
-        clearTimeout(heroHighlightTimeout);
-    }
-
-    heroHighlightTimeout = setTimeout(() => {
-        element.classList.remove('highlighted');
-        if (heroLastHighlightedItem === element) {
-            heroLastHighlightedItem = null;
-        }
-    }, 3500);
-}
-
-function clearHeroHighlight() {
-    if (heroHighlightTimeout) {
-        clearTimeout(heroHighlightTimeout);
-        heroHighlightTimeout = null;
-    }
-    if (heroLastHighlightedItem) {
-        heroLastHighlightedItem.classList.remove('highlighted');
-        heroLastHighlightedItem = null;
-    }
 }
 
 // Menu filtering functionality
