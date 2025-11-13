@@ -234,7 +234,7 @@ function renderMenu() {
             const imageAltEs = itemName.es || '';
             const imageAltEu = itemName.eu || imageAltEs;
             const imageHTML = imageSrc
-                ? `<img src="${imageSrc}" alt="${imageAltEs}" data-alt-es="${imageAltEs}" data-alt-eu="${imageAltEu}" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder\\'></div>'">`
+                ? `<img src="${imageSrc}" alt="${imageAltEs}" data-alt-es="${imageAltEs}" data-alt-eu="${imageAltEu}" loading="lazy" decoding="async" fetchpriority="low" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder\\'></div>'">`
                 : `<div class="image-placeholder"></div>`;
 
                 const showLikeControls = category === 'hamburguesas';
