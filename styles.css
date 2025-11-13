@@ -1410,6 +1410,24 @@ body.dark-mode .footer-hours-table td {
         justify-content: flex-end;
     }
 
+    #logout-btn {
+        padding: 0.55rem;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        justify-content: center;
+        gap: 0;
+    }
+
+    #logout-btn .logout-label {
+        display: none;
+    }
+
+    #logout-btn .logout-icon {
+        display: inline-flex;
+        font-size: 1.1rem;
+    }
+
     .nav-menu {
         position: fixed;
         left: -100%;
