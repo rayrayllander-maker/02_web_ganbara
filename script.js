@@ -19,6 +19,8 @@ let heroCarouselInterval = 5000;
 let heroHighlightTimeout = null;
 let heroLastHighlightedItem = null;
 
+let modalKeydownAttached = false;
+
 // Preloader helpers
 function showPreloader() {
     const pre = document.getElementById('preloader');
@@ -1273,17 +1275,85 @@ function initFirebaseAuthUI() {
     if (!services || !services.auth) return;
 
     const { auth, provider, onAuthStateChanged, signInWithPopup, signOut } = services;
+    const openBtn = document.getElementById('open-auth-modal');
     const googleBtn = document.getElementById('google-signin');
     const logoutBtn = document.getElementById('logout-btn');
+    const modal = document.getElementById('auth-modal');
     const privateSection = document.querySelector('.solo-usuarios');
     const subtitle = privateSection?.querySelector('.section-subtitle');
     const defaultSubtitle = subtitle?.getAttribute('data-auth-default') || subtitle?.textContent || '';
 
+    const focusTrapElements = () => {
+        if (!modal) return [];
+        return Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+            .filter(el => !el.hasAttribute('disabled') && el.offsetParent !== null);
+    };
+
+    let lastFocusedElement = null;
+
+    const closeModal = () => {
+        if (!modal) return;
+        modal.classList.add('hidden');
+        document.body.classList.remove('modal-open');
+        if (lastFocusedElement) {
+            lastFocusedElement.focus();
+            lastFocusedElement = null;
+        }
+    };
+
+    const openModal = () => {
+        if (!modal) return;
+        lastFocusedElement = document.activeElement;
+        modal.classList.remove('hidden');
+        document.body.classList.add('modal-open');
+        const focusables = focusTrapElements();
+        if (focusables.length) {
+            focusables[0].focus();
+        }
+    };
+
+    const handleKeyDown = (event) => {
+        if (!modal || modal.classList.contains('hidden')) return;
+        if (event.key === 'Escape') {
+            closeModal();
+        } else if (event.key === 'Tab') {
+            const focusables = focusTrapElements();
+            if (!focusables.length) return;
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+            if (event.shiftKey) {
+                if (document.activeElement === first) {
+                    last.focus();
+                    event.preventDefault();
+                }
+            } else if (document.activeElement === last) {
+                first.focus();
+                event.preventDefault();
+            }
+        }
+    };
+
+    modal?.addEventListener('click', (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        if (target.dataset.close === 'true' || target === modal) {
+            closeModal();
+        }
+    });
+
+    if (modal && !modalKeydownAttached) {
+        document.addEventListener('keydown', handleKeyDown);
+        modalKeydownAttached = true;
+    }
+
     const updateUI = (user) => {
         const logged = Boolean(user);
-        googleBtn?.classList.toggle('hidden', logged);
+        openBtn?.classList.toggle('hidden', logged);
         logoutBtn?.classList.toggle('hidden', !logged);
         privateSection?.classList.toggle('hidden', !logged);
+        if (logged) {
+            closeModal();
+        }
 
         if (subtitle) {
             if (logged) {
@@ -1296,6 +1366,10 @@ function initFirebaseAuthUI() {
     };
 
     onAuthStateChanged(auth, updateUI);
+
+    openBtn?.addEventListener('click', () => {
+        openModal();
+    });
 
     googleBtn?.addEventListener('click', async () => {
         try {

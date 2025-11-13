@@ -54,7 +54,7 @@
             <p class="hero-subtitle" data-es="Descubre sabores auténticos en un ambiente acogedor" data-eu="Ezagutu zapore autentikoak giro atsegin batean">Descubre sabores auténticos en un ambiente acogedor</p>
             <a href="#menu" class="cta-button" data-es="Ver Menú" data-eu="Ikusi Menua">Ver Menú</a>
             <div class="auth-controls">
-                <button id="google-signin" class="auth-btn">Entrar con Google</button>
+                <button id="open-auth-modal" class="auth-btn">Acceder</button>
                 <button id="logout-btn" class="auth-btn hidden">Cerrar sesión</button>
             </div>
         </div>
@@ -71,6 +71,19 @@
             <p class="section-subtitle" data-auth-default="Te damos la bienvenida. Aquí podrás gestionar contenido exclusivo y métricas.">Te damos la bienvenida. Aquí podrás gestionar contenido exclusivo y métricas.</p>
         </div>
     </section>
+
+    <div class="auth-modal hidden" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+        <div class="auth-modal-backdrop" data-close="true"></div>
+        <div class="auth-modal-content" role="document">
+            <button class="auth-modal-close" type="button" aria-label="Cerrar" data-close="true">&times;</button>
+            <h2 id="auth-modal-title">Inicia sesión</h2>
+            <p>Accede con tu cuenta de Google para gestionar el contenido privado.</p>
+            <button id="google-signin" class="auth-btn auth-btn-google" type="button">
+                <span class="auth-btn-icon"><i class="fab fa-google"></i></span>
+                <span>Continuar con Google</span>
+            </button>
+        </div>
+    </div>
 
     <!-- Menu Section -->
     <section id="menu" class="menu-section">
