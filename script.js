@@ -28,6 +28,27 @@ let likesInitialized = false;
 let currentUser = null;
 let likeRetryTimer = null;
 
+const LIKE_HINTS = {
+    es: {
+        like: 'Doble clic para valorar',
+        unlike: 'Doble clic para retirar tu valoración',
+        auth: 'Inicia sesión para valorar'
+    },
+    eu: {
+        like: 'Klik bikoitza baloratzeko',
+        unlike: 'Klik bikoitza zure balorazioa kentzeko',
+        auth: 'Saioa hasi baloratzeko'
+    }
+};
+
+function getLikeHintText(liked, requiresAuth = false, lang = currentLang) {
+    const pack = LIKE_HINTS[lang] || LIKE_HINTS.es;
+    if (requiresAuth) {
+        return pack.auth;
+    }
+    return liked ? pack.unlike : pack.like;
+}
+
 // Preloader helpers
 function showPreloader() {
     const pre = document.getElementById('preloader');
@@ -218,27 +239,24 @@ function renderMenu() {
                 ? `<img src="${imageSrc}" alt="${imageAltEs}" data-alt-es="${imageAltEs}" data-alt-eu="${imageAltEu}" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder\\'></div>'">`
                 : `<div class="image-placeholder"></div>`;
 
-            const showLikeControls = category === 'hamburguesas';
-            const likeControlsHTML = showLikeControls ? `
-                <div class="menu-item-actions">
-                    <button class="like-toggle" type="button" data-item-id="${item.id}" data-category="${category}" data-name-es="${itemName.es}" data-name-eu="${itemName.eu}" aria-pressed="false">
+                const showLikeControls = category === 'hamburguesas';
+                const likeOverlayHTML = showLikeControls ? `
+                    <div class="like-display like-overlay" data-like-display="true">
                         <span class="like-icon" aria-hidden="true">&#10084;</span>
-                        <span class="like-label" data-es="Me gusta" data-eu="Gustatzen zait">Me gusta</span>
-                    </button>
-                    <span class="like-count" data-item-id="${item.id}" data-category="${category}" aria-live="polite">0</span>
-                </div>
-            ` : '';
+                        <span class="like-count" data-item-id="${item.id}" data-category="${category}" aria-live="polite">0</span>
+                    </div>
+                ` : '';
 
             menuItem.innerHTML = `
                 <div class="menu-item-image">
                     ${imageHTML}
+                    ${likeOverlayHTML}
                 </div>
                 <div class="menu-item-content">
                     <h3 class="menu-item-title" data-es="${itemName.es}" data-eu="${itemName.eu}">${itemName.es}</h3>
                     <p class="menu-item-description" data-es="${description.es}" data-eu="${description.eu}">${description.es}</p>
                     ${noteHTML}
                     ${priceHTML}
-                    ${likeControlsHTML}
                 </div>
             `;
 
@@ -247,6 +265,21 @@ function renderMenu() {
             }
             if (itemName.eu) {
                 menuItem.setAttribute('data-label-eu', itemName.eu);
+            }
+
+            if (showLikeControls) {
+                menuItem.setAttribute('data-like-enabled', 'true');
+                menuItem.setAttribute('data-like-item-id', item.id);
+                menuItem.setAttribute('data-like-category', category);
+                if (itemName.es) {
+                    menuItem.setAttribute('data-like-name-es', itemName.es);
+                }
+                if (itemName.eu) {
+                    menuItem.setAttribute('data-like-name-eu', itemName.eu);
+                }
+                menuItem.setAttribute('data-liked', 'false');
+                const hint = getLikeHintText(false, !currentUser, currentLang);
+                menuItem.setAttribute('title', hint);
             }
 
             menuItem.setAttribute('role', 'button');
@@ -270,9 +303,14 @@ function cleanupLikeControls() {
         if (typeof control.unsubUser === 'function') {
             control.unsubUser();
         }
-        if (control.button && control.handler) {
-            control.button.removeEventListener('click', control.handler);
-            control.button.dataset.likeInitialized = '';
+        if (control.interactionEl && control.handlers) {
+            if (typeof control.handlers.dbl === 'function') {
+                control.interactionEl.removeEventListener('dblclick', control.handlers.dbl);
+            }
+            if (typeof control.handlers.key === 'function') {
+                control.interactionEl.removeEventListener('keydown', control.handlers.key);
+            }
+            control.interactionEl.dataset.likeInitialized = '';
         }
     });
     likeControls.clear();
@@ -323,8 +361,8 @@ function getFirestoreServices() {
 }
 
 function initializeLikeControls() {
-    const buttons = document.querySelectorAll('.like-toggle[data-item-id]');
-    if (!buttons.length) {
+    const likeItems = document.querySelectorAll('.menu-item[data-like-enabled="true"]');
+    if (!likeItems.length) {
         likesInitialized = false;
         if (likeRetryTimer) {
             clearTimeout(likeRetryTimer);
@@ -335,50 +373,73 @@ function initializeLikeControls() {
 
     const firestore = getFirestoreServices();
 
-    buttons.forEach(button => {
-        const rawItemId = String(button.dataset.itemId || '').trim();
+    likeItems.forEach(item => {
+        const rawItemId = String(item.dataset.likeItemId || '').trim();
         if (!rawItemId) return;
 
-        const category = (button.dataset.category || 'general').trim() || 'general';
+        const category = (item.dataset.likeCategory || 'general').trim() || 'general';
         const controlKey = buildControlKey(category, rawItemId);
 
         let control = likeControls.get(controlKey);
         if (!control) {
-            const container = button.closest('.menu-item-actions');
-            const countEl = container?.querySelector('.like-count');
+            const displayEl = item.querySelector('.like-display');
+            const countEl = displayEl?.querySelector('.like-count') || item.querySelector('.like-count');
             if (!countEl) return;
 
-            const nameEs = button.dataset.nameEs || '';
-            const nameEu = button.dataset.nameEu || nameEs;
+            const nameEs = item.dataset.likeNameEs || '';
+            const nameEu = item.dataset.likeNameEu || nameEs;
             const itemIdForWrite = coerceItemIdForWrite(rawItemId);
+            const iconEl = displayEl?.querySelector('.like-icon') || item.querySelector('.like-icon');
 
             const newControl = {
                 key: controlKey,
                 itemId: rawItemId,
                 itemIdForWrite,
                 category,
-                button,
+                interactionEl: item,
+                displayEl,
                 countEl,
+                iconEl,
                 name: { es: nameEs, eu: nameEu },
                 unsubCount: null,
                 unsubUser: null,
-                handler: null
+                handlers: {},
+                isProcessing: false
             };
 
-            const handler = (event) => {
+            const doubleHandler = (event) => {
+                if (newControl.isProcessing) return;
                 event.preventDefault();
                 handleLikeToggle(newControl);
             };
 
-            newControl.handler = handler;
-            button.addEventListener('click', handler);
-            button.dataset.likeInitialized = 'true';
+            const keyboardHandler = (event) => {
+                if (!event || typeof event.key !== 'string') return;
+                const key = event.key.toLowerCase();
+                if (key === 'l') {
+                    event.preventDefault();
+                    handleLikeToggle(newControl);
+                }
+            };
+
+            newControl.handlers.dbl = doubleHandler;
+            newControl.handlers.key = keyboardHandler;
+
+            item.addEventListener('dblclick', doubleHandler);
+            item.addEventListener('keydown', keyboardHandler);
+            item.dataset.likeInitialized = 'true';
             likeControls.set(controlKey, newControl);
             control = newControl;
         }
 
-        if (control?.button) {
-            control.button.classList.toggle('requires-auth', !currentUser);
+        const requiresAuth = !currentUser;
+        if (control?.displayEl) {
+            control.displayEl.classList.toggle('requires-auth', requiresAuth);
+        }
+        if (control?.interactionEl) {
+            control.interactionEl.classList.toggle('requires-auth', requiresAuth);
+            const hint = getLikeHintText(control.interactionEl.getAttribute('data-liked') === 'true', requiresAuth, currentLang);
+            control.interactionEl.setAttribute('title', hint);
         }
     });
 
@@ -434,41 +495,61 @@ function refreshLikeButtonsForUser(user) {
             control.unsubUser = null;
         }
 
-        if (control.button) {
-            control.button.classList.toggle('requires-auth', !currentUser);
+        const requiresAuth = !currentUser;
+        if (control.displayEl) {
+            control.displayEl.classList.toggle('requires-auth', requiresAuth);
+        }
+        if (control.interactionEl) {
+            control.interactionEl.classList.toggle('requires-auth', requiresAuth);
         }
 
         if (!currentUser || !firestore) {
-            updateLikeButtonState(control, false);
+            updateLikeButtonState(control, false, requiresAuth);
             return;
         }
 
         const userDocRef = getUserLikeDocRef(firestore, control.category, control.itemId, currentUser.uid);
         if (!userDocRef) {
-            updateLikeButtonState(control, false);
+            updateLikeButtonState(control, false, false);
             return;
         }
 
         control.unsubUser = firestore.onSnapshot(userDocRef, snapshot => {
-            updateLikeButtonState(control, snapshot.exists());
+            updateLikeButtonState(control, snapshot.exists(), false);
         }, error => {
             console.error('Error subscribing to user like state:', error);
         });
     });
 }
 
-function updateLikeButtonState(control, liked) {
-    if (!control || !control.button) return;
-    control.button.setAttribute('aria-pressed', liked ? 'true' : 'false');
-    control.button.classList.toggle('is-liked', Boolean(liked));
-    const icon = control.button.querySelector('.like-icon');
-    if (icon) {
-        icon.classList.toggle('is-active', Boolean(liked));
+function updateLikeButtonState(control, liked, requiresAuth = !currentUser) {
+    if (!control) return;
+    const isLiked = Boolean(liked);
+    control.isLiked = isLiked;
+
+    if (control.interactionEl) {
+        control.interactionEl.classList.toggle('is-liked', isLiked);
+        control.interactionEl.setAttribute('data-liked', isLiked ? 'true' : 'false');
+        const hint = getLikeHintText(isLiked, requiresAuth, currentLang);
+        control.interactionEl.setAttribute('title', hint);
+    }
+
+    if (control.displayEl) {
+        control.displayEl.classList.toggle('is-liked', isLiked);
+        control.displayEl.setAttribute('data-liked', isLiked ? 'true' : 'false');
+    }
+
+    if (control.iconEl) {
+        control.iconEl.classList.toggle('is-active', isLiked);
     }
 }
 
 async function handleLikeToggle(control) {
-    if (!control || !control.button) return;
+    if (!control || !control.interactionEl) return;
+
+    if (control.isProcessing) {
+        return;
+    }
 
     if (!currentUser) {
         showNotification('Inicia sesión para valorar las hamburguesas.', 'info');
@@ -490,7 +571,9 @@ async function handleLikeToggle(control) {
         return;
     }
 
-    control.button.disabled = true;
+    control.isProcessing = true;
+    control.interactionEl.classList.add('like-processing');
+    control.displayEl?.classList.add('like-processing');
 
     try {
         const result = await runTransaction(db, async (transaction) => {
@@ -554,7 +637,7 @@ async function handleLikeToggle(control) {
             return { liked, count };
         });
 
-        updateLikeButtonState(control, result.liked);
+        updateLikeButtonState(control, result.liked, false);
         if (control.countEl) {
             control.countEl.textContent = result.count;
         }
@@ -564,7 +647,9 @@ async function handleLikeToggle(control) {
         console.error('Error toggling like:', error);
         showNotification('No se pudo actualizar tu valoración.', 'error');
     } finally {
-        control.button.disabled = false;
+        control.isProcessing = false;
+        control.interactionEl.classList.remove('like-processing');
+        control.displayEl?.classList.remove('like-processing');
     }
 }
 
@@ -819,6 +904,13 @@ function applyLanguage(lang) {
                 element.textContent = text;
             }
         }
+    });
+
+    document.querySelectorAll('.menu-item[data-like-enabled="true"]').forEach(item => {
+        const liked = item.getAttribute('data-liked') === 'true';
+        const requiresAuth = item.classList.contains('requires-auth');
+        const hint = getLikeHintText(liked, requiresAuth, lang);
+        item.setAttribute('title', hint);
     });
 
     document.querySelectorAll('[data-alt-es][data-alt-eu]').forEach(element => {

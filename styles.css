@@ -913,51 +913,73 @@ body.modal-open {
     gap: 0.75rem;
 }
 
-.like-toggle {
+.menu-item[data-like-enabled="true"] {
+    cursor: pointer;
+}
+
+.menu-item-image {
+    position: relative;
+}
+
+.like-display {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    padding: 0.45rem 0.9rem;
+    padding: 0.5rem 1rem;
     border-radius: 999px;
-    border: 1px solid rgba(235, 115, 76, 0.4);
-    background: rgba(235, 115, 76, 0.08);
-    color: var(--color-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(33, 15, 4, 0.78);
+    color: #fff;
     font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    pointer-events: none;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
-.like-toggle:hover {
-    background: rgba(235, 115, 76, 0.16);
-    box-shadow: 0 8px 18px rgba(235, 115, 76, 0.18);
+.menu-item[data-like-enabled="true"].requires-auth .like-display {
+    opacity: 0.8;
 }
 
-.like-toggle:focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 3px;
-}
-
-.like-toggle[aria-pressed="true"] {
-    background: linear-gradient(135deg, var(--color-secondary), var(--color-accent));
+.like-display.is-liked {
+    background: linear-gradient(135deg, rgba(235, 115, 76, 0.95), rgba(187, 107, 0, 0.95));
     color: #fff;
     border-color: transparent;
-    box-shadow: 0 10px 24px rgba(235, 115, 76, 0.35);
+    box-shadow: 0 14px 30px rgba(235, 115, 76, 0.45);
 }
 
-.like-toggle[aria-pressed="true"] .like-icon {
+.like-display.is-liked .like-icon {
     transform: scale(1.1);
 }
 
+.menu-item.like-processing .like-display {
+    opacity: 0.6;
+}
+
+.menu-item.like-processing {
+    pointer-events: none;
+}
+
+.like-overlay {
+    position: absolute;
+    top: 0.65rem;
+    left: 0.75rem;
+    pointer-events: none;
+    z-index: 2;
+    filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.3));
+}
+
 .like-icon {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     line-height: 1;
     transition: transform 0.2s ease;
 }
 
 .like-count {
     font-weight: 700;
-    color: var(--color-secondary);
+    color: inherit;
     min-width: 2rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
 .menu-item.highlighted {
