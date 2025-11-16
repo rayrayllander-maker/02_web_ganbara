@@ -237,7 +237,7 @@ function renderMenu() {
                 ? `<img src="${imageSrc}" alt="${imageAltEs}" data-alt-es="${imageAltEs}" data-alt-eu="${imageAltEu}" loading="lazy" decoding="async" fetchpriority="low" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder\\'></div>'">`
                 : `<div class="image-placeholder"></div>`;
 
-                const showLikeControls = category === 'hamburguesas';
+                const showLikeControls = false; // Temporarily disabled: category === 'hamburguesas'
                 const likeOverlayHTML = showLikeControls ? `
                     <div class="like-display like-overlay" data-like-display="true">
                         <span class="like-icon" aria-hidden="true">&#10084;</span>
