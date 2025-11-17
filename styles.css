@@ -208,9 +208,14 @@ body.dark-mode .logo-img {
 .bar {
     width: 25px;
     height: 3px;
-    background-color: #333;
+    background-color: var(--color-secondary);
     margin: 3px 0;
-    transition: 0.3s;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.hamburger:hover .bar,
+.hamburger:active .bar {
+    background-color: var(--color-accent);
 }
 
 /* Language toggle */
@@ -327,6 +332,13 @@ body.dark-mode .logo-img {
     justify-content: center;
     position: relative;
     overflow: hidden;
+}
+
+.hero-image .image-placeholder picture {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .hero-image .image-placeholder .carousel-item {
@@ -911,6 +923,12 @@ body.modal-open {
 
 .menu-item-image {
     position: relative;
+}
+
+.menu-item-image picture {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 .like-display {

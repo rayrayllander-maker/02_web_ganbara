@@ -1,0 +1,87 @@
+{
+  "assets/baconessa.png": {
+    "widths": [
+      480,
+      768,
+      864
+    ],
+    "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/bbq.png": {
+    "widths": [
+      480,
+      768,
+      864
+    ],
+    "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/colombiana.png": {
+    "widths": [
+      480,
+      768,
+      864
+    ],
+    "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/croquetas.png": {
+    "widths": [
+      480,
+      768,
+      1200,
+      2304
+    ],
+    "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/emmy.png": {
+    "widths": [
+      480,
+      768
+    ],
+    "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/ganbaraturbo.png": {
+    "widths": [
+      480,
+      768,
+      864
+    ],
+    "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/Logo_color_ganbara.png": {
+    "widths": [
+      480,
+      500
+    ],
+    "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/Logo_ganbara_01.jpg": {
+    "widths": [
+      225
+    ],
+    "fallback": "jpeg",
+    "hasWebp": true
+  },
+  "assets/Nachos_IA_gemini.png": {
+    "widths": [
+      480,
+      768,
+      864
+    ],
+    "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/rabas.png": {
+    "widths": [
+      383
+    ],
+    "fallback": "png",
+    "hasWebp": true
+  }
+}

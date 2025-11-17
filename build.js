@@ -3,6 +3,13 @@ const path = require('path');
 const { minify: terserMinify } = require('terser');
 const CleanCSS = require('clean-css');
 
+let sharp = null;
+try {
+    sharp = require('sharp');
+} catch (error) {
+    console.warn('Aviso: no se pudo cargar sharp. Se omitirán las variantes de imagen responsivas.', error?.message || '');
+}
+
 const ROOT_DIR = __dirname;
 const PUBLIC_DIR = path.join(ROOT_DIR, 'public');
 
@@ -23,6 +30,30 @@ const DIRECTORIES = [
     { src: path.join(ROOT_DIR, 'assets'), dest: path.join(PUBLIC_DIR, 'assets') },
     { src: path.join(ROOT_DIR, 'images'), dest: path.join(PUBLIC_DIR, 'images') }
 ];
+
+const RESPONSIVE_IMAGE_WIDTHS = [480, 768, 1200];
+const SUPPORTED_IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png']);
+const WEBP_OPTIONS = { quality: 80, effort: 4, alphaQuality: 80 }; 
+const JPEG_OPTIONS = { quality: 82, mozjpeg: true, chromaSubsampling: '4:4:4' };
+const PNG_OPTIONS = { compressionLevel: 9, adaptiveFiltering: true, palette: true };
+
+const responsiveManifest = {};
+
+function normalizeRelativePath(filePath) {
+    return filePath.split(path.sep).join('/');
+}
+
+function writeResponsiveManifest(manifest) {
+    const json = JSON.stringify(manifest, null, 2);
+    const publicPath = path.join(PUBLIC_DIR, 'responsive-images.json');
+    ensureDir(path.dirname(publicPath));
+    fs.writeFileSync(publicPath, json);
+    try {
+        fs.writeFileSync(path.join(ROOT_DIR, 'responsive-images.json'), json);
+    } catch (error) {
+        console.warn('No se pudo escribir responsive-images.json en la raíz del proyecto:', error.message);
+    }
+}
 
 function ensureDir(dirPath) {
     fs.mkdirSync(dirPath, { recursive: true });
@@ -59,6 +90,129 @@ function copyDirectory(src, dest) {
             fs.copyFileSync(srcPath, destPath);
         }
     }
+}
+
+function collectImageFiles(dir) {
+    if (!fs.existsSync(dir)) return [];
+
+    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    const files = [];
+
+    for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+            files.push(...collectImageFiles(fullPath));
+        } else {
+            const ext = path.extname(entry.name).toLowerCase();
+            if (SUPPORTED_IMAGE_EXTENSIONS.has(ext)) {
+                files.push(fullPath);
+            }
+        }
+    }
+
+    return files;
+}
+
+async function buildVariantsForImage(srcPath) {
+    if (!sharp) return 0;
+
+    const ext = path.extname(srcPath).toLowerCase();
+    if (!SUPPORTED_IMAGE_EXTENSIONS.has(ext)) return 0;
+
+    const relativePath = path.relative(ROOT_DIR, srcPath);
+    const normalizedOriginalPath = normalizeRelativePath(relativePath);
+    const relativeDir = path.dirname(relativePath);
+    const parsed = path.parse(srcPath);
+    const destDir = path.join(PUBLIC_DIR, relativeDir);
+    ensureDir(destDir);
+
+    let metadata;
+    try {
+        metadata = await sharp(srcPath).metadata();
+    } catch (error) {
+        console.warn(`No se pudo leer metadata de ${relativePath}: ${error.message}`);
+        return 0;
+    }
+
+    const fallbackFormat = ext === '.png' ? 'png' : 'jpeg';
+    const fallbackOptions = fallbackFormat === 'png' ? PNG_OPTIONS : JPEG_OPTIONS;
+
+    const availableWidths = RESPONSIVE_IMAGE_WIDTHS.filter(width => !metadata.width || metadata.width >= width);
+    if (metadata.width && metadata.width > 0) {
+        const rounded = Math.round(metadata.width);
+        if (!availableWidths.includes(rounded)) {
+            availableWidths.push(rounded);
+        }
+    }
+
+    const uniqueWidths = [...new Set(availableWidths)].sort((a, b) => a - b);
+    let variantCount = 0;
+
+    responsiveManifest[normalizedOriginalPath] = {
+        widths: uniqueWidths,
+        fallback: fallbackFormat,
+        hasWebp: true
+    };
+
+    for (const width of uniqueWidths) {
+        const resizeOptions = {
+            width,
+            withoutEnlargement: true,
+            fit: 'inside'
+        };
+
+        const baseName = `${parsed.name}-${width}w`;
+        const fallbackOutput = path.join(destDir, `${baseName}${ext}`);
+        try {
+            await sharp(srcPath)
+                .resize(resizeOptions)
+                .toFormat(fallbackFormat, fallbackOptions)
+                .toFile(fallbackOutput);
+            variantCount += 1;
+        } catch (error) {
+            console.warn(`No se pudo generar ${path.relative(PUBLIC_DIR, fallbackOutput)}: ${error.message}`);
+        }
+
+        const webpOutput = path.join(destDir, `${baseName}.webp`);
+        try {
+            await sharp(srcPath)
+                .resize(resizeOptions)
+                .webp(WEBP_OPTIONS)
+                .toFile(webpOutput);
+            variantCount += 1;
+        } catch (error) {
+            console.warn(`No se pudo generar ${path.relative(PUBLIC_DIR, webpOutput)}: ${error.message}`);
+        }
+    }
+
+    return variantCount;
+}
+
+async function generateResponsiveImages() {
+    if (!sharp) {
+        return { processedCount: 0, variantCount: 0 };
+    }
+
+    let processedCount = 0;
+    let variantCount = 0;
+
+    for (const { src } of DIRECTORIES) {
+        if (!fs.existsSync(src)) continue;
+        const files = collectImageFiles(src);
+        for (const filePath of files) {
+            try {
+                const produced = await buildVariantsForImage(filePath);
+                if (produced > 0) {
+                    processedCount += 1;
+                    variantCount += produced;
+                }
+            } catch (error) {
+                console.warn(`Error generando variantes para ${path.relative(ROOT_DIR, filePath)}: ${error.message}`);
+            }
+        }
+    }
+
+    return { processedCount, variantCount };
 }
 
 async function minifyJS(file) {
@@ -153,8 +307,23 @@ async function run() {
     
     DIRECTORIES.forEach(({ src, dest }) => copyDirectory(src, dest));
 
+    const { processedCount, variantCount } = await generateResponsiveImages();
+    if (sharp) {
+        if (processedCount > 0) {
+            console.log(`Variantes responsivas generadas: ${variantCount} archivos a partir de ${processedCount} imágenes.`);
+        } else {
+            console.log('No se encontraron imágenes para generar variantes responsivas.');
+        }
+        writeResponsiveManifest(responsiveManifest);
+    } else {
+        writeResponsiveManifest({});
+    }
+
     console.log('\nArchivos procesados y copiados correctamente a la carpeta public');
 }
 
-run();
+run().catch(error => {
+    console.error('Error durante la construcción:', error);
+    process.exit(1);
+});
 

@@ -186,8 +186,8 @@
     {
       "id": 2,
       "nombre": {
-        "es": "Rabas (calamar rebozado)",
-        "eu": "Rabak (txipiroi errebozatua)"
+        "es": "Rabas",
+        "eu": "Rabak"
       },
       "descripcion": {
         "es": "Calamar rebozado",
@@ -250,7 +250,7 @@
     {
       "id": 6,
       "nombre": {
-        "es": "Croquetas de jamón o de hongos",
+        "es": "Croquetas de jamón/hongos",
         "eu": "Urdaiazpiko edo perretxikoen kroketak"
       },
       "descripcion": {
@@ -282,7 +282,7 @@
     {
       "id": 8,
       "nombre": {
-        "es": "Pizzas de pollo crujiente con patatas",
+        "es": "Piezas de pollo crujiente con patatas",
         "eu": "Oilasko kurruskariaren pizzak patatekin"
       },
       "descripcion": {
@@ -330,8 +330,8 @@
     {
       "id": 11,
       "nombre": {
-        "es": "Tequeños de guayaba y queso",
-        "eu": "Guaiaba eta gazta tekegnoak"
+        "es": "Tequeños",
+        "eu": "tekegnoak"
       },
       "descripcion": {
         "es": "Tequeños rellenos de guayaba y queso",

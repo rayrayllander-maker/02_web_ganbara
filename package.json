@@ -24,6 +24,7 @@
     "imagemin": "^9.0.1",
     "imagemin-mozjpeg": "^10.0.0",
     "imagemin-pngquant": "^10.0.0",
+    "sharp": "^0.33.2",
     "terser": "^5.44.1"
   }
 }

@@ -39,6 +39,14 @@ const LIKE_HINTS = {
     }
 };
 
+const RESPONSIVE_IMAGE_WIDTHS = [480, 768, 1200];
+const MENU_IMAGE_SIZES = '(max-width: 600px) 92vw, (max-width: 1024px) 45vw, 360px';
+const HERO_IMAGE_SIZES = '(max-width: 768px) 100vw, 600px';
+const RESPONSIVE_IMAGE_FORMATS = new Set(['jpg', 'jpeg', 'png']);
+
+let responsiveImageManifest = null;
+let responsiveImageManifestPromise = null;
+
 function getLikeHintText(liked, requiresAuth = false, lang = currentLang) {
     const pack = LIKE_HINTS[lang] || LIKE_HINTS.es;
     if (requiresAuth) {
@@ -73,11 +81,170 @@ function waitForImages(timeoutMs = 7000) {
     });
 }
 
+function normalizeImagePath(imageSrc) {
+    if (typeof imageSrc !== 'string') return '';
+    return imageSrc.replace(/^\.\//, '').replace(/^\//, '');
+}
+
+function loadResponsiveImageManifest() {
+    if (responsiveImageManifestPromise) {
+        return responsiveImageManifestPromise;
+    }
+
+    responsiveImageManifestPromise = fetch('responsive-images.json', { cache: 'no-store' })
+        .then(response => {
+            if (!response.ok) {
+                return null;
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && typeof data === 'object') {
+                responsiveImageManifest = data;
+            } else {
+                responsiveImageManifest = null;
+            }
+            return responsiveImageManifest;
+        })
+        .catch(() => {
+            responsiveImageManifest = null;
+            return null;
+        });
+
+    return responsiveImageManifestPromise;
+}
+
+function getResponsiveManifestEntry(imageSrc) {
+    if (!responsiveImageManifest) return null;
+    const normalized = normalizeImagePath(imageSrc);
+    return responsiveImageManifest[normalized] || null;
+}
+
+function getMimeTypeFromExtension(ext) {
+    switch (ext) {
+        case 'png':
+            return 'image/png';
+        case 'jpg':
+        case 'jpeg':
+        default:
+            return 'image/jpeg';
+    }
+}
+
+function getResponsiveImageDescriptors(imageSrc) {
+    if (!imageSrc) return null;
+    const entry = getResponsiveManifestEntry(imageSrc);
+    if (!entry || !Array.isArray(entry.widths) || !entry.widths.length) {
+        return null;
+    }
+
+    const dotIndex = imageSrc.lastIndexOf('.');
+    if (dotIndex === -1) return null;
+
+    const extension = imageSrc.slice(dotIndex + 1).toLowerCase();
+    if (!RESPONSIVE_IMAGE_FORMATS.has(extension)) {
+        return null;
+    }
+
+    const basePath = imageSrc.slice(0, dotIndex);
+    const normalizedWidths = Array.isArray(entry.widths) && entry.widths.length ? [...entry.widths] : [Math.max(window.innerWidth || 1200, 1200)];
+    const fallbackEntries = normalizedWidths.map(width => `${basePath}-${width}w.${extension} ${width}w`);
+    const originalDescriptorWidth = Math.max(...normalizedWidths, 1920);
+    fallbackEntries.push(`${imageSrc} ${originalDescriptorWidth}w`);
+    const fallbackSrcset = fallbackEntries.join(', ');
+    const webpSrcset = entry.widths.map(width => `${basePath}-${width}w.webp ${width}w`).join(', ');
+
+    return {
+        fallbackSrcset,
+        webpSrcset,
+        fallbackType: getMimeTypeFromExtension(extension)
+    };
+}
+
+function buildResponsiveImageMarkup(imageSrc, altEs, altEu, options = {}) {
+    const { sizes = MENU_IMAGE_SIZES, loading = 'lazy', fetchPriority = 'low' } = options;
+
+    if (!imageSrc) {
+        return '<div class="image-placeholder"></div>';
+    }
+
+    const descriptors = getResponsiveImageDescriptors(imageSrc, RESPONSIVE_IMAGE_WIDTHS);
+
+    if (!descriptors) {
+        return `<img src="${imageSrc}" data-original-src="${imageSrc}" alt="${altEs}" data-alt-es="${altEs}" data-alt-eu="${altEu}" loading="${loading}" decoding="async" fetchpriority="${fetchPriority}">`;
+    }
+
+    const { fallbackSrcset, webpSrcset, fallbackType } = descriptors;
+
+    return `
+        <picture>
+            <source type="image/webp" srcset="${webpSrcset}" sizes="${sizes}">
+            <source type="${fallbackType}" srcset="${fallbackSrcset}" sizes="${sizes}">
+            <img src="${imageSrc}" data-original-src="${imageSrc}" srcset="${fallbackSrcset}" sizes="${sizes}" alt="${altEs}" data-alt-es="${altEs}" data-alt-eu="${altEu}" loading="${loading}" decoding="async" fetchpriority="${fetchPriority}">
+        </picture>
+    `;
+}
+
+function attemptResponsiveImageFallback(img) {
+    if (!img) return false;
+    const alreadyTried = img.dataset.fallbackAttempted === 'true';
+    if (alreadyTried) return false;
+
+    const originalSrc = img.getAttribute('data-original-src') || img.getAttribute('src');
+    if (!originalSrc) return false;
+
+    img.dataset.fallbackAttempted = 'true';
+    const pictureParent = img.parentElement && img.parentElement.tagName === 'PICTURE' ? img.parentElement : null;
+    if (pictureParent) {
+        pictureParent.querySelectorAll('source').forEach(source => {
+            source.removeAttribute('srcset');
+            source.removeAttribute('sizes');
+        });
+    }
+    img.removeAttribute('srcset');
+    img.removeAttribute('sizes');
+    if (img.loading === 'lazy') {
+        img.loading = 'eager';
+    }
+    img.src = originalSrc;
+    return true;
+}
+
+function handleMenuImageError(event) {
+    const target = event?.currentTarget;
+    if (!target) return;
+
+    if (attemptResponsiveImageFallback(target)) {
+        return;
+    }
+
+    const container = target.closest('.menu-item-image');
+    if (container) {
+        container.innerHTML = '<div class="image-placeholder"></div>';
+    }
+}
+
+function handleHeroImageError(event) {
+    const target = event?.currentTarget;
+    if (!target) return;
+
+    if (attemptResponsiveImageFallback(target)) {
+        return;
+    }
+
+    const slideWrapper = target.closest('picture') || target;
+    if (slideWrapper && slideWrapper.parentElement) {
+        slideWrapper.parentElement.removeChild(slideWrapper);
+    }
+}
+
 async function loadMenuData() {
     try {
         showPreloader();
+        const manifestPromise = loadResponsiveImageManifest();
         const response = await fetch('menu-data.json');
         menuData = await response.json();
+        await manifestPromise;
         renderMenu();
         initializeCategoryButtons();
         const savedLang = localStorage.getItem('language') || 'es';
@@ -233,12 +400,10 @@ function renderMenu() {
             const imageSrc = item?.imagen;
             const imageAltEs = itemName.es || '';
             const imageAltEu = itemName.eu || imageAltEs;
-            const imageHTML = imageSrc
-                ? `<img src="${imageSrc}" alt="${imageAltEs}" data-alt-es="${imageAltEs}" data-alt-eu="${imageAltEu}" loading="lazy" decoding="async" fetchpriority="low" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder\\'></div>'">`
-                : `<div class="image-placeholder"></div>`;
+            const imageHTML = buildResponsiveImageMarkup(imageSrc, imageAltEs, imageAltEu);
 
-                const showLikeControls = category === 'hamburguesas';
-                const likeOverlayHTML = showLikeControls ? `
+            const showLikeControls = category === 'hamburguesas';
+            const likeOverlayHTML = showLikeControls ? `
                     <div class="like-display like-overlay" data-like-display="true">
                         <span class="like-icon" aria-hidden="true">&#10084;</span>
                         <span class="like-count" data-item-id="${item.id}" data-category="${category}" aria-live="polite">0</span>
@@ -263,6 +428,11 @@ function renderMenu() {
             }
             if (itemName.eu) {
                 menuItem.setAttribute('data-label-eu', itemName.eu);
+            }
+
+            const menuImageEl = menuItem.querySelector('.menu-item-image img[data-alt-es][data-alt-eu]');
+            if (menuImageEl) {
+                menuImageEl.addEventListener('error', handleMenuImageError);
             }
 
             if (showLikeControls) {
@@ -1295,9 +1465,11 @@ function resolveHeroSlides() {
 
 async function loadHeroCarouselData() {
     try {
+        const manifestPromise = loadResponsiveImageManifest();
         const response = await fetch('hero-carousel.json');
         const data = await response.json();
         heroRawSlides = Array.isArray(data.slides) ? data.slides : [];
+        await manifestPromise;
         resolveHeroSlides();
     } catch (error) {
         console.error('Error loading hero carousel data:', error);
@@ -1327,14 +1499,44 @@ function renderHeroCarousel() {
         img.src = slide.image;
         img.loading = idx === 0 ? 'eager' : 'lazy';
         img.decoding = 'async';
+        img.setAttribute('fetchpriority', idx === 0 ? 'high' : 'low');
         img.className = 'carousel-item';
         if (idx === heroCurrentIndex) img.classList.add('is-active');
+        img.setAttribute('data-original-src', slide.image);
 
         const altEs = getLocalizedValue(slide.alt, 'es') || getLocalizedValue(slide.title, 'es') || heroDefaults.title.es;
         const altEu = getLocalizedValue(slide.alt, 'eu') || getLocalizedValue(slide.title, 'eu') || altEs;
         img.setAttribute('data-alt-es', altEs);
         img.setAttribute('data-alt-eu', altEu);
         img.alt = currentLang === 'eu' ? altEu : altEs;
+
+        const descriptors = getResponsiveImageDescriptors(slide.image, RESPONSIVE_IMAGE_WIDTHS);
+
+        if (descriptors) {
+            const { webpSrcset, fallbackSrcset, fallbackType } = descriptors;
+            const picture = document.createElement('picture');
+
+            const webpSource = document.createElement('source');
+            webpSource.type = 'image/webp';
+            webpSource.srcset = webpSrcset;
+            webpSource.sizes = HERO_IMAGE_SIZES;
+            picture.appendChild(webpSource);
+
+            const fallbackSource = document.createElement('source');
+            fallbackSource.type = fallbackType;
+            fallbackSource.srcset = fallbackSrcset;
+            fallbackSource.sizes = HERO_IMAGE_SIZES;
+            picture.appendChild(fallbackSource);
+
+            img.srcset = fallbackSrcset;
+            img.sizes = HERO_IMAGE_SIZES;
+            picture.appendChild(img);
+            container.appendChild(picture);
+        } else {
+            container.appendChild(img);
+        }
+
+        img.addEventListener('error', handleHeroImageError);
 
         if (slide.target) {
             if (slide.target.category) {
@@ -1355,7 +1557,6 @@ function renderHeroCarousel() {
             focusHeroSlideTarget(idx);
         });
 
-        container.appendChild(img);
         heroSlideElements.push(img);
     });
 
