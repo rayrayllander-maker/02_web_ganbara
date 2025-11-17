@@ -86,7 +86,7 @@
         "eu": "Bularreko errebozatua, allioli, zirikatz, tipula"
       },
       "precio": 7.50,
-      "imagen": "images/bocadillo-6.jpg",
+      "imagen": "assets/bocadillo_06.png",
       "categoria": "bocadillos",
       "disponible": true
     },
@@ -476,7 +476,7 @@
         "eu": "180 gr. Angus, cheddar gazta, tipula crispy, jalapeño, guacamole, nachos, jalapeño errearen saltsa"
       },
       "precio": 13.50,
-      "imagen": "images/hamburguesa-9.jpg",
+      "imagen": "assets/azteca.png",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -491,7 +491,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, Burger Saltsa"
       },
       "precio": 12.50,
-      "imagen": "images/hamburguesa-10.jpg",
+      "imagen": "assets/clasica.png",
       "categoria": "hamburguesas",
       "disponible": true
     },
