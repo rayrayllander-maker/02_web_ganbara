@@ -402,8 +402,8 @@ function renderMenu() {
             const imageAltEu = itemName.eu || imageAltEs;
             const imageHTML = buildResponsiveImageMarkup(imageSrc, imageAltEs, imageAltEu);
 
-                const showLikeControls = category === 'hamburguesas';
-                const likeOverlayHTML = showLikeControls ? `
+            const showLikeControls = category === 'hamburguesas';
+            const likeOverlayHTML = showLikeControls ? `
                     <div class="like-display like-overlay" data-like-display="true">
                         <span class="like-icon" aria-hidden="true">&#10084;</span>
                         <span class="like-count" data-item-id="${item.id}" data-category="${category}" aria-live="polite">0</span>
