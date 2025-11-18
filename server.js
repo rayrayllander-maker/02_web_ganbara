@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const compression = require('compression');
 const { google } = require('googleapis');
+const { buildSite } = require('./build');
 require('dotenv').config();
 
 const app = express();
@@ -75,6 +76,60 @@ async function initGoogleSheets() {
 
 // Initialize sheets on startup
 initGoogleSheets();
+
+let isPublishing = false;
+const publishState = {
+    status: 'idle',
+    startedAt: null,
+    finishedAt: null,
+    error: null
+};
+
+app.get('/api/publish/status', (req, res) => {
+    res.json(publishState);
+});
+
+app.post('/api/publish', async (req, res) => {
+    if (isPublishing) {
+        return res.status(409).json({
+            error: 'Ya hay una publicación en curso.',
+            status: publishState.status,
+            startedAt: publishState.startedAt,
+            finishedAt: publishState.finishedAt
+        });
+    }
+
+    isPublishing = true;
+    const startedAt = new Date();
+    publishState.status = 'running';
+    publishState.startedAt = startedAt.toISOString();
+    publishState.finishedAt = null;
+    publishState.error = null;
+
+    try {
+        await buildSite();
+        publishState.status = 'success';
+        publishState.finishedAt = new Date().toISOString();
+        res.json({
+            status: publishState.status,
+            startedAt: publishState.startedAt,
+            finishedAt: publishState.finishedAt
+        });
+    } catch (error) {
+        publishState.status = 'error';
+        publishState.finishedAt = new Date().toISOString();
+        publishState.error = error?.message || 'No se pudo completar la publicación.';
+        console.error('Error durante la publicación:', error);
+        res.status(500).json({
+            error: publishState.error,
+            status: publishState.status,
+            startedAt: publishState.startedAt,
+            finishedAt: publishState.finishedAt
+        });
+    } finally {
+        isPublishing = false;
+    }
+});
 
 // Track click endpoint
 app.post('/api/track-click', async (req, res) => {

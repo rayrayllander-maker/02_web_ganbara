@@ -42,8 +42,8 @@
                     <p class="section-description">Gestiona el contenido público del sitio Ganbara.</p>
                 </div>
                 <div class="actions">
-                    <button class="btn btn-outline" type="button">Previsualizar sitio</button>
-                    <button class="btn btn-primary" type="button">Publicar cambios</button>
+                    <button class="btn btn-outline" type="button" data-admin-preview>Previsualizar sitio</button>
+                    <button class="btn btn-primary" type="button" data-admin-publish>Publicar cambios</button>
                     <button class="btn btn-outline hidden" type="button" data-admin-logout>Cerrar sesión</button>
                 </div>
             </header>
@@ -119,8 +119,9 @@
                             <p class="section-description">Crea, edita y clasifica los platos.</p>
                         </div>
                         <div class="actions">
-                            <button class="btn btn-outline" type="button">Importar JSON</button>
-                            <button class="btn btn-primary" type="button">Añadir plato</button>
+                            <button class="btn btn-outline" type="button" data-menu-import-json>Importar JSON</button>
+                            <input type="file" accept="application/json" data-menu-import-json-input hidden>
+                            <button class="btn btn-primary" type="button" data-menu-scroll-target>Añadir plato</button>
                         </div>
                     </div>
 

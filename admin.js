@@ -9,6 +9,12 @@ const authGuardSection = document.querySelector('[data-auth-guard]');
 const authGuardMessage = document.querySelector('[data-auth-guard-message]');
 const authRefreshButton = document.querySelector('[data-admin-refresh-session]');
 const adminLogoutButton = document.querySelector('[data-admin-logout]');
+const previewButton = document.querySelector('[data-admin-preview]');
+const publishButton = document.querySelector('[data-admin-publish]');
+const importJsonButton = document.querySelector('[data-menu-import-json]');
+const importJsonInput = document.querySelector('[data-menu-import-json-input]');
+const menuScrollButton = document.querySelector('[data-menu-scroll-target]');
+const lastDeployLabel = document.getElementById('last-deploy');
 const AUTH_LOCK_CLASS = 'is-locked';
 
 if (adminShell) {
@@ -67,6 +73,7 @@ const currencyFormatter = new Intl.NumberFormat('es-ES', { style: 'currency', cu
 let menuUnsubscribe = null;
 let authGuardInitialized = false;
 let menuFormHandlerAttached = false;
+let globalActionsInitialized = false;
 
 function setMenuStatus(message) {
     if (!menuTableBody) return;
@@ -392,11 +399,311 @@ async function initFirebaseFeatures() {
         const services = await window.loadFirebaseServices();
         handleMenuFormSubmit(services);
         setMenuFormEnabled(false);
+        setupGlobalActions(services);
         initAuthGuard(services);
     } catch (error) {
         console.error('No se pudo inicializar Firebase:', error);
         setMenuStatus('No se pudo conectar con Firebase.');
     }
+}
+
+function setupGlobalActions(services) {
+    if (globalActionsInitialized) {
+        return;
+    }
+    globalActionsInitialized = true;
+
+    const hasFetchSupport = typeof window.fetch === 'function';
+
+    if (previewButton) {
+        previewButton.addEventListener('click', () => {
+            const targetUrl = new URL('index.html', window.location.href);
+            window.open(targetUrl.toString(), '_blank', 'noopener');
+        });
+    }
+
+    if (menuScrollButton && menuForm) {
+        menuScrollButton.addEventListener('click', () => {
+            menuForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const focusable = menuForm.querySelector('input, select, textarea');
+            if (focusable && typeof focusable.focus === 'function') {
+                focusable.focus();
+            }
+        });
+    }
+
+    const updateDeployLabel = status => {
+        if (!lastDeployLabel) {
+            return;
+        }
+
+        if (!status || !status.finishedAt) {
+            lastDeployLabel.textContent = 'Pendiente';
+            return;
+        }
+
+        const finishedAt = new Date(status.finishedAt);
+        if (Number.isNaN(finishedAt.getTime())) {
+            lastDeployLabel.textContent = 'Pendiente';
+            return;
+        }
+
+        lastDeployLabel.textContent = finishedAt.toLocaleString('es-ES', {
+            dateStyle: 'short',
+            timeStyle: 'short'
+        });
+    };
+
+    async function fetchPublishStatus() {
+        if (!hasFetchSupport) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/publish/status');
+            if (!response.ok) {
+                return;
+            }
+            const data = await response.json();
+            updateDeployLabel(data);
+        } catch (error) {
+            console.warn('No se pudo obtener el estado de publicación:', error);
+        }
+    }
+
+    if (publishButton && hasFetchSupport) {
+        publishButton.addEventListener('click', async () => {
+            const originalLabel = publishButton.textContent;
+            publishButton.disabled = true;
+            publishButton.textContent = 'Publicando...';
+
+            try {
+                const response = await fetch('/api/publish', { method: 'POST' });
+                if (!response.ok) {
+                    const errorBody = await response.json().catch(() => ({}));
+                    throw new Error(errorBody?.error || 'Publicación rechazada por el servidor.');
+                }
+                const data = await response.json();
+                updateDeployLabel(data);
+                alert('Publicación completada correctamente.');
+            } catch (error) {
+                console.error('No se pudo publicar:', error);
+                alert(`No se pudo publicar el sitio: ${error.message}`);
+            } finally {
+                publishButton.disabled = false;
+                publishButton.textContent = originalLabel;
+                fetchPublishStatus();
+            }
+        });
+    }
+
+    if (importJsonButton && importJsonInput) {
+        importJsonButton.addEventListener('click', () => {
+            if (menuForm?.dataset.locked === 'true') {
+                alert('Debes confirmar tu sesión de administrador antes de importar el menú.');
+                return;
+            }
+            importJsonInput.click();
+        });
+
+        importJsonInput.addEventListener('change', async event => {
+            const file = event.target?.files?.[0];
+            // Reset input so selecting the same file twice triggers change
+            importJsonInput.value = '';
+
+            if (!file) {
+                return;
+            }
+
+            if (!file.name.toLowerCase().endsWith('.json')) {
+                alert('Selecciona un archivo con formato JSON.');
+                return;
+            }
+
+            if (!window.confirm(`Se importarán los platos de "${file.name}". Esto añadirá nuevos registros sin eliminar los existentes. ¿Quieres continuar?`)) {
+                return;
+            }
+
+            const originalLabel = importJsonButton.textContent;
+            importJsonButton.disabled = true;
+            importJsonButton.textContent = 'Importando...';
+
+            try {
+                const result = await importMenuJsonFile(file, services);
+                alert(`Importación completada. Se añadieron ${result.importedCount} platos.`);
+            } catch (error) {
+                console.error('No se pudo importar el archivo JSON:', error);
+                alert(`No se pudo importar el archivo JSON: ${error.message}`);
+            } finally {
+                importJsonButton.disabled = false;
+                importJsonButton.textContent = originalLabel;
+            }
+        });
+    }
+
+    fetchPublishStatus();
+}
+
+async function importMenuJsonFile(file, services) {
+    if (!services?.firestore) {
+        throw new Error('Firestore no está disponible.');
+    }
+
+    const fileText = await file.text();
+    let parsed;
+
+    try {
+        parsed = JSON.parse(fileText);
+    } catch (error) {
+        throw new Error('El archivo no contiene JSON válido.');
+    }
+
+    const entries = extractMenuEntries(parsed);
+    if (!entries.length) {
+        throw new Error('No se encontraron platos en el archivo.');
+    }
+
+    const { firestore } = services;
+    const { db, collection, addDoc, serverTimestamp } = firestore;
+
+    if (!db || typeof collection !== 'function' || typeof addDoc !== 'function') {
+        throw new Error('Firestore no está listo para escribir.');
+    }
+
+    const collectionRef = collection(db, 'menuItems');
+    const baseTime = Date.now();
+    let importedCount = 0;
+
+    for (let index = 0; index < entries.length; index += 1) {
+        const entry = entries[index];
+        const payload = normalizeMenuEntry(entry.raw, entry.fallbackCategory, baseTime + index, serverTimestamp);
+        if (!payload) {
+            console.warn('Elemento del menú omitido por datos insuficientes:', entry);
+            continue;
+        }
+
+        await addDoc(collectionRef, payload);
+        importedCount += 1;
+    }
+
+    return { importedCount };
+}
+
+function extractMenuEntries(source) {
+    if (!source) {
+        return [];
+    }
+
+    const entries = [];
+
+    if (Array.isArray(source)) {
+        source.forEach(raw => {
+            if (raw && typeof raw === 'object') {
+                entries.push({ raw });
+            }
+        });
+        return entries;
+    }
+
+    if (typeof source === 'object') {
+        Object.entries(source).forEach(([category, value]) => {
+            if (Array.isArray(value)) {
+                value.forEach(raw => {
+                    if (raw && typeof raw === 'object') {
+                        entries.push({ raw, fallbackCategory: category });
+                    }
+                });
+            } else if (value && typeof value === 'object') {
+                entries.push({ raw: value, fallbackCategory: category });
+            }
+        });
+    }
+
+    return entries;
+}
+
+function toNumber(value) {
+    if (typeof value === 'number' && Number.isFinite(value)) {
+        return value;
+    }
+    if (typeof value === 'string') {
+        const sanitized = value.replace(/,/g, '.').replace(/[^0-9.\-]/g, '');
+        const parsed = Number.parseFloat(sanitized);
+        if (Number.isFinite(parsed)) {
+            return parsed;
+        }
+    }
+    return null;
+}
+
+function getString(value) {
+    if (typeof value === 'string') {
+        return value.trim();
+    }
+    if (typeof value === 'number' && Number.isFinite(value)) {
+        return value.toString();
+    }
+    return '';
+}
+
+function normalizeMenuEntry(raw, fallbackCategory, orderValue, serverTimestamp) {
+    if (!raw || typeof raw !== 'object') {
+        return null;
+    }
+
+    const titleEs = getString(raw?.nombre?.es || raw?.nombre || raw?.title?.es || raw?.title);
+    if (!titleEs) {
+        return null;
+    }
+
+    const titleEu = getString(raw?.nombre?.eu || raw?.title?.eu || titleEs);
+    const descriptionEs = getString(raw?.descripcion?.es || raw?.descripcion || raw?.description?.es || raw?.description);
+    const descriptionEu = getString(raw?.descripcion?.eu || raw?.description?.eu || descriptionEs);
+    const category = getString(raw?.categoria || raw?.category || fallbackCategory) || 'sin-categoria';
+
+    const priceValue = toNumber(raw?.precio ?? raw?.price);
+    const mediaPriceValue = toNumber(raw?.mediaRacion ?? raw?.mediaPrice);
+    const availability = raw?.disponible ?? raw?.isAvailable;
+    const isAvailable = availability === undefined ? true : Boolean(availability);
+
+    const imageSource = raw?.imagen ?? raw?.image ?? '';
+    let desktopImage = '';
+    let mobileImage = '';
+
+    if (typeof imageSource === 'string') {
+        desktopImage = imageSource;
+        mobileImage = imageSource;
+    } else if (imageSource && typeof imageSource === 'object') {
+        desktopImage = getString(imageSource.desktop || imageSource.main || '');
+        mobileImage = getString(imageSource.mobile || imageSource.main || desktopImage);
+    }
+
+    const rawTags = Array.isArray(raw?.tags) ? raw.tags : [];
+    const tags = rawTags
+        .filter(tag => typeof tag === 'string' && tag.trim().length)
+        .map(tag => tag.trim());
+
+    return {
+        title: {
+            es: titleEs,
+            eu: titleEu || titleEs
+        },
+        description: {
+            es: descriptionEs,
+            eu: descriptionEu || descriptionEs
+        },
+        category,
+        price: Number.isFinite(priceValue) ? priceValue : 0,
+        mediaPrice: Number.isFinite(mediaPriceValue) ? mediaPriceValue : null,
+        isAvailable,
+        displayOrder: Number.isFinite(orderValue) ? orderValue : Date.now(),
+        tags,
+        image: {
+            desktop: desktopImage,
+            mobile: mobileImage || desktopImage
+        },
+        lastUpdated: typeof serverTimestamp === 'function' ? serverTimestamp() : new Date()
+    };
 }
 
 initFirebaseFeatures();

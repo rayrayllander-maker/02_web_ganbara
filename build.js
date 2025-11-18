@@ -290,7 +290,7 @@ function minifyCSS(file) {
     }
 }
 
-async function run() {
+async function buildSite() {
     ensureDir(PUBLIC_DIR);
 
     STATIC_FILES.forEach(copyFile);
@@ -322,8 +322,12 @@ async function run() {
     console.log('\nArchivos procesados y copiados correctamente a la carpeta public');
 }
 
-run().catch(error => {
-    console.error('Error durante la construcción:', error);
-    process.exit(1);
-});
+module.exports = { buildSite };
+
+if (require.main === module) {
+    buildSite().catch(error => {
+        console.error('Error durante la construcción:', error);
+        process.exit(1);
+    });
+}
 
