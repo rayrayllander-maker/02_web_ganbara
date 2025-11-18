@@ -1,6 +1,7 @@
 'use strict';
 
 const adminConfig = window.ADMIN_CONFIG || {};
+let currentAdminConfig = { ...adminConfig };
 
 const sectionButtons = Array.from(document.querySelectorAll('[data-section-target]'));
 const sections = Array.from(document.querySelectorAll('[data-section]'));
@@ -83,6 +84,7 @@ let globalActionsInitialized = false;
 let tableActionsInitialized = false;
 let menuItemsState = new Map();
 let menuFormTextareas = [];
+let refreshPublishStatus = null;
 
 function setMenuStatus(message) {
     if (!menuTableBody) return;
@@ -115,6 +117,31 @@ function resolveAdminUrl(pathOrUrl) {
     } catch (error) {
         console.warn('No se pudo resolver la URL proporcionada:', pathOrUrl, error);
         return null;
+    }
+}
+
+function mergeAdminConfig(partial) {
+    if (!partial || typeof partial !== 'object') {
+        return;
+    }
+
+    const next = { ...currentAdminConfig };
+    const assignIfString = (key, value) => {
+        if (typeof value === 'string' && value.trim().length) {
+            next[key] = value.trim();
+        }
+    };
+
+    assignIfString('previewUrl', partial.previewUrl);
+    assignIfString('publishEndpoint', partial.publishEndpoint);
+    assignIfString('publishStatusEndpoint', partial.publishStatusEndpoint);
+
+    currentAdminConfig = next;
+
+    if (typeof refreshPublishStatus === 'function') {
+        refreshPublishStatus().catch(error => {
+            console.warn('No se pudo refrescar el estado de publicación tras actualizar la configuración:', error);
+        });
     }
 }
 
@@ -509,6 +536,7 @@ function initAuthGuard(services) {
 
             hideAuthGuard();
             setMenuStatus('Cargando platos...');
+            await loadCmsConfig(services);
             initMenuListeners(services);
         } catch (error) {
             console.error('No se pudo verificar el rol de administrador:', error);
@@ -579,17 +607,18 @@ function setupGlobalActions(services) {
     globalActionsInitialized = true;
 
     const hasFetchSupport = typeof window.fetch === 'function';
-    const previewUrl = resolveAdminUrl(adminConfig.previewUrl || 'index.html');
-    const publishEndpoint = resolveAdminUrl(adminConfig.publishEndpoint || '/api/publish');
-    const publishStatusEndpoint = resolveAdminUrl(adminConfig.publishStatusEndpoint || '/api/publish/status');
+    const getPreviewUrl = () => resolveAdminUrl(currentAdminConfig.previewUrl || 'index.html');
+    const getPublishEndpoint = () => resolveAdminUrl(currentAdminConfig.publishEndpoint || '/api/publish');
+    const getPublishStatusEndpoint = () => resolveAdminUrl(currentAdminConfig.publishStatusEndpoint || '/api/publish/status');
 
     if (previewButton) {
         previewButton.addEventListener('click', () => {
-            if (!previewUrl) {
+            const targetUrl = getPreviewUrl();
+            if (!targetUrl) {
                 alert('No se pudo determinar la URL de previsualizacion.');
                 return;
             }
-            window.open(previewUrl, '_blank', 'noopener');
+            window.open(targetUrl, '_blank', 'noopener');
         });
     }
 
@@ -625,13 +654,18 @@ function setupGlobalActions(services) {
         });
     };
 
-    async function fetchPublishStatus() {
-        if (!hasFetchSupport || !publishStatusEndpoint) {
+    const fetchPublishStatus = async () => {
+        if (!hasFetchSupport) {
+            return;
+        }
+
+        const statusEndpoint = getPublishStatusEndpoint();
+        if (!statusEndpoint) {
             return;
         }
 
         try {
-            const response = await fetch(publishStatusEndpoint);
+            const response = await fetch(statusEndpoint, { cache: 'no-store' });
             if (!response.ok) {
                 return;
             }
@@ -640,10 +674,13 @@ function setupGlobalActions(services) {
         } catch (error) {
             console.warn('No se pudo obtener el estado de publicación:', error);
         }
-    }
+    };
+
+    refreshPublishStatus = fetchPublishStatus;
 
     if (publishButton && hasFetchSupport) {
         publishButton.addEventListener('click', async () => {
+            const publishEndpoint = getPublishEndpoint();
             if (!publishEndpoint) {
                 alert('No hay un endpoint configurado para publicar el sitio.');
                 return;
@@ -655,8 +692,23 @@ function setupGlobalActions(services) {
             try {
                 const response = await fetch(publishEndpoint, { method: 'POST' });
                 if (!response.ok) {
-                    const errorBody = await response.json().catch(() => ({}));
-                    throw new Error(errorBody?.error || 'Publicación rechazada por el servidor.');
+                    let errorMessage = '';
+                    const contentType = response.headers.get('content-type') || '';
+                    if (contentType.includes('application/json')) {
+                        const errorBody = await response.json().catch(() => ({}));
+                        errorMessage = errorBody?.error || '';
+                    } else {
+                        const textBody = await response.text().catch(() => '');
+                        if (textBody) {
+                            errorMessage = textBody.slice(0, 180);
+                        }
+                    }
+
+                    const normalizedMessage = errorMessage && errorMessage.trim()
+                        ? errorMessage.trim()
+                        : `Publicación rechazada (HTTP ${response.status})`;
+
+                    throw new Error(normalizedMessage);
                 }
                 const data = await response.json();
                 updateDeployLabel(data);
@@ -893,6 +945,35 @@ function getString(value) {
         return value.toString();
     }
     return '';
+}
+
+async function loadCmsConfig(services) {
+    if (!services?.firestore) {
+        return;
+    }
+
+    const { db, doc, getDoc } = services.firestore;
+    if (!db || typeof doc !== 'function' || typeof getDoc !== 'function') {
+        console.warn('Firestore no esta listo para leer la configuración del CMS.');
+        return;
+    }
+
+    try {
+        const configDoc = await getDoc(doc(db, 'cmsConfig', 'general'));
+        if (!configDoc.exists()) {
+            console.warn('Documento cmsConfig/general no encontrado. Usa window.ADMIN_CONFIG para establecer las URLs.');
+            return;
+        }
+
+        const data = configDoc.data() || {};
+        mergeAdminConfig({
+            previewUrl: getString(data.previewUrl || data.previewURL || ''),
+            publishEndpoint: getString(data.publishEndpoint || data.publishURL || ''),
+            publishStatusEndpoint: getString(data.publishStatusEndpoint || data.publishStatusURL || '')
+        });
+    } catch (error) {
+        console.error('No se pudo cargar la configuración remota del CMS:', error);
+    }
 }
 
 function normalizeMenuEntry(raw, fallbackCategory, orderValue, serverTimestamp) {
