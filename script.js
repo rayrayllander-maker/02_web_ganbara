@@ -19,40 +19,56 @@ let heroCarouselInterval = 5000;
 
 let modalKeydownAttached = false;
 
-// Like system state
-const LIKE_COLLECTION = 'menuLikes';
-const likeControls = new Map();
-let likesInitialized = false;
-let currentUser = null;
-let likeRetryTimer = null;
-
-const LIKE_HINTS = {
-    es: {
-        like: 'Doble clic para valorar',
-        unlike: 'Doble clic para retirar tu valoración',
-        auth: 'Inicia sesión para valorar'
-    },
-    eu: {
-        like: 'Klik bikoitza baloratzeko',
-        unlike: 'Klik bikoitza zure balorazioa kentzeko',
-        auth: 'Saioa hasi baloratzeko'
-    }
-};
-
 const RESPONSIVE_IMAGE_WIDTHS = [480, 768, 1200];
 const MENU_IMAGE_SIZES = '(max-width: 600px) 92vw, (max-width: 1024px) 45vw, 360px';
 const HERO_IMAGE_SIZES = '(max-width: 768px) 100vw, 600px';
 const RESPONSIVE_IMAGE_FORMATS = new Set(['jpg', 'jpeg', 'png']);
+const PRELOADER_MAX_VISIBLE_MS = 1400;
+
+let firebaseLoadPromise = null;
+let firebaseAuthInitialized = false;
+let pendingAuthModalOpen = false;
+let authModalOpener = null;
+let authButtonIntercept = null;
 
 let responsiveImageManifest = null;
 let responsiveImageManifestPromise = null;
 
-function getLikeHintText(liked, requiresAuth = false, lang = currentLang) {
-    const pack = LIKE_HINTS[lang] || LIKE_HINTS.es;
-    if (requiresAuth) {
-        return pack.auth;
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function ensureFirebaseLoaded() {
+    if (window.firebaseServices) {
+        return window.firebaseServices;
     }
-    return liked ? pack.unlike : pack.like;
+
+    if (firebaseLoadPromise) {
+        return firebaseLoadPromise;
+    }
+
+    if (typeof window.loadFirebaseServices !== 'function') {
+        return null;
+    }
+
+    firebaseLoadPromise = window.loadFirebaseServices()
+        .then(services => {
+            if (services) {
+                window.firebaseServices = services;
+            }
+            return services;
+        })
+        .catch(error => {
+            console.error('No se pudo cargar Firebase:', error);
+            return null;
+        })
+        .finally(() => {
+            if (!window.firebaseServices) {
+                firebaseLoadPromise = null;
+            }
+        });
+
+    return firebaseLoadPromise;
 }
 
 // Preloader helpers
@@ -250,7 +266,11 @@ async function loadMenuData() {
         const savedLang = localStorage.getItem('language') || 'es';
         applyLanguage(savedLang);
         resolveHeroSlides();
-        await waitForImages(8000);
+        const imageWaitPromise = waitForImages(8000);
+        await Promise.race([
+            imageWaitPromise,
+            delay(PRELOADER_MAX_VISIBLE_MS)
+        ]);
     } catch (error) {
         console.error('Error loading menu data:', error);
     } finally {
@@ -264,7 +284,6 @@ function renderMenu() {
     const menuGrid = document.querySelector('.menu-grid');
     if (!menuGrid) return;
 
-    cleanupLikeControls();
     menuGrid.innerHTML = '';
 
     const categoryIconAssets = {
@@ -402,18 +421,9 @@ function renderMenu() {
             const imageAltEu = itemName.eu || imageAltEs;
             const imageHTML = buildResponsiveImageMarkup(imageSrc, imageAltEs, imageAltEu);
 
-            const showLikeControls = category === 'hamburguesas';
-            const likeOverlayHTML = showLikeControls ? `
-                    <div class="like-display like-overlay" data-like-display="true">
-                        <span class="like-icon" aria-hidden="true">&#10084;</span>
-                        <span class="like-count" data-item-id="${item.id}" data-category="${category}" aria-live="polite">0</span>
-                    </div>
-                ` : '';
-
             menuItem.innerHTML = `
                 <div class="menu-item-image">
                     ${imageHTML}
-                    ${likeOverlayHTML}
                 </div>
                 <div class="menu-item-content">
                     <h3 class="menu-item-title" data-es="${itemName.es}" data-eu="${itemName.eu}">${itemName.es}</h3>
@@ -435,21 +445,6 @@ function renderMenu() {
                 menuImageEl.addEventListener('error', handleMenuImageError);
             }
 
-            if (showLikeControls) {
-                menuItem.setAttribute('data-like-enabled', 'true');
-                menuItem.setAttribute('data-like-item-id', item.id);
-                menuItem.setAttribute('data-like-category', category);
-                if (itemName.es) {
-                    menuItem.setAttribute('data-like-name-es', itemName.es);
-                }
-                if (itemName.eu) {
-                    menuItem.setAttribute('data-like-name-eu', itemName.eu);
-                }
-                menuItem.setAttribute('data-liked', 'false');
-                const hint = getLikeHintText(false, !currentUser, currentLang);
-                menuItem.setAttribute('title', hint);
-            }
-
             menuItem.setAttribute('role', 'button');
             menuItem.tabIndex = 0;
             setMenuItemAriaLabel(menuItem);
@@ -458,367 +453,6 @@ function renderMenu() {
             menuGrid.appendChild(menuItem);
         });
     });
-
-    initializeLikeControls();
-}
-
-function cleanupLikeControls() {
-    likeControls.forEach(control => {
-        if (!control) return;
-        if (typeof control.unsubCount === 'function') {
-            control.unsubCount();
-        }
-        if (typeof control.unsubUser === 'function') {
-            control.unsubUser();
-        }
-        if (control.interactionEl && control.handlers) {
-            if (typeof control.handlers.dbl === 'function') {
-                control.interactionEl.removeEventListener('dblclick', control.handlers.dbl);
-            }
-            if (typeof control.handlers.key === 'function') {
-                control.interactionEl.removeEventListener('keydown', control.handlers.key);
-            }
-            control.interactionEl.dataset.likeInitialized = '';
-        }
-    });
-    likeControls.clear();
-    likesInitialized = false;
-    if (likeRetryTimer) {
-        clearTimeout(likeRetryTimer);
-        likeRetryTimer = null;
-    }
-}
-
-function buildControlKey(category, itemId) {
-    const safeCategory = (category || 'general').toString().trim() || 'general';
-    return `${safeCategory}::${itemId}`;
-}
-
-function getLikeDocId(category, itemId) {
-    const safeCategory = (category || 'general').toString().trim() || 'general';
-    return `${safeCategory}__${itemId}`;
-}
-
-function getLikeDocRef(firestore, category, itemId) {
-    if (!firestore || !firestore.doc || !firestore.db) return null;
-    return firestore.doc(firestore.db, LIKE_COLLECTION, getLikeDocId(category, itemId));
-}
-
-function getUserLikeDocRef(firestore, category, itemId, userId) {
-    if (!firestore || !firestore.doc || !firestore.db || !userId) return null;
-    return firestore.doc(firestore.db, LIKE_COLLECTION, getLikeDocId(category, itemId), 'userLikes', userId);
-}
-
-function coerceItemIdForWrite(rawValue) {
-    if (rawValue === undefined || rawValue === null) return null;
-    const numericValue = Number(rawValue);
-    if (Number.isFinite(numericValue)) {
-        return numericValue;
-    }
-    if (typeof rawValue === 'string') {
-        const trimmed = rawValue.trim();
-        return trimmed.length ? trimmed : null;
-    }
-    return rawValue;
-}
-
-function getFirestoreServices() {
-    const services = window.firebaseServices;
-    if (!services || !services.firestore || !services.firestore.db) return null;
-    return services.firestore;
-}
-
-function initializeLikeControls() {
-    const likeItems = document.querySelectorAll('.menu-item[data-like-enabled="true"]');
-    if (!likeItems.length) {
-        likesInitialized = false;
-        if (likeRetryTimer) {
-            clearTimeout(likeRetryTimer);
-            likeRetryTimer = null;
-        }
-        return;
-    }
-
-    const firestore = getFirestoreServices();
-
-    likeItems.forEach(item => {
-        const rawItemId = String(item.dataset.likeItemId || '').trim();
-        if (!rawItemId) return;
-
-        const category = (item.dataset.likeCategory || 'general').trim() || 'general';
-        const controlKey = buildControlKey(category, rawItemId);
-
-        let control = likeControls.get(controlKey);
-        if (!control) {
-            const displayEl = item.querySelector('.like-display');
-            const countEl = displayEl?.querySelector('.like-count') || item.querySelector('.like-count');
-            if (!countEl) return;
-
-            const nameEs = item.dataset.likeNameEs || '';
-            const nameEu = item.dataset.likeNameEu || nameEs;
-            const itemIdForWrite = coerceItemIdForWrite(rawItemId);
-            const iconEl = displayEl?.querySelector('.like-icon') || item.querySelector('.like-icon');
-
-            const newControl = {
-                key: controlKey,
-                itemId: rawItemId,
-                itemIdForWrite,
-                category,
-                interactionEl: item,
-                displayEl,
-                countEl,
-                iconEl,
-                name: { es: nameEs, eu: nameEu },
-                unsubCount: null,
-                unsubUser: null,
-                handlers: {},
-                isProcessing: false
-            };
-
-            const doubleHandler = (event) => {
-                if (newControl.isProcessing) return;
-                event.preventDefault();
-                handleLikeToggle(newControl);
-            };
-
-            const keyboardHandler = (event) => {
-                if (!event || typeof event.key !== 'string') return;
-                const key = event.key.toLowerCase();
-                if (key === 'l') {
-                    event.preventDefault();
-                    handleLikeToggle(newControl);
-                }
-            };
-
-            newControl.handlers.dbl = doubleHandler;
-            newControl.handlers.key = keyboardHandler;
-
-            item.addEventListener('dblclick', doubleHandler);
-            item.addEventListener('keydown', keyboardHandler);
-            item.dataset.likeInitialized = 'true';
-            likeControls.set(controlKey, newControl);
-            control = newControl;
-        }
-
-        const requiresAuth = !currentUser;
-        if (control?.displayEl) {
-            control.displayEl.classList.toggle('requires-auth', requiresAuth);
-        }
-        if (control?.interactionEl) {
-            control.interactionEl.classList.toggle('requires-auth', requiresAuth);
-            const hint = getLikeHintText(control.interactionEl.getAttribute('data-liked') === 'true', requiresAuth, currentLang);
-            control.interactionEl.setAttribute('title', hint);
-        }
-    });
-
-    likesInitialized = likeControls.size > 0;
-
-    if (!firestore) {
-        if (likesInitialized && !likeRetryTimer) {
-            likeRetryTimer = setTimeout(() => {
-                likeRetryTimer = null;
-                initializeLikeControls();
-            }, 800);
-        }
-        refreshLikeButtonsForUser(currentUser);
-        return;
-    }
-
-    likeControls.forEach(control => subscribeToLikeCount(control));
-    refreshLikeButtonsForUser(currentUser);
-}
-
-function subscribeToLikeCount(control) {
-    if (!control) return;
-
-    const firestore = getFirestoreServices();
-    if (!firestore) return;
-
-    if (typeof control.unsubCount === 'function') {
-        control.unsubCount();
-        control.unsubCount = null;
-    }
-
-    const docRef = getLikeDocRef(firestore, control.category, control.itemId);
-    if (!docRef) return;
-
-    control.unsubCount = firestore.onSnapshot(docRef, snapshot => {
-        const data = snapshot.exists() ? snapshot.data() : null;
-        const count = (data && typeof data.count === 'number') ? data.count : 0;
-        if (control.countEl) {
-            control.countEl.textContent = count;
-        }
-    }, error => {
-        console.error('Error subscribing to like count:', error);
-    });
-}
-
-function refreshLikeButtonsForUser(user) {
-    currentUser = user || null;
-    const firestore = getFirestoreServices();
-
-    likeControls.forEach(control => {
-        if (typeof control.unsubUser === 'function') {
-            control.unsubUser();
-            control.unsubUser = null;
-        }
-
-        const requiresAuth = !currentUser;
-        if (control.displayEl) {
-            control.displayEl.classList.toggle('requires-auth', requiresAuth);
-        }
-        if (control.interactionEl) {
-            control.interactionEl.classList.toggle('requires-auth', requiresAuth);
-        }
-
-        if (!currentUser || !firestore) {
-            updateLikeButtonState(control, false, requiresAuth);
-            return;
-        }
-
-        const userDocRef = getUserLikeDocRef(firestore, control.category, control.itemId, currentUser.uid);
-        if (!userDocRef) {
-            updateLikeButtonState(control, false, false);
-            return;
-        }
-
-        control.unsubUser = firestore.onSnapshot(userDocRef, snapshot => {
-            updateLikeButtonState(control, snapshot.exists(), false);
-        }, error => {
-            console.error('Error subscribing to user like state:', error);
-        });
-    });
-}
-
-function updateLikeButtonState(control, liked, requiresAuth = !currentUser) {
-    if (!control) return;
-    const isLiked = Boolean(liked);
-    control.isLiked = isLiked;
-
-    if (control.interactionEl) {
-        control.interactionEl.classList.toggle('is-liked', isLiked);
-        control.interactionEl.setAttribute('data-liked', isLiked ? 'true' : 'false');
-        const hint = getLikeHintText(isLiked, requiresAuth, currentLang);
-        control.interactionEl.setAttribute('title', hint);
-    }
-
-    if (control.displayEl) {
-        control.displayEl.classList.toggle('is-liked', isLiked);
-        control.displayEl.setAttribute('data-liked', isLiked ? 'true' : 'false');
-    }
-
-    if (control.iconEl) {
-        control.iconEl.classList.toggle('is-active', isLiked);
-    }
-}
-
-async function handleLikeToggle(control) {
-    if (!control || !control.interactionEl) return;
-
-    if (control.isProcessing) {
-        return;
-    }
-
-    if (!currentUser) {
-        showNotification('Inicia sesión para valorar las hamburguesas.', 'info');
-        const trigger = document.getElementById('open-auth-modal');
-        trigger?.focus();
-        trigger?.click();
-        return;
-    }
-
-    const firestore = getFirestoreServices();
-    if (!firestore) {
-        showNotification('El servicio de valoraciones no está disponible.', 'error');
-        return;
-    }
-
-    const { db, runTransaction, serverTimestamp } = firestore;
-    if (typeof runTransaction !== 'function') {
-        showNotification('No se pudo acceder a la base de datos.', 'error');
-        return;
-    }
-
-    control.isProcessing = true;
-    control.interactionEl.classList.add('like-processing');
-    control.displayEl?.classList.add('like-processing');
-
-    try {
-        const result = await runTransaction(db, async (transaction) => {
-            const likeRef = getLikeDocRef(firestore, control.category, control.itemId);
-            const userRef = getUserLikeDocRef(firestore, control.category, control.itemId, currentUser.uid);
-            if (!likeRef || !userRef) {
-                throw new Error('No se pudo preparar la referencia de la valoración.');
-            }
-
-            const likeSnap = await transaction.get(likeRef);
-            const userSnap = await transaction.get(userRef);
-
-            const itemIdForWrite = control.itemIdForWrite ?? coerceItemIdForWrite(control.itemId);
-            if (itemIdForWrite === null || itemIdForWrite === '') {
-                throw new Error('Identificador de elemento no válido.');
-            }
-
-            const baseData = likeSnap.exists() ? likeSnap.data() : null;
-            let count = baseData && typeof baseData.count === 'number' ? baseData.count : 0;
-            let liked;
-
-            const timestamp = typeof serverTimestamp === 'function'
-                ? serverTimestamp()
-                : new Date().toISOString();
-            const metadata = {
-                category: control.category,
-                itemId: itemIdForWrite,
-                name: control.name
-            };
-
-            if (userSnap.exists()) {
-                liked = false;
-                count = Math.max(0, count - 1);
-                transaction.set(likeRef, {
-                    ...metadata,
-                    count,
-                    updatedAt: timestamp,
-                    lastUserId: currentUser.uid
-                }, { merge: true });
-                transaction.delete(userRef);
-            } else {
-                liked = true;
-                count += 1;
-                transaction.set(likeRef, {
-                    ...metadata,
-                    count,
-                    updatedAt: timestamp,
-                    lastUserId: currentUser.uid
-                }, { merge: true });
-                const payload = {
-                    liked: true,
-                    category: control.category,
-                    itemId: itemIdForWrite,
-                    name: control.name,
-                    userId: currentUser.uid,
-                    updatedAt: timestamp
-                };
-                transaction.set(userRef, payload, { merge: true });
-            }
-
-            return { liked, count };
-        });
-
-        updateLikeButtonState(control, result.liked, false);
-        if (control.countEl) {
-            control.countEl.textContent = result.count;
-        }
-        const message = result.liked ? '¡Gracias por tu like!' : 'Has retirado tu like.';
-        showNotification(message, 'success');
-    } catch (error) {
-        console.error('Error toggling like:', error);
-        showNotification('No se pudo actualizar tu valoración.', 'error');
-    } finally {
-        control.isProcessing = false;
-        control.interactionEl.classList.remove('like-processing');
-        control.displayEl?.classList.remove('like-processing');
-    }
 }
 
 function setMenuItemAriaLabel(menuItem, lang = currentLang) {
@@ -1070,13 +704,6 @@ function applyLanguage(lang) {
                 element.textContent = text;
             }
         }
-    });
-
-    document.querySelectorAll('.menu-item[data-like-enabled="true"]').forEach(item => {
-        const liked = item.getAttribute('data-liked') === 'true';
-        const requiresAuth = item.classList.contains('requires-auth');
-        const hint = getLikeHintText(liked, requiresAuth, lang);
-        item.setAttribute('title', hint);
     });
 
     document.querySelectorAll('[data-alt-es][data-alt-eu]').forEach(element => {
@@ -1914,9 +1541,17 @@ function animateMenuItems() {
 // Call animation on page load
 document.addEventListener('DOMContentLoaded', animateMenuItems);
 
-function initFirebaseAuthUI() {
-    const services = window.firebaseServices;
-    if (!services || !services.auth) return;
+async function initFirebaseAuthUI() {
+    if (firebaseAuthInitialized) {
+        return window.firebaseServices || null;
+    }
+
+    const services = await ensureFirebaseLoaded();
+    if (!services || !services.auth) {
+        return null;
+    }
+
+    firebaseAuthInitialized = true;
 
     const {
         auth,
@@ -2060,6 +1695,13 @@ function initFirebaseAuthUI() {
         }
     };
 
+    authModalOpener = openModal;
+
+    if (openBtn && typeof authButtonIntercept === 'function') {
+        openBtn.removeEventListener('click', authButtonIntercept);
+        authButtonIntercept = null;
+    }
+
     const handleKeyDown = (event) => {
         if (!modal || modal.classList.contains('hidden')) return;
         if (event.key === 'Escape') {
@@ -2117,7 +1759,6 @@ function initFirebaseAuthUI() {
 
     onAuthStateChanged(auth, user => {
         updateUI(user);
-        refreshLikeButtonsForUser(user);
     });
 
     openBtn?.addEventListener('click', () => {
@@ -2240,9 +1881,42 @@ function initFirebaseAuthUI() {
             removeLoadingState(logoutBtn);
         }
     });
+
+    if (pendingAuthModalOpen && typeof authModalOpener === 'function') {
+        pendingAuthModalOpen = false;
+        requestAnimationFrame(() => authModalOpener());
+    }
+
+    return services;
 }
 
-document.addEventListener('DOMContentLoaded', initFirebaseAuthUI);
+document.addEventListener('DOMContentLoaded', () => {
+    const openAuthBtn = document.getElementById('open-auth-modal');
+    if (!openAuthBtn) {
+        return;
+    }
+
+    const prepareAuth = () => {
+        initFirebaseAuthUI();
+    };
+
+    openAuthBtn.addEventListener('pointerenter', prepareAuth, { once: true });
+    openAuthBtn.addEventListener('focus', prepareAuth, { once: true });
+
+    authButtonIntercept = async (event) => {
+        if (firebaseAuthInitialized) {
+            openAuthBtn.removeEventListener('click', authButtonIntercept);
+            authButtonIntercept = null;
+            return;
+        }
+
+        event.preventDefault();
+        pendingAuthModalOpen = true;
+        await initFirebaseAuthUI();
+    };
+
+    openAuthBtn.addEventListener('click', authButtonIntercept);
+});
 
 // Parallax effect for hero section (optional enhancement)
 window.addEventListener('scroll', () => {

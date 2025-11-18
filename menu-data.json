@@ -86,7 +86,7 @@
         "eu": "Bularreko errebozatua, allioli, zirikatz, tipula"
       },
       "precio": 7.50,
-      "imagen": "assets/bocadillo_06.png",
+      "imagen": "assets/bocadillo_06.jpg",
       "categoria": "bocadillos",
       "disponible": true
     },
@@ -195,7 +195,7 @@
       },
       "precio": 9.50,
       "mediaRacion": 5.50,
-      "imagen": "assets/rabas.png",
+      "imagen": "assets/rabas.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -259,7 +259,7 @@
       },
       "precio": 9.50,
       "mediaRacion": null,
-      "imagen": "assets/croquetas.png",
+      "imagen": "assets/croquetas.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -416,7 +416,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, tipula karamelizatua, pepiniloak, arraultza, Emmy saltsa"
       },
       "precio": 13.50,
-      "imagen": "assets/emmy.png",
+      "imagen": "assets/emmy.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -431,7 +431,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, patata hariak, 70 gr. haragia mechada, anana saltsa"
       },
       "precio": 14.50,
-      "imagen": "assets/colombiana.png",
+      "imagen": "assets/colombiana.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -446,7 +446,7 @@
         "eu": "180 gr. Angus, daniar gazta bikoitza, zirikatz bikoitza, zirikatz crispy, tipula crispy, arraultza, Bacón saltsa"
       },
       "precio": 14.00,
-      "imagen": "assets/baconessa.png",
+      "imagen": "assets/baconessa.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -461,7 +461,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, daniar gazta, tipula, chaskis, Barbacoa saltsa"
       },
       "precio": 13.00,
-      "imagen": "assets/bbq.png",
+      "imagen": "assets/bbq.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -476,7 +476,7 @@
         "eu": "180 gr. Angus, cheddar gazta, tipula crispy, jalapeño, guacamole, nachos, jalapeño errearen saltsa"
       },
       "precio": 13.50,
-      "imagen": "assets/azteca.png",
+      "imagen": "assets/azteca.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -491,7 +491,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, Burger Saltsa"
       },
       "precio": 12.50,
-      "imagen": "assets/clasica.png",
+      "imagen": "assets/clasica.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -524,7 +524,7 @@
       },
       "precio": 15.00,
       "precioPorKg": null,
-      "imagen": "assets/ganbaraturbo.png",
+      "imagen": "assets/ganbaraturbo.jpg",
       "categoria": "chuleta",
       "disponible": true
     },

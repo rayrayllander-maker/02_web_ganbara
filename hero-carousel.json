@@ -6,6 +6,14 @@
     },
     {
       "category": "hamburguesas",
+      "id": 10
+    },
+    {
+      "category": "hamburguesas",
+      "id": 9
+    },
+    {
+      "category": "hamburguesas",
       "id": 8
     },
     {
@@ -20,5 +28,6 @@
       "category": "hamburguesas",
       "id": 5
     }
+     
   ]
 }

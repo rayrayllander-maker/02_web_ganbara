@@ -1,4 +1,31 @@
 {
+  "assets/azteca.jpg": {
+    "widths": [
+      480,
+      768,
+      864
+    ],
+    "fallback": "jpeg",
+    "hasWebp": true
+  },
+  "assets/azteca.png": {
+    "widths": [
+      480,
+      768,
+      864
+    ],
+    "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/baconessa.jpg": {
+    "widths": [
+      480,
+      768,
+      864
+    ],
+    "fallback": "jpeg",
+    "hasWebp": true
+  },
   "assets/baconessa.png": {
     "widths": [
       480,
@@ -8,6 +35,15 @@
     "fallback": "png",
     "hasWebp": true
   },
+  "assets/bbq.jpg": {
+    "widths": [
+      480,
+      768,
+      864
+    ],
+    "fallback": "jpeg",
+    "hasWebp": true
+  },
   "assets/bbq.png": {
     "widths": [
       480,
@@ -15,6 +51,51 @@
       864
     ],
     "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/bocadillo_06.jpg": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1344
+    ],
+    "fallback": "jpeg",
+    "hasWebp": true
+  },
+  "assets/bocadillo_06.png": {
+    "widths": [
+      480,
+      768,
+      1200,
+      1344
+    ],
+    "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/clasica.jpg": {
+    "widths": [
+      480,
+      768
+    ],
+    "fallback": "jpeg",
+    "hasWebp": true
+  },
+  "assets/clasica.png": {
+    "widths": [
+      480,
+      768
+    ],
+    "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/colombiana.jpg": {
+    "widths": [
+      480,
+      768,
+      864
+    ],
+    "fallback": "jpeg",
     "hasWebp": true
   },
   "assets/colombiana.png": {
@@ -36,12 +117,29 @@
     "fallback": "png",
     "hasWebp": true
   },
+  "assets/emmy.jpg": {
+    "widths": [
+      480,
+      768
+    ],
+    "fallback": "jpeg",
+    "hasWebp": true
+  },
   "assets/emmy.png": {
     "widths": [
       480,
       768
     ],
     "fallback": "png",
+    "hasWebp": true
+  },
+  "assets/ganbaraturbo.jpg": {
+    "widths": [
+      480,
+      768,
+      864
+    ],
+    "fallback": "jpeg",
     "hasWebp": true
   },
   "assets/ganbaraturbo.png": {
@@ -64,6 +162,15 @@
   "assets/Logo_ganbara_01.jpg": {
     "widths": [
       225
+    ],
+    "fallback": "jpeg",
+    "hasWebp": true
+  },
+  "assets/Nachos_IA_gemini.jpg": {
+    "widths": [
+      480,
+      768,
+      864
     ],
     "fallback": "jpeg",
     "hasWebp": true
