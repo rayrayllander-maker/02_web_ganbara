@@ -1,6 +1,9 @@
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const compression = require('compression');
+const firebaseAdmin = require('firebase-admin');
 const { google } = require('googleapis');
 const { buildSite } = require('./build');
 require('dotenv').config();
@@ -82,8 +85,101 @@ const publishState = {
     status: 'idle',
     startedAt: null,
     finishedAt: null,
-    error: null
+    error: null,
+    exportedCount: 0
 };
+
+let firestoreDb = null;
+
+function initFirestoreAdmin() {
+    if (firestoreDb) {
+        return firestoreDb;
+    }
+
+    const serviceAccountPath = path.join(__dirname, 'serviceAccount.json');
+    if (!fs.existsSync(serviceAccountPath)) {
+        console.warn('serviceAccount.json no encontrado. La sincronizacion con Firestore estara deshabilitada.');
+        return null;
+    }
+
+    try {
+        const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
+        if (!firebaseAdmin.apps.length) {
+            firebaseAdmin.initializeApp({
+                credential: firebaseAdmin.credential.cert(serviceAccount),
+                projectId: serviceAccount.project_id || serviceAccount.projectId
+            });
+        }
+        firestoreDb = firebaseAdmin.firestore();
+        return firestoreDb;
+    } catch (error) {
+        console.error('No se pudo inicializar Firebase Admin:', error.message);
+        return null;
+    }
+}
+
+function mapMenuDocument(docSnap) {
+    const data = docSnap.data() || {};
+    const category = typeof data.category === 'string' && data.category.trim() ? data.category.trim() : 'sin-categoria';
+
+    const record = {
+        id: docSnap.id,
+        nombre: {
+            es: typeof data.title?.es === 'string' ? data.title.es : '',
+            eu: typeof data.title?.eu === 'string' ? data.title.eu : data.title?.es || ''
+        },
+        descripcion: {
+            es: typeof data.description?.es === 'string' ? data.description.es : '',
+            eu: typeof data.description?.eu === 'string' ? data.description.eu : data.description?.es || ''
+        },
+        precio: typeof data.price === 'number' ? Number(data.price) : 0,
+        mediaRacion: typeof data.mediaPrice === 'number' ? Number(data.mediaPrice) : null,
+        imagen: typeof data.image?.desktop === 'string' ? data.image.desktop : '',
+        categoria: category,
+        disponible: data.isAvailable === undefined ? true : Boolean(data.isAvailable),
+        __displayOrder: Number.isFinite(data.displayOrder) ? data.displayOrder : 0
+    };
+
+    return record;
+}
+
+async function exportMenuDataFromFirestore() {
+    const db = initFirestoreAdmin();
+    if (!db) {
+        throw new Error('No se pudo conectar con Firestore. Coloca serviceAccount.json en la raiz del proyecto.');
+    }
+
+    const snapshot = await db.collection('menuItems').orderBy('category').orderBy('displayOrder').get();
+    const grouped = {};
+
+    snapshot.forEach(docSnap => {
+        const record = mapMenuDocument(docSnap);
+        const category = record.categoria;
+        if (!grouped[category]) {
+            grouped[category] = [];
+        }
+        grouped[category].push(record);
+    });
+
+    const output = {};
+    Object.keys(grouped).sort().forEach(category => {
+        const sorted = grouped[category]
+            .slice()
+            .sort((a, b) => (a.__displayOrder || 0) - (b.__displayOrder || 0))
+            .map(entry => {
+                const clone = { ...entry };
+                delete clone.__displayOrder;
+                return clone;
+            });
+        output[category] = sorted;
+    });
+
+    const menuDataPath = path.join(__dirname, 'menu-data.json');
+    fs.writeFileSync(menuDataPath, JSON.stringify(output, null, 2), 'utf8');
+    console.log(`Menú sincronizado desde Firestore: ${snapshot.size} documentos exportados.`);
+
+    return { total: snapshot.size, menuDataPath };
+}
 
 app.get('/api/publish/status', (req, res) => {
     res.json(publishState);
@@ -105,15 +201,19 @@ app.post('/api/publish', async (req, res) => {
     publishState.startedAt = startedAt.toISOString();
     publishState.finishedAt = null;
     publishState.error = null;
+    publishState.exportedCount = 0;
 
     try {
+        const exportResult = await exportMenuDataFromFirestore();
+        publishState.exportedCount = exportResult.total;
         await buildSite();
         publishState.status = 'success';
         publishState.finishedAt = new Date().toISOString();
         res.json({
             status: publishState.status,
             startedAt: publishState.startedAt,
-            finishedAt: publishState.finishedAt
+            finishedAt: publishState.finishedAt,
+            exportedCount: publishState.exportedCount
         });
     } catch (error) {
         publishState.status = 'error';

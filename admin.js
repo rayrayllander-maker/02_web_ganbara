@@ -1,5 +1,7 @@
 'use strict';
 
+const adminConfig = window.ADMIN_CONFIG || {};
+
 const sectionButtons = Array.from(document.querySelectorAll('[data-section-target]'));
 const sections = Array.from(document.querySelectorAll('[data-section]'));
 const mobileNavToggle = document.querySelector('[data-admin-nav-toggle]');
@@ -69,11 +71,18 @@ autoResizeTextareas.forEach(textarea => {
 
 const menuTableBody = document.querySelector('[data-menu-table-body]');
 const menuForm = document.querySelector('[data-menu-form]');
+const menuFormSubmitButton = menuForm ? menuForm.querySelector('button[type="submit"]') : null;
+const menuFormResetButton = menuForm ? menuForm.querySelector('button[type="reset"]') : null;
+const menuFormDefaultSubmitLabel = menuFormSubmitButton ? menuFormSubmitButton.textContent : '';
+const menuFormDefaultResetLabel = menuFormResetButton ? menuFormResetButton.textContent : '';
 const currencyFormatter = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' });
 let menuUnsubscribe = null;
 let authGuardInitialized = false;
 let menuFormHandlerAttached = false;
 let globalActionsInitialized = false;
+let tableActionsInitialized = false;
+let menuItemsState = new Map();
+let menuFormTextareas = [];
 
 function setMenuStatus(message) {
     if (!menuTableBody) return;
@@ -94,6 +103,166 @@ function setMenuFormEnabled(enabled) {
             element.disabled = !enabled;
         }
     });
+}
+
+function resolveAdminUrl(pathOrUrl) {
+    if (!pathOrUrl) {
+        return null;
+    }
+
+    try {
+        return new URL(pathOrUrl, window.location.origin).toString();
+    } catch (error) {
+        console.warn('No se pudo resolver la URL proporcionada:', pathOrUrl, error);
+        return null;
+    }
+}
+
+function resetMenuFormState() {
+    if (!menuForm) {
+        return;
+    }
+
+    menuForm.dataset.editingId = '';
+    menuForm.dataset.displayOrder = '';
+    menuForm.classList.remove('is-editing');
+
+    if (menuFormSubmitButton) {
+        menuFormSubmitButton.textContent = menuFormDefaultSubmitLabel || 'Guardar plato';
+    }
+
+    if (menuFormResetButton) {
+        menuFormResetButton.textContent = menuFormDefaultResetLabel || 'Limpiar';
+    }
+}
+
+function populateMenuForm(item) {
+    if (!menuForm || !item) {
+        return;
+    }
+
+    menuForm.dataset.editingId = item.id || '';
+    menuForm.dataset.displayOrder = Number.isFinite(item.displayOrder) ? String(item.displayOrder) : '';
+    menuForm.classList.add('is-editing');
+
+    const setValue = (selector, value) => {
+        const element = menuForm.querySelector(selector);
+        if (!element) {
+            return;
+        }
+        element.value = value;
+    };
+
+    setValue('#dish-name-es', getString(item?.title?.es || ''));
+    setValue('#dish-name-eu', getString(item?.title?.eu || item?.title?.es || ''));
+    setValue('#dish-category', getString(item?.category || ''));
+    setValue('#dish-description-es', getString(item?.description?.es || ''));
+    setValue('#dish-description-eu', getString(item?.description?.eu || item?.description?.es || ''));
+
+    const priceInput = menuForm.querySelector('#dish-price');
+    if (priceInput) {
+        priceInput.value = Number.isFinite(item?.price) ? item.price.toString() : '';
+    }
+
+    const mediaPriceInput = menuForm.querySelector('#dish-price-medium');
+    if (mediaPriceInput) {
+        const mediaValue = item?.mediaPrice;
+        mediaPriceInput.value = Number.isFinite(mediaValue) ? mediaValue.toString() : '';
+    }
+
+    if (menuFormSubmitButton) {
+        menuFormSubmitButton.textContent = 'Actualizar plato';
+    }
+
+    if (menuFormResetButton) {
+        menuFormResetButton.textContent = 'Cancelar';
+    }
+
+    menuForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    const focusTarget = menuForm.querySelector('#dish-name-es');
+    if (focusTarget && typeof focusTarget.focus === 'function') {
+        focusTarget.focus();
+    }
+
+    menuFormTextareas.forEach(textarea => {
+        textarea.dispatchEvent(new Event('input'));
+    });
+}
+
+function parseNumberInput(value) {
+    if (value === null || value === undefined) {
+        return null;
+    }
+
+    const raw = value.toString().trim();
+    if (!raw) {
+        return null;
+    }
+
+    const normalized = raw.replace(/,/g, '.');
+    const parsed = Number.parseFloat(normalized);
+    return Number.isFinite(parsed) ? parsed : null;
+}
+
+function collectMenuFormValues(formData) {
+    const titleEs = getString((formData.get('dish-name-es') || '').toString());
+    const titleEu = getString((formData.get('dish-name-eu') || '').toString());
+    const category = getString((formData.get('dish-category') || '').toString());
+    const descEs = getString((formData.get('dish-description-es') || '').toString());
+    const descEu = getString((formData.get('dish-description-eu') || '').toString());
+    const price = parseNumberInput(formData.get('dish-price'));
+    const mediaPrice = parseNumberInput(formData.get('dish-price-medium'));
+
+    return {
+        titleEs,
+        titleEu,
+        category,
+        descEs,
+        descEu,
+        price,
+        mediaPrice
+    };
+}
+
+function buildImageField(source) {
+    if (!source || typeof source !== 'object') {
+        return { desktop: '', mobile: '' };
+    }
+
+    const desktop = getString(source.desktop || source.main || '');
+    const mobile = getString(source.mobile || source.main || desktop);
+
+    return {
+        desktop,
+        mobile
+    };
+}
+
+function createMenuPayload(values, options) {
+    const existingItem = options?.existingItem || null;
+    const serverTimestamp = options?.serverTimestamp;
+
+    const payload = {
+        title: {
+            es: values.titleEs,
+            eu: values.titleEu || values.titleEs
+        },
+        description: {
+            es: values.descEs,
+            eu: values.descEu || values.descEs
+        },
+        category: values.category,
+        price: Number.isFinite(values.price) ? values.price : 0,
+        mediaPrice: Number.isFinite(values.mediaPrice) ? values.mediaPrice : null,
+        isAvailable: existingItem?.isAvailable ?? true,
+        displayOrder: Number.isFinite(existingItem?.displayOrder) ? existingItem.displayOrder : Date.now(),
+        tags: Array.isArray(existingItem?.tags) ? existingItem.tags : [],
+        image: buildImageField(existingItem?.image),
+        lastUpdated: typeof serverTimestamp === 'function' ? serverTimestamp() : new Date()
+    };
+
+    return payload;
 }
 
 function teardownMenuListener() {
@@ -149,10 +318,14 @@ function renderMenuRows(items) {
         return;
     }
 
+    menuItemsState = new Map();
+
     if (!items.length) {
         setMenuStatus('No hay platos guardados todavia.');
         return;
     }
+
+    menuItemsState = new Map(items.map(item => [item.id, item]));
 
     const rows = items.map(item => {
         const titleEs = item?.title?.es?.trim() || 'Sin titulo';
@@ -217,8 +390,14 @@ function handleMenuFormSubmit(services) {
     }
     menuFormHandlerAttached = true;
     const { firestore } = services;
-    const { db, collection, addDoc, serverTimestamp } = firestore;
-    const formTextareas = Array.from(menuForm.querySelectorAll('textarea[data-autogrow]'));
+    const { db, collection, addDoc, serverTimestamp, doc, updateDoc } = firestore || {};
+
+    if (!db || typeof collection !== 'function' || typeof addDoc !== 'function') {
+        console.warn('Firestore no esta listo para escribir platos.');
+        return;
+    }
+
+    menuFormTextareas = Array.from(menuForm.querySelectorAll('textarea[data-autogrow]'));
 
     menuForm.addEventListener('submit', async event => {
         event.preventDefault();
@@ -226,65 +405,50 @@ function handleMenuFormSubmit(services) {
             return;
         }
 
-        const submitButton = menuForm.querySelector('button[type="submit"]');
-        if (submitButton) {
-            submitButton.disabled = true;
+        if (menuFormSubmitButton) {
+            menuFormSubmitButton.disabled = true;
         }
 
         try {
             const formData = new FormData(menuForm);
-            const titleEs = (formData.get('dish-name-es') || '').toString().trim();
-            const titleEu = (formData.get('dish-name-eu') || '').toString().trim();
-            const category = (formData.get('dish-category') || '').toString().trim();
-            const descEs = (formData.get('dish-description-es') || '').toString().trim();
-            const descEu = (formData.get('dish-description-eu') || '').toString().trim();
-            const priceInput = formData.get('dish-price');
-            const mediaPriceInput = formData.get('dish-price-medium');
+            const values = collectMenuFormValues(formData);
 
-            const price = priceInput === null || priceInput === '' ? 0 : Number.parseFloat(priceInput);
-            const mediaPrice = mediaPriceInput === null || mediaPriceInput === '' ? null : Number.parseFloat(mediaPriceInput);
-
-            if (!titleEs || !titleEu || !category) {
+            if (!values.titleEs || !values.titleEu || !values.category) {
                 alert('Completa nombre y categoria antes de guardar.');
                 return;
             }
 
-            const payload = {
-                title: {
-                    es: titleEs,
-                    eu: titleEu
-                },
-                description: {
-                    es: descEs,
-                    eu: descEu
-                },
-                category,
-                price: Number.isFinite(price) ? price : 0,
-                mediaPrice: Number.isFinite(mediaPrice) ? mediaPrice : null,
-                isAvailable: true,
-                displayOrder: Date.now(),
-                tags: [],
-                image: {
-                    desktop: '',
-                    mobile: ''
-                },
-                lastUpdated: serverTimestamp()
-            };
+            const editingId = menuForm.dataset.editingId;
+            const existingItem = editingId ? menuItemsState.get(editingId) : null;
+            const payload = createMenuPayload(values, { serverTimestamp, existingItem });
 
-            await addDoc(collection(db, 'menuItems'), payload);
+            if (editingId && existingItem && typeof doc === 'function' && typeof updateDoc === 'function') {
+                await updateDoc(doc(db, 'menuItems', editingId), payload);
+            } else {
+                await addDoc(collection(db, 'menuItems'), payload);
+            }
 
             menuForm.reset();
-            formTextareas.forEach(textarea => {
+            menuFormTextareas.forEach(textarea => {
                 textarea.dispatchEvent(new Event('input'));
             });
         } catch (error) {
             console.error('No se pudo guardar el plato:', error);
             alert('No se pudo guardar el plato. Revisa la consola para mas detalles.');
         } finally {
-            if (submitButton) {
-                submitButton.disabled = false;
+            if (menuFormSubmitButton) {
+                menuFormSubmitButton.disabled = false;
             }
         }
+    });
+
+    menuForm.addEventListener('reset', () => {
+        resetMenuFormState();
+        window.setTimeout(() => {
+            menuFormTextareas.forEach(textarea => {
+                textarea.dispatchEvent(new Event('input'));
+            });
+        }, 0);
     });
 }
 
@@ -400,6 +564,7 @@ async function initFirebaseFeatures() {
         handleMenuFormSubmit(services);
         setMenuFormEnabled(false);
         setupGlobalActions(services);
+        setupMenuTableActions(services);
         initAuthGuard(services);
     } catch (error) {
         console.error('No se pudo inicializar Firebase:', error);
@@ -414,11 +579,17 @@ function setupGlobalActions(services) {
     globalActionsInitialized = true;
 
     const hasFetchSupport = typeof window.fetch === 'function';
+    const previewUrl = resolveAdminUrl(adminConfig.previewUrl || 'index.html');
+    const publishEndpoint = resolveAdminUrl(adminConfig.publishEndpoint || '/api/publish');
+    const publishStatusEndpoint = resolveAdminUrl(adminConfig.publishStatusEndpoint || '/api/publish/status');
 
     if (previewButton) {
         previewButton.addEventListener('click', () => {
-            const targetUrl = new URL('index.html', window.location.href);
-            window.open(targetUrl.toString(), '_blank', 'noopener');
+            if (!previewUrl) {
+                alert('No se pudo determinar la URL de previsualizacion.');
+                return;
+            }
+            window.open(previewUrl, '_blank', 'noopener');
         });
     }
 
@@ -455,12 +626,12 @@ function setupGlobalActions(services) {
     };
 
     async function fetchPublishStatus() {
-        if (!hasFetchSupport) {
+        if (!hasFetchSupport || !publishStatusEndpoint) {
             return;
         }
 
         try {
-            const response = await fetch('/api/publish/status');
+            const response = await fetch(publishStatusEndpoint);
             if (!response.ok) {
                 return;
             }
@@ -473,12 +644,16 @@ function setupGlobalActions(services) {
 
     if (publishButton && hasFetchSupport) {
         publishButton.addEventListener('click', async () => {
+            if (!publishEndpoint) {
+                alert('No hay un endpoint configurado para publicar el sitio.');
+                return;
+            }
             const originalLabel = publishButton.textContent;
             publishButton.disabled = true;
             publishButton.textContent = 'Publicando...';
 
             try {
-                const response = await fetch('/api/publish', { method: 'POST' });
+                const response = await fetch(publishEndpoint, { method: 'POST' });
                 if (!response.ok) {
                     const errorBody = await response.json().catch(() => ({}));
                     throw new Error(errorBody?.error || 'Publicación rechazada por el servidor.');
@@ -542,6 +717,80 @@ function setupGlobalActions(services) {
     }
 
     fetchPublishStatus();
+}
+
+function setupMenuTableActions(services) {
+    if (tableActionsInitialized || !menuTableBody) {
+        return;
+    }
+
+    tableActionsInitialized = true;
+    const firestoreOps = services?.firestore || null;
+
+    menuTableBody.addEventListener('click', async event => {
+        const rawTarget = event.target;
+        if (!rawTarget || typeof rawTarget !== 'object') {
+            return;
+        }
+
+        const button = typeof rawTarget.closest === 'function'
+            ? rawTarget.closest('button[data-action]')
+            : null;
+
+        if (!button) {
+            return;
+        }
+
+        const action = button.dataset.action;
+        if (!action) {
+            return;
+        }
+
+        const row = typeof button.closest === 'function' ? button.closest('tr[data-id]') : null;
+        const itemId = button.dataset.id || row?.dataset.id;
+        if (!itemId) {
+            return;
+        }
+
+        if (action === 'edit') {
+            const item = menuItemsState.get(itemId);
+            if (!item) {
+                alert('No se encontraron los datos del plato seleccionado.');
+                return;
+            }
+            populateMenuForm(item);
+            return;
+        }
+
+        if (action === 'delete') {
+            if (!firestoreOps || !firestoreOps.db || typeof firestoreOps.doc !== 'function' || typeof firestoreOps.deleteDoc !== 'function') {
+                alert('No es posible eliminar el plato porque Firestore no esta disponible.');
+                return;
+            }
+
+            if (!window.confirm('¿Seguro que quieres eliminar este plato? Esta accion no se puede deshacer.')) {
+                return;
+            }
+
+            if (menuForm && menuForm.dataset.editingId === itemId) {
+                menuForm.reset();
+            }
+
+            const originalLabel = button.textContent;
+            button.textContent = 'Eliminando...';
+            button.disabled = true;
+
+            try {
+                await firestoreOps.deleteDoc(firestoreOps.doc(firestoreOps.db, 'menuItems', itemId));
+            } catch (error) {
+                console.error('No se pudo eliminar el plato:', error);
+                alert('No se pudo eliminar el plato. Revisa la consola para mas detalles.');
+            } finally {
+                button.disabled = false;
+                button.textContent = originalLabel;
+            }
+        }
+    });
 }
 
 async function importMenuJsonFile(file, services) {
@@ -704,6 +953,10 @@ function normalizeMenuEntry(raw, fallbackCategory, orderValue, serverTimestamp) 
         },
         lastUpdated: typeof serverTimestamp === 'function' ? serverTimestamp() : new Date()
     };
+}
+
+if (menuForm) {
+    resetMenuFormState();
 }
 
 initFirebaseFeatures();
