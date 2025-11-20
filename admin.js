@@ -2,6 +2,7 @@
 
 const adminConfig = window.ADMIN_CONFIG || {};
 let currentAdminConfig = { ...adminConfig };
+let publishFeatureEnabled = adminConfig.publishEnabled === true;
 
 const sectionButtons = Array.from(document.querySelectorAll('[data-section-target]'));
 const sections = Array.from(document.querySelectorAll('[data-section]'));
@@ -135,6 +136,10 @@ function mergeAdminConfig(partial) {
     assignIfString('previewUrl', partial.previewUrl);
     assignIfString('publishEndpoint', partial.publishEndpoint);
     assignIfString('publishStatusEndpoint', partial.publishStatusEndpoint);
+
+    if (typeof partial.publishEnabled === 'boolean') {
+        publishFeatureEnabled = partial.publishEnabled;
+    }
 
     currentAdminConfig = next;
 
@@ -655,7 +660,8 @@ function setupGlobalActions(services) {
     };
 
     const fetchPublishStatus = async () => {
-        if (!hasFetchSupport) {
+        if (!hasFetchSupport || publishFeatureEnabled !== true) {
+            updateDeployLabel(null);
             return;
         }
 
@@ -678,50 +684,56 @@ function setupGlobalActions(services) {
 
     refreshPublishStatus = fetchPublishStatus;
 
-    if (publishButton && hasFetchSupport) {
-        publishButton.addEventListener('click', async () => {
-            const publishEndpoint = getPublishEndpoint();
-            if (!publishEndpoint) {
-                alert('No hay un endpoint configurado para publicar el sitio.');
-                return;
-            }
-            const originalLabel = publishButton.textContent;
+    if (publishButton) {
+        if (publishFeatureEnabled !== true) {
             publishButton.disabled = true;
-            publishButton.textContent = 'Publicando...';
-
-            try {
-                const response = await fetch(publishEndpoint, { method: 'POST' });
-                if (!response.ok) {
-                    let errorMessage = '';
-                    const contentType = response.headers.get('content-type') || '';
-                    if (contentType.includes('application/json')) {
-                        const errorBody = await response.json().catch(() => ({}));
-                        errorMessage = errorBody?.error || '';
-                    } else {
-                        const textBody = await response.text().catch(() => '');
-                        if (textBody) {
-                            errorMessage = textBody.slice(0, 180);
-                        }
-                    }
-
-                    const normalizedMessage = errorMessage && errorMessage.trim()
-                        ? errorMessage.trim()
-                        : `Publicación rechazada (HTTP ${response.status})`;
-
-                    throw new Error(normalizedMessage);
+            publishButton.textContent = 'Publicación deshabilitada';
+            publishButton.title = 'La publicación automática está deshabilitada temporalmente.';
+        } else if (hasFetchSupport) {
+            publishButton.addEventListener('click', async () => {
+                const publishEndpoint = getPublishEndpoint();
+                if (!publishEndpoint) {
+                    alert('No hay un endpoint configurado para publicar el sitio.');
+                    return;
                 }
-                const data = await response.json();
-                updateDeployLabel(data);
-                alert('Publicación completada correctamente.');
-            } catch (error) {
-                console.error('No se pudo publicar:', error);
-                alert(`No se pudo publicar el sitio: ${error.message}`);
-            } finally {
-                publishButton.disabled = false;
-                publishButton.textContent = originalLabel;
-                fetchPublishStatus();
-            }
-        });
+                const originalLabel = publishButton.textContent;
+                publishButton.disabled = true;
+                publishButton.textContent = 'Publicando...';
+
+                try {
+                    const response = await fetch(publishEndpoint, { method: 'POST' });
+                    if (!response.ok) {
+                        let errorMessage = '';
+                        const contentType = response.headers.get('content-type') || '';
+                        if (contentType.includes('application/json')) {
+                            const errorBody = await response.json().catch(() => ({}));
+                            errorMessage = errorBody?.error || '';
+                        } else {
+                            const textBody = await response.text().catch(() => '');
+                            if (textBody) {
+                                errorMessage = textBody.slice(0, 180);
+                            }
+                        }
+
+                        const normalizedMessage = errorMessage && errorMessage.trim()
+                            ? errorMessage.trim()
+                            : `Publicación rechazada (HTTP ${response.status})`;
+
+                        throw new Error(normalizedMessage);
+                    }
+                    const data = await response.json();
+                    updateDeployLabel(data);
+                    alert('Publicación completada correctamente.');
+                } catch (error) {
+                    console.error('No se pudo publicar:', error);
+                    alert(`No se pudo publicar el sitio: ${error.message}`);
+                } finally {
+                    publishButton.disabled = false;
+                    publishButton.textContent = originalLabel;
+                    fetchPublishStatus();
+                }
+            });
+        }
     }
 
     if (importJsonButton && importJsonInput) {
@@ -969,7 +981,8 @@ async function loadCmsConfig(services) {
         mergeAdminConfig({
             previewUrl: getString(data.previewUrl || data.previewURL || ''),
             publishEndpoint: getString(data.publishEndpoint || data.publishURL || ''),
-            publishStatusEndpoint: getString(data.publishStatusEndpoint || data.publishStatusURL || '')
+            publishStatusEndpoint: getString(data.publishStatusEndpoint || data.publishStatusURL || ''),
+            publishEnabled: data.publishEnabled === true
         });
     } catch (error) {
         console.error('No se pudo cargar la configuración remota del CMS:', error);

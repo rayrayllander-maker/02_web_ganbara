@@ -133,6 +133,14 @@
     "fallback": "png",
     "hasWebp": true
   },
+  "assets/ganbara.jpg": {
+    "widths": [
+      480,
+      768
+    ],
+    "fallback": "jpeg",
+    "hasWebp": true
+  },
   "assets/ganbaraturbo.jpg": {
     "widths": [
       480,

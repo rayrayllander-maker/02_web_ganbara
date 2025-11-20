@@ -356,7 +356,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, daniar gazta, tipula karamelizatua, arraultza, tomatea"
       },
       "precio": 13.50,
-      "imagen": "images/hamburguesa-1.jpg",
+      "imagen": "assets/ganbara.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
