@@ -386,7 +386,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, Camembert gazta, perretxiko laminatuak, tipula"
       },
       "precio": 13.00,
-      "imagen": "images/hamburguesa-3.jpg",
+      "imagen": "assets/francesa.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },

@@ -367,5 +367,18 @@
     <script src="firebase-init.js" defer></script>
     <script src="script.js" defer></script>
     <script src="analytics.js" defer></script>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+        // Permite abrir el panel del CMS cuando un admin inicia sesión desde la web pública
+        if (window.netlifyIdentity) {
+            window.netlifyIdentity.on('init', function (user) {
+                if (!user) {
+                    window.netlifyIdentity.on('login', function () {
+                        document.location.href = '/admin/';
+                    });
+                }
+            });
+        }
+    </script>
 </body>
 </html>

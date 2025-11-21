@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ganbara CMS</title>
+    <title>CMS en migración · Ganbara</title>
     <link rel="icon" type="image/png" href="assets/Logo_color_ganbara.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,314 +11,44 @@
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-    <div class="admin-layout">
-        <aside class="sidebar">
-            <button class="btn btn-outline" type="button" data-admin-nav-toggle aria-label="Abrir navegación" aria-expanded="false">
-                ☰ Menú
-            </button>
-            <div class="brand">
-                <img src="assets/Logo_color_ganbara.png" alt="Ganbara">
-                <span>Ganbara CMS</span>
-            </div>
-            <nav data-admin-nav>
-                <ul>
-                    <li><button type="button" data-section-target="dashboard">📊 Panel</button></li>
-                    <li><button type="button" data-section-target="menu">🍽 Menú</button></li>
-                    <li><button type="button" data-section-target="hero">🎞 Hero</button></li>
-                    <li><button type="button" data-section-target="media">🖼 Multimedia</button></li>
-                    <li><button type="button" data-section-target="settings">⚙️ Ajustes</button></li>
-                </ul>
-            </nav>
-            <div class="meta">
-                <p>Versión CMS 0.1</p>
-                <p>Último despliegue: <strong id="last-deploy">Pendiente</strong></p>
-            </div>
-        </aside>
-
-        <main class="main-content" data-admin-shell>
-            <header class="header-actions">
-                <div>
-                    <h1>Panel de administración</h1>
-                    <p class="section-description">Gestiona el contenido público del sitio Ganbara.</p>
-                </div>
-                <div class="actions">
-                    <button class="btn btn-outline" type="button" data-admin-preview>Previsualizar sitio</button>
-                    <button class="btn btn-primary" type="button" data-admin-publish>Publicar cambios</button>
-                    <button class="btn btn-outline hidden" type="button" data-admin-logout>Cerrar sesión</button>
-                </div>
+    <main class="migration-shell">
+        <section class="migration-card">
+            <header class="migration-header">
+                <img class="migration-logo" src="assets/Logo_color_ganbara.png" alt="Ganbara">
+                <h1>Migrando el CMS a Netlify</h1>
+                <p class="migration-lead">Estamos retirando el panel basado en Firebase para preparar la nueva experiencia con Netlify CMS.</p>
             </header>
 
-            <section class="section auth-guard hidden" data-auth-guard>
-                <article class="card">
-                    <h2 class="section-title">Acceso restringido</h2>
-                    <p class="section-description" data-auth-guard-message>
-                        Inicia sesión en la página pública con una cuenta autorizada y vuelve a abrir este panel.
-                    </p>
-                    <div class="actions">
-                        <a class="btn btn-outline" href="index.html">Ir a la página pública</a>
-                        <button class="btn btn-primary" type="button" data-admin-refresh-session>Ya inicié sesión</button>
-                    </div>
-                </article>
+            <section class="migration-section">
+                <h2>¿Qué está pasando?</h2>
+                <p>El dashboard anterior ya no acepta ediciones. Todo el contenido público sigue cargándose desde los archivos estáticos del repositorio.</p>
             </section>
 
-            <section class="section" data-section="dashboard">
-                <article class="card">
-                    <h2 class="section-title">Estado general</h2>
-                    <p class="section-description">Resumen rápido del contenido y tareas pendientes.</p>
-                    <div class="grid two">
-                        <div class="card">
-                            <h3 class="section-title">Menú</h3>
-                            <p class="section-description">Elementos actuales por categoría.</p>
-                            <div class="table-wrapper">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Categoría</th>
-                                            <th>Elementos</th>
-                                            <th>Última actualización</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Bocadillos</td>
-                                            <td>12</td>
-                                            <td>Hace 2 días</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Raciones</td>
-                                            <td>8</td>
-                                            <td>Ayer</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Hamburguesas</td>
-                                            <td>6</td>
-                                            <td>Hace 5 días</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <h3 class="section-title">Hero</h3>
-                            <p class="section-description">Revisa las diapositivas del carrusel principal.</p>
-                            <ul>
-                                <li><span class="badge"><span class="status-dot"></span> Slide 1: Destacado Bocadillo</span></li>
-                                <li><span class="badge"><span class="status-dot"></span> Slide 2: Hamburguesa especial</span></li>
-                                <li><span class="badge"><span class="status-dot"></span> Slide 3: Postres</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </article>
+            <section class="migration-section">
+                <h2>Próximos pasos</h2>
+                <ol class="migration-steps">
+                    <li>Configuraremos Netlify CMS para gestionar los menús, hero e imágenes.</li>
+                    <li>Publicaremos un nuevo backend de autenticación con Netlify Identity.</li>
+                    <li>Conectaremos el CMS para que realice commits automáticos en GitHub.</li>
+                </ol>
             </section>
 
-            <section class="section" data-section="menu">
-                <article class="card">
-                    <div class="header-actions">
-                        <div>
-                            <h2 class="section-title">Menú principal</h2>
-                            <p class="section-description">Crea, edita y clasifica los platos.</p>
-                        </div>
-                        <div class="actions">
-                            <button class="btn btn-outline" type="button" data-menu-import-json>Importar JSON</button>
-                            <input type="file" accept="application/json" data-menu-import-json-input hidden>
-                            <button class="btn btn-primary" type="button" data-menu-scroll-target>Añadir plato</button>
-                        </div>
-                    </div>
-
-                    <form class="card" data-menu-form>
-                        <h3 class="section-title">Nuevo plato</h3>
-                        <div class="form-grid">
-                            <div class="form-control">
-                                <label for="dish-name-es">Nombre (ES)</label>
-                                <input id="dish-name-es" name="dish-name-es" type="text" placeholder="Ej. Hamburguesa Ganbara" required>
-                            </div>
-                            <div class="form-control">
-                                <label for="dish-name-eu">Nombre (EU)</label>
-                                <input id="dish-name-eu" name="dish-name-eu" type="text" placeholder="Ganbara Hanburgesa" required>
-                            </div>
-                            <div class="form-control">
-                                <label for="dish-category">Categoría</label>
-                                <select id="dish-category" name="dish-category" required>
-                                    <option value="">Selecciona categoría</option>
-                                    <option value="bocadillos">Bocadillos</option>
-                                    <option value="raciones">Raciones</option>
-                                    <option value="hamburguesas">Hamburguesas</option>
-                                    <option value="chuleta">Chuleta</option>
-                                    <option value="postres">Postres</option>
-                                </select>
-                            </div>
-                            <div class="form-control">
-                                <label for="dish-price">Precio (€)</label>
-                                <input id="dish-price" name="dish-price" type="number" min="0" step="0.10" placeholder="12.00">
-                            </div>
-                            <div class="form-control">
-                                <label for="dish-price-medium">Media ración (€)</label>
-                                <input id="dish-price-medium" name="dish-price-medium" type="number" min="0" step="0.10" placeholder="7.00">
-                            </div>
-                            <div class="form-control">
-                                <label for="dish-fallback">Imagen principal</label>
-                                <input id="dish-fallback" name="dish-fallback" type="file" accept="image/*">
-                            </div>
-                        </div>
-                        <div class="form-control">
-                            <label for="dish-description-es">Descripción (ES)</label>
-                            <textarea id="dish-description-es" name="dish-description-es" placeholder="Introduce la descripción" data-autogrow></textarea>
-                        </div>
-                        <div class="form-control">
-                            <label for="dish-description-eu">Descripción (EU)</label>
-                            <textarea id="dish-description-eu" name="dish-description-eu" placeholder="Idatzi deskribapena" data-autogrow></textarea>
-                        </div>
-                        <div class="actions">
-                            <button class="btn btn-outline" type="reset">Limpiar</button>
-                            <button class="btn btn-primary" type="submit">Guardar plato</button>
-                        </div>
-                    </form>
-
-                    <div class="card">
-                        <h3 class="section-title">Listado de platos</h3>
-                        <div class="table-wrapper">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Categoría</th>
-                                        <th>Precio</th>
-                                        <th>Disponibilidad</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody data-menu-table-body>
-                                    <tr>
-                                        <td colspan="5">Cargando platos…</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </article>
+            <section class="migration-section" data-migration-notes>
+                <h2>Durante la transición</h2>
+                <ul>
+                    <li>Los cambios manuales al contenido pueden seguir haciéndose editando los archivos JSON en el repositorio.</li>
+                    <li>No elimines la cuenta o claves de Firebase hasta finalizar la migración.</li>
+                    <li>Si necesitas acceder al sitio público, visita <a href="index.html">index.html</a>.</li>
+                </ul>
             </section>
 
-            <section class="section" data-section="hero">
-                <article class="card">
-                    <div class="header-actions">
-                        <div>
-                            <h2 class="section-title">Hero carousel</h2>
-                            <p class="section-description">Gestiona las diapositivas destacadas.</p>
-                        </div>
-                        <div class="actions">
-                            <button class="btn btn-outline" type="button">Reordenar</button>
-                            <button class="btn btn-primary" type="button">Nueva diapositiva</button>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3 class="section-title">Configuración de diapositiva</h3>
-                        <div class="form-grid">
-                            <div class="form-control">
-                                <label for="slide-title-es">Título (ES)</label>
-                                <input id="slide-title-es" type="text" placeholder="Título principal" required>
-                            </div>
-                            <div class="form-control">
-                                <label for="slide-title-eu">Título (EU)</label>
-                                <input id="slide-title-eu" type="text" placeholder="Izenburua" required>
-                            </div>
-                            <div class="form-control">
-                                <label for="slide-target">Referencia del menú</label>
-                                <input id="slide-target" type="text" placeholder="Categoría o ID de plato">
-                            </div>
-                            <div class="form-control">
-                                <label for="slide-image">Imagen</label>
-                                <input id="slide-image" type="file" accept="image/*">
-                            </div>
-                        </div>
-                        <div class="form-control">
-                            <label for="slide-subtitle-es">Subtítulo (ES)</label>
-                            <textarea id="slide-subtitle-es" placeholder="Mensaje descriptivo" data-autogrow></textarea>
-                        </div>
-                        <div class="form-control">
-                            <label for="slide-subtitle-eu">Subtítulo (EU)</label>
-                            <textarea id="slide-subtitle-eu" placeholder="Deskribapena" data-autogrow></textarea>
-                        </div>
-                        <div class="actions">
-                            <button class="btn btn-outline" type="reset">Cancelar</button>
-                            <button class="btn btn-primary" type="submit">Guardar diapositiva</button>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h3 class="section-title">Diapositivas actuales</h3>
-                        <div class="empty-state">
-                            No hay diapositivas cargadas todavía. Importa los datos o crea una nueva.
-                        </div>
-                    </div>
-                </article>
-            </section>
+            <footer class="migration-footer">
+                <button class="migration-button" type="button" data-copy-plan>Copiar plan de migración</button>
+                <p class="migration-status" data-copy-feedback hidden>Plan copiado al portapapeles.</p>
+            </footer>
+        </section>
+    </main>
 
-            <section class="section" data-section="media">
-                <article class="card">
-                    <h2 class="section-title">Biblioteca multimedia</h2>
-                    <p class="section-description">Sube fotografías y asigna variantes responsivas.</p>
-                    <div class="actions">
-                        <button class="btn btn-outline" type="button">Subir archivos</button>
-                        <button class="btn btn-primary" type="button">Sincronizar variantes</button>
-                    </div>
-                    <div class="empty-state">
-                        La biblioteca multimedia se conectará con la carpeta <code>assets/</code> y su manifiesto.
-                    </div>
-                </article>
-            </section>
-
-            <section class="section" data-section="settings">
-                <article class="card">
-                    <h2 class="section-title">Ajustes generales</h2>
-                    <p class="section-description">Configura datos globales del sitio.</p>
-                    <form class="grid two">
-                        <div class="form-control">
-                            <label for="setting-locale">Idioma por defecto</label>
-                            <select id="setting-locale">
-                                <option value="es">Español</option>
-                                <option value="eu">Euskera</option>
-                            </select>
-                        </div>
-                        <div class="form-control">
-                            <label for="setting-theme">Tema inicial</label>
-                            <select id="setting-theme">
-                                <option value="light">Claro</option>
-                                <option value="dark">Oscuro</option>
-                            </select>
-                        </div>
-                        <div class="form-control">
-                            <label for="setting-contact-email">Correo de contacto</label>
-                            <input id="setting-contact-email" type="email" placeholder="contacto@ganbara.eus">
-                        </div>
-                        <div class="form-control">
-                            <label for="setting-phone">Teléfono principal</label>
-                            <input id="setting-phone" type="tel" placeholder="943 000 000">
-                        </div>
-                        <div class="form-control">
-                            <label for="setting-address">Dirección</label>
-                            <textarea id="setting-address" placeholder="Dirección completa" data-autogrow></textarea>
-                        </div>
-                        <div class="form-control">
-                            <label for="setting-api-key">API Key</label>
-                            <input id="setting-api-key" type="password" placeholder="********">
-                        </div>
-                    </form>
-                    <div class="actions">
-                        <button class="btn btn-outline" type="reset">Descartar</button>
-                        <button class="btn btn-primary" type="submit">Guardar ajustes</button>
-                    </div>
-                </article>
-            </section>
-        </main>
-    </div>
-
-    <script>
-        window.ADMIN_CONFIG = window.ADMIN_CONFIG || {};
-        // Ejemplo de configuracion remota:
-        // window.ADMIN_CONFIG.previewUrl = 'http://localhost:3000/index.html';
-        // window.ADMIN_CONFIG.publishEndpoint = 'http://localhost:3000/api/publish';
-        // window.ADMIN_CONFIG.publishStatusEndpoint = 'http://localhost:3000/api/publish/status';
-    </script>
-    <script src="firebase-init.js" defer></script>
     <script src="admin.js" defer></script>
 </body>
 </html>
