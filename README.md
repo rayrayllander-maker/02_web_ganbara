@@ -1,6 +1,6 @@
 # Ganbara Restaurant Website
 
-Una página web moderna y responsiva para el restaurante Ganbara, diseñada con HTML, CSS y JavaScript vanilla, con sistema de analítica de clicks integrado.
+Una página web moderna y responsiva para el restaurante Ganbara, diseñada con HTML, CSS y JavaScript vanilla.
 
 ## 🚀 Características
 
@@ -10,20 +10,7 @@ Una página web moderna y responsiva para el restaurante Ganbara, diseñada con 
 - **Formulario de Reservas**: Sistema de validación en tiempo real
 - **Animaciones**: Efectos visuales atractivos y transiciones suaves
 - **SEO Optimizado**: Estructura semántica y metadatos apropiados
-- **🆕 Sistema de Analítica**: Rastreo automático de clicks en hamburguesas con integración a Google Sheets
-- **🆕 Autenticación**: Inicio de sesión con Google gracias a Firebase Authentication
-
-## 📊 Sistema de Analítica (Nuevo)
-
-El sitio incluye un sistema back-end simplificado para rastrear clicks en las hamburguesas y enviar los datos a Google Sheets.
-
-### Inicio Rápido
-```bash
-npm install
-npm start
-```
-
-Visita http://localhost:3000 para ver el sitio en acción.
+- **🆕 CMS**: Gestión del contenido con Netlify CMS + Netlify Identity
 
 ## 📁 Estructura del Proyecto
 
@@ -32,8 +19,6 @@ Visita http://localhost:3000 para ver el sitio en acción.
 ├── index.html          # Página principal
 ├── styles.css          # Estilos CSS
 ├── script.js           # Funcionalidad JavaScript
-├── firebase-init.js    # Inicialización de Firebase (Auth)
-├── analytics.js        # Sistema de rastreo de clicks
 ├── server.js           # Servidor Node.js/Express
 ├── package.json        # Dependencias del proyecto
 ├── .env.example        # Plantilla de configuración
@@ -173,7 +158,7 @@ La página está optimizada para:
 
 3. **Abrir en el navegador**: http://localhost:3000
 
-### Solo Front-end (Sin Analítica)
+### Solo Front-end
 
 1. **Abrir la página**: Simplemente abre `index.html` en tu navegador
 2. **Personalizar contenido**: 
@@ -185,9 +170,6 @@ La página está optimizada para:
 ## 🔧 Características Implementadas y Futuras
 
 ### ✅ Implementado
-- [x] Sistema de analítica de clicks para hamburguesas
-- [x] Integración con Google Sheets
-- [x] API REST para rastreo de datos
 - [x] Modo multi-idioma (ES/EU)
 - [x] Tema claro/oscuro
 

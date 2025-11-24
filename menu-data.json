@@ -179,7 +179,7 @@
       },
       "precio": 17.00,
       "mediaRacion": 9.00,
-      "imagen": "images/racion-1.jpg",
+      "imagen": "assets/jamon.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -259,7 +259,7 @@
       },
       "precio": 9.50,
       "mediaRacion": null,
-      "imagen": "assets/croquetas.jpg",
+      "imagen": "assets/croquetas.png",
       "categoria": "raciones",
       "disponible": true
     },
@@ -307,7 +307,7 @@
       },
       "precio": 8.50,
       "mediaRacion": null,
-      "imagen": "images/racion-9.jpg",
+      "imagen": "assets/pimientos.jpg",
       "categoria": "raciones",
       "disponible": true
     },

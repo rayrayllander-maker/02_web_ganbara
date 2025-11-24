@@ -16,8 +16,6 @@
         "npm:cors@^2.8.5",
         "npm:dotenv@^17.2.3",
         "npm:express@^5.1.0",
-        "npm:firebase-admin@^13.6.0",
-        "npm:googleapis@165",
         "npm:imagemin-mozjpeg@10",
         "npm:imagemin-pngquant@10",
         "npm:imagemin@^9.0.1",

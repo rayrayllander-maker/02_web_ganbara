@@ -54,10 +54,6 @@
                             <img src="assets/user.svg" alt="" class="auth-btn-icon auth-btn-user-icon" aria-hidden="true">
                             <span class="auth-btn-label">Acceder</span>
                         </button>
-                        <button id="logout-btn" class="auth-btn hidden" aria-label="Cerrar sesión">
-                            <i class="fas fa-sign-out-alt logout-icon" aria-hidden="true"></i>
-                            <span class="logout-label">Cerrar sesión</span>
-                        </button>
                     </div>
                 </div>
                 <div class="hamburger">
@@ -82,55 +78,6 @@
             </div>
         </div>
     </section>
-
-    <section class="private-area solo-usuarios hidden" aria-live="polite">
-        <div class="container">
-            <h2 class="section-title">Panel privado</h2>
-            <p class="section-subtitle" data-auth-default="Te damos la bienvenida. Aquí podrás gestionar contenido exclusivo y métricas.">Te damos la bienvenida. Aquí podrás gestionar contenido exclusivo y métricas.</p>
-        </div>
-    </section>
-
-    <div class="auth-modal hidden" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
-        <div class="auth-modal-backdrop" data-close="true"></div>
-        <div class="auth-modal-content" role="document">
-            <button class="auth-modal-close" type="button" aria-label="Cerrar" data-close="true">&times;</button>
-            <h2 id="auth-modal-title">Inicia sesión</h2>
-            <p>Accede con tu cuenta favorita para gestionar el contenido privado.</p>
-            <div class="auth-modal-provider-list">
-                <button id="google-signin" class="auth-btn auth-btn-google" type="button">
-                    <span class="auth-btn-icon"><i class="fab fa-google"></i></span>
-                    <span>Continuar con Google</span>
-                </button>
-                <button id="apple-signin" class="auth-btn auth-btn-apple" type="button">
-                    <span class="auth-btn-icon"><i class="fab fa-apple"></i></span>
-                    <span>Continuar con Apple</span>
-                </button>
-                <div class="auth-divider" role="separator"><span>o usa tu correo electrónico</span></div>
-                <form id="auth-email-form" novalidate>
-                    <label class="auth-field" for="auth-email">
-                        <span class="auth-field-label">Correo electrónico</span>
-                        <input id="auth-email" type="email" name="email" autocomplete="email" required>
-                    </label>
-                    <label class="auth-field" for="auth-password">
-                        <span class="auth-field-label">Contraseña</span>
-                        <input id="auth-password" type="password" name="password" autocomplete="current-password" minlength="6" required>
-                    </label>
-                    <label class="auth-field auth-field-confirm hidden" for="auth-confirm-password">
-                        <span class="auth-field-label">Confirmar contraseña</span>
-                        <input id="auth-confirm-password" type="password" name="confirm-password" autocomplete="new-password" minlength="6">
-                    </label>
-                    <p id="auth-email-error" class="auth-error hidden" role="alert"></p>
-                    <button id="auth-email-submit" class="auth-btn auth-btn-email" type="submit">
-                        <span id="auth-email-submit-text">Iniciar sesión</span>
-                    </button>
-                </form>
-                <p class="auth-email-toggle">
-                    <span id="auth-email-mode-text">¿No tienes cuenta?</span>
-                    <button id="auth-email-mode-toggle" type="button">Crear una ahora</button>
-                </p>
-            </div>
-        </div>
-    </div>
 
     <!-- Menu Section -->
     <section id="menu" class="menu-section">
@@ -364,9 +311,7 @@
     </footer>
 
     <script src="translations.js" defer></script>
-    <script src="firebase-init.js" defer></script>
     <script src="script.js" defer></script>
-    <script src="analytics.js" defer></script>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
         // Permite abrir el panel del CMS cuando un admin inicia sesión desde la web pública
@@ -374,10 +319,18 @@
             window.netlifyIdentity.on('init', function (user) {
                 if (!user) {
                     window.netlifyIdentity.on('login', function () {
-                        document.location.href = '/admin/';
+                        document.location.href = '/admin/admin.html';
                     });
                 }
             });
+
+            const legacyAuthButton = document.getElementById('open-auth-modal');
+            if (legacyAuthButton) {
+                legacyAuthButton.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    window.netlifyIdentity.open('login');
+                });
+            }
         }
     </script>
 </body>
