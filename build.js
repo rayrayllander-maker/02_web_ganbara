@@ -17,8 +17,7 @@ const STATIC_FILES = [
     'index.html',
     'analytics.js',
     'menu-data.json',
-    'hero-carousel.json',
-    'firebase-init.js'
+    'hero-carousel.json'
 ];
 
 const MINIFY_FILES = {

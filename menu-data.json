@@ -259,7 +259,7 @@
       },
       "precio": 9.50,
       "mediaRacion": null,
-      "imagen": "assets/croquetas.jpg",
+      "imagen": "assets/croquetas.png",
       "categoria": "raciones",
       "disponible": true
     },
@@ -401,7 +401,7 @@
         "eu": "180 gr. Angus, urdaiazpiko, daniar gazta, tipula morea, patata hariak, saltsa tartara"
       },
       "precio": 13.00,
-      "imagen": "images/hamburguesa-4.jpg",
+      "imagen": "assets/jamon.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
