@@ -1,0 +1,2 @@
+/* Wrapper de compatibilidad: estilos fuente movidos a src/styles.css */
+@import url("src/styles.css");
