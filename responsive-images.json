@@ -1,5 +1,5 @@
-﻿{
-  "assets/menu/azteca.jpg": {
+{
+  "assets/azteca.jpg": {
     "widths": [
       480,
       768,
@@ -8,7 +8,7 @@
     "fallback": "jpeg",
     "hasWebp": true
   },
-  "assets/menu/azteca.png": {
+  "assets/azteca.png": {
     "widths": [
       480,
       768,
@@ -17,7 +17,7 @@
     "fallback": "png",
     "hasWebp": true
   },
-  "assets/menu/baconessa.jpg": {
+  "assets/baconessa.jpg": {
     "widths": [
       480,
       768,
@@ -26,7 +26,7 @@
     "fallback": "jpeg",
     "hasWebp": true
   },
-  "assets/menu/baconessa.png": {
+  "assets/baconessa.png": {
     "widths": [
       480,
       768,
@@ -35,7 +35,7 @@
     "fallback": "png",
     "hasWebp": true
   },
-  "assets/menu/bbq.jpg": {
+  "assets/bbq.jpg": {
     "widths": [
       480,
       768,
@@ -44,7 +44,7 @@
     "fallback": "jpeg",
     "hasWebp": true
   },
-  "assets/menu/bbq.png": {
+  "assets/bbq.png": {
     "widths": [
       480,
       768,
@@ -53,7 +53,7 @@
     "fallback": "png",
     "hasWebp": true
   },
-  "assets/menu/bocadillo_06.jpg": {
+  "assets/bocadillo_06.jpg": {
     "widths": [
       480,
       768,
@@ -63,7 +63,7 @@
     "fallback": "jpeg",
     "hasWebp": true
   },
-  "assets/menu/bocadillo_06.png": {
+  "assets/bocadillo_06.png": {
     "widths": [
       480,
       768,
@@ -73,7 +73,7 @@
     "fallback": "png",
     "hasWebp": true
   },
-  "assets/menu/clasica.jpg": {
+  "assets/clasica.jpg": {
     "widths": [
       480,
       768
@@ -81,7 +81,7 @@
     "fallback": "jpeg",
     "hasWebp": true
   },
-  "assets/menu/clasica.png": {
+  "assets/clasica.png": {
     "widths": [
       480,
       768
@@ -89,7 +89,7 @@
     "fallback": "png",
     "hasWebp": true
   },
-  "assets/menu/colombiana.jpg": {
+  "assets/colombiana.jpg": {
     "widths": [
       480,
       768,
@@ -98,7 +98,7 @@
     "fallback": "jpeg",
     "hasWebp": true
   },
-  "assets/menu/colombiana.png": {
+  "assets/colombiana.png": {
     "widths": [
       480,
       768,
@@ -117,7 +117,7 @@
     "fallback": "png",
     "hasWebp": true
   },
-  "assets/menu/emmy.jpg": {
+  "assets/emmy.jpg": {
     "widths": [
       480,
       768
@@ -125,7 +125,7 @@
     "fallback": "jpeg",
     "hasWebp": true
   },
-  "assets/menu/emmy.png": {
+  "assets/emmy.png": {
     "widths": [
       480,
       768
@@ -133,7 +133,7 @@
     "fallback": "png",
     "hasWebp": true
   },
-  "assets/menu/francesa.jpg": {
+  "assets/ganbara.jpg": {
     "widths": [
       480,
       768
@@ -141,15 +141,7 @@
     "fallback": "jpeg",
     "hasWebp": true
   },
-  "assets/menu/ganbara.jpg": {
-    "widths": [
-      480,
-      768
-    ],
-    "fallback": "jpeg",
-    "hasWebp": true
-  },
-  "assets/menu/ganbaraturbo.jpg": {
+  "assets/ganbaraturbo.jpg": {
     "widths": [
       480,
       768,
@@ -158,7 +150,7 @@
     "fallback": "jpeg",
     "hasWebp": true
   },
-  "assets/menu/ganbaraturbo.png": {
+  "assets/ganbaraturbo.png": {
     "widths": [
       480,
       768,
@@ -182,7 +174,7 @@
     "fallback": "jpeg",
     "hasWebp": true
   },
-  "assets/menu/Nachos_IA_gemini.jpg": {
+  "assets/Nachos_IA_gemini.jpg": {
     "widths": [
       480,
       768,
@@ -191,7 +183,7 @@
     "fallback": "jpeg",
     "hasWebp": true
   },
-  "assets/menu/Nachos_IA_gemini.png": {
+  "assets/Nachos_IA_gemini.png": {
     "widths": [
       480,
       768,
@@ -200,7 +192,7 @@
     "fallback": "png",
     "hasWebp": true
   },
-  "assets/menu/rabas.png": {
+  "assets/rabas.png": {
     "widths": [
       383
     ],

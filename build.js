@@ -15,13 +15,15 @@ const PUBLIC_DIR = path.join(ROOT_DIR, 'public');
 
 const STATIC_FILES = [
     'index.html',
+    'analytics.js',
     'menu-data.json',
-    'hero-carousel.json'
+    'hero-carousel.json',
+    'firebase-init.js'
 ];
 
 const MINIFY_FILES = {
-    js: ['src/script.js', 'src/translations.js'],
-    css: ['src/styles.css']
+    js: ['script.js', 'translations.js'],
+    css: ['styles.css']
 };
 
 const DIRECTORIES = [

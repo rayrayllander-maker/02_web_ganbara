@@ -1,4 +1,4 @@
-﻿{
+{
   "bocadillos": [
     {
       "id": 1,
@@ -7,7 +7,7 @@
         "eu": "Oilasko begetala"
       },
       "descripcion": {
-        "es": "Pechuga, lechuga, tomate, york, queso, mayonesa, atÃºn, huevo cocido",
+        "es": "Pechuga, lechuga, tomate, york, queso, mayonesa, atún, huevo cocido",
         "eu": "Bularreko, letxuga, tomatea, york, gazta, mayonesa, atuna, arrautza egosia"
       },
       "precio": 8.00,
@@ -22,7 +22,7 @@
         "eu": "Tortilla desberdinak"
       },
       "descripcion": {
-        "es": "Chorizo, patata, jamÃ³n o champis",
+        "es": "Chorizo, patata, jamón o champis",
         "eu": "Txorizo, patata, urdaiazpia edo perretxikoak"
       },
       "precio": 6.50,
@@ -86,18 +86,18 @@
         "eu": "Bularreko errebozatua, allioli, zirikatz, tipula"
       },
       "precio": 7.50,
-      "imagen": "assets/menu/bocadillo_06.jpg",
+      "imagen": "assets/bocadillo_06.jpg",
       "categoria": "bocadillos",
       "disponible": true
     },
     {
       "id": 7,
       "nombre": {
-        "es": "JamÃ³n ibÃ©rico, queso, setas y rodajas de tomate a la plancha",
+        "es": "Jamón ibérico, queso, setas y rodajas de tomate a la plancha",
         "eu": "Iberiar urdaiazpia, gazta, perretxikoak eta tomate xaflak plantxan"
       },
       "descripcion": {
-        "es": "JamÃ³n ibÃ©rico, queso, setas, tomate a la plancha",
+        "es": "Jamón ibérico, queso, setas, tomate a la plancha",
         "eu": "Iberiar urdaiazpia, gazta, perretxikoak, tomatea plantxan"
       },
       "precio": 8.00,
@@ -108,11 +108,11 @@
     {
       "id": 8,
       "nombre": {
-        "es": "JamÃ³n ibÃ©rico",
+        "es": "Jamón ibérico",
         "eu": "Iberiar urdaiazpia"
       },
       "descripcion": {
-        "es": "JamÃ³n ibÃ©rico",
+        "es": "Jamón ibérico",
         "eu": "Iberiar urdaiazpia"
       },
       "precio": 7.00,
@@ -127,7 +127,7 @@
         "eu": "Berezia"
       },
       "descripcion": {
-        "es": "JamÃ³n, pimientos verdes, queso Idiazabal, setas",
+        "es": "Jamón, pimientos verdes, queso Idiazabal, setas",
         "eu": "Urdaiazpia, piper berdeak, Idiazabal gazta, perretxikoak"
       },
       "precio": 8.00,
@@ -157,7 +157,7 @@
         "eu": "Begetarianoa"
       },
       "descripcion": {
-        "es": "CalabacÃ­n, pimientos verdes, cebolla morada, tomate, guacamole, huevo y queso danÃ©s",
+        "es": "Calabacín, pimientos verdes, cebolla morada, tomate, guacamole, huevo y queso danés",
         "eu": "Kalabazin, piper berdeak, tipula morea, tomatea, guacamole, arrautza eta daniar gazta"
       },
       "precio": 7.50,
@@ -170,16 +170,16 @@
     {
       "id": 1,
       "nombre": {
-        "es": "Paletilla de jamÃ³n ibÃ©rico",
+        "es": "Paletilla de jamón ibérico",
         "eu": "Iberiar urdaiazpiko sorbalda"
       },
       "descripcion": {
-        "es": "Paletilla de jamÃ³n ibÃ©rico",
+        "es": "Paletilla de jamón ibérico",
         "eu": "Iberiar urdaiazpiko sorbalda"
       },
       "precio": 17.00,
       "mediaRacion": 9.00,
-      "imagen": "assets/menu/jamon.jpg",
+      "imagen": "images/racion-1.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -195,7 +195,7 @@
       },
       "precio": 9.50,
       "mediaRacion": 5.50,
-      "imagen": "assets/menu/rabas.jpg",
+      "imagen": "assets/rabas.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -234,8 +234,8 @@
     {
       "id": 5,
       "nombre": {
-        "es": "Patata casera BraviolÃ­",
-        "eu": "Etxeko patata BraviolÃ­"
+        "es": "Patata casera Braviolí",
+        "eu": "Etxeko patata Braviolí"
       },
       "descripcion": {
         "es": "Patata casera, salsa brava y alioli",
@@ -250,11 +250,11 @@
     {
       "id": 6,
       "nombre": {
-        "es": "Croquetas de jamÃ³n/hongos",
+        "es": "Croquetas de jamón/hongos",
         "eu": "Urdaiazpiko edo perretxikoen kroketak"
       },
       "descripcion": {
-        "es": "Croquetas de jamÃ³n o de hongos",
+        "es": "Croquetas de jamón o de hongos",
         "eu": "Urdaiazpiko edo perretxikoen kroketak"
       },
       "precio": 9.50,
@@ -270,7 +270,7 @@
         "eu": "Perretxikoak ganbekin vinagretarekin"
       },
       "descripcion": {
-        "es": "ChampiÃ±ones, gambas, vinagreta",
+        "es": "Champiñones, gambas, vinagreta",
         "eu": "Perretxikoak, ganbak, vinagreta"
       },
       "precio": 8.50,
@@ -307,7 +307,7 @@
       },
       "precio": 8.50,
       "mediaRacion": null,
-      "imagen": "assets/menu/pimientos.jpg",
+      "imagen": "images/racion-9.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -330,11 +330,11 @@
     {
       "id": 11,
       "nombre": {
-        "es": "TequeÃ±os",
+        "es": "Tequeños",
         "eu": "tekegnoak"
       },
       "descripcion": {
-        "es": "TequeÃ±os rellenos de guayaba y queso",
+        "es": "Tequeños rellenos de guayaba y queso",
         "eu": "Guaiaba eta gaztaz betetako tekegnoak"
       },
       "precio": 9.50,
@@ -352,11 +352,11 @@
         "eu": "GANBARA"
       },
       "descripcion": {
-        "es": "180 gr. Angus, doble bacon, queso danÃ©s, cebolla caramelizada, huevo, tomate",
+        "es": "180 gr. Angus, doble bacon, queso danés, cebolla caramelizada, huevo, tomate",
         "eu": "180 gr. Angus, zirikatz bikoitza, daniar gazta, tipula karamelizatua, arraultza, tomatea"
       },
       "precio": 13.50,
-      "imagen": "assets/menu/ganbara.jpg",
+      "imagen": "assets/ganbara.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -386,7 +386,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, Camembert gazta, perretxiko laminatuak, tipula"
       },
       "precio": 13.00,
-      "imagen": "assets/menu/francesa.jpg",
+      "imagen": "assets/francesa.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -397,7 +397,7 @@
         "eu": "SERRANA"
       },
       "descripcion": {
-        "es": "180 gr. Angus, jamÃ³n, queso danÃ©s, cebolla morada, hilos de patata, salsa tÃ¡rtara",
+        "es": "180 gr. Angus, jamón, queso danés, cebolla morada, hilos de patata, salsa tártara",
         "eu": "180 gr. Angus, urdaiazpiko, daniar gazta, tipula morea, patata hariak, saltsa tartara"
       },
       "precio": 13.00,
@@ -416,7 +416,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, tipula karamelizatua, pepiniloak, arraultza, Emmy saltsa"
       },
       "precio": 13.50,
-      "imagen": "assets/menu/emmy.jpg",
+      "imagen": "assets/emmy.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -427,11 +427,11 @@
         "eu": "COLOMBIANA"
       },
       "descripcion": {
-        "es": "180 gr. Angus, doble bacon, queso cheddar, hilos de patata, 70 gr. carne mechada, salsa de piÃ±a",
+        "es": "180 gr. Angus, doble bacon, queso cheddar, hilos de patata, 70 gr. carne mechada, salsa de piña",
         "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, patata hariak, 70 gr. haragia mechada, anana saltsa"
       },
       "precio": 14.50,
-      "imagen": "assets/menu/colombiana.jpg",
+      "imagen": "assets/colombiana.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -442,11 +442,11 @@
         "eu": "BACONESSA"
       },
       "descripcion": {
-        "es": "180 gr. Angus, doble queso danÃ©s, doble bacon, bacon crispy, cebolla crispy, huevo, salsa BacÃ³n",
-        "eu": "180 gr. Angus, daniar gazta bikoitza, zirikatz bikoitza, zirikatz crispy, tipula crispy, arraultza, BacÃ³n saltsa"
+        "es": "180 gr. Angus, doble queso danés, doble bacon, bacon crispy, cebolla crispy, huevo, salsa Bacón",
+        "eu": "180 gr. Angus, daniar gazta bikoitza, zirikatz bikoitza, zirikatz crispy, tipula crispy, arraultza, Bacón saltsa"
       },
       "precio": 14.00,
-      "imagen": "assets/menu/baconessa.jpg",
+      "imagen": "assets/baconessa.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -457,11 +457,11 @@
         "eu": "BBQ"
       },
       "descripcion": {
-        "es": "180 gr. Angus, doble bacon, queso danÃ©s, cebolla, chaskis, salsa Barbacoa",
+        "es": "180 gr. Angus, doble bacon, queso danés, cebolla, chaskis, salsa Barbacoa",
         "eu": "180 gr. Angus, zirikatz bikoitza, daniar gazta, tipula, chaskis, Barbacoa saltsa"
       },
       "precio": 13.00,
-      "imagen": "assets/menu/bbq.jpg",
+      "imagen": "assets/bbq.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -472,11 +472,11 @@
         "eu": "AZTECA"
       },
       "descripcion": {
-        "es": "180 gr. Angus, queso cheddar, cebolla crispy, jalapeÃ±o, guacamole, nachos, salsa de jalapeÃ±o asado",
-        "eu": "180 gr. Angus, cheddar gazta, tipula crispy, jalapeÃ±o, guacamole, nachos, jalapeÃ±o errearen saltsa"
+        "es": "180 gr. Angus, queso cheddar, cebolla crispy, jalapeño, guacamole, nachos, salsa de jalapeño asado",
+        "eu": "180 gr. Angus, cheddar gazta, tipula crispy, jalapeño, guacamole, nachos, jalapeño errearen saltsa"
       },
       "precio": 13.50,
-      "imagen": "assets/menu/azteca.jpg",
+      "imagen": "assets/azteca.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -491,7 +491,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, Burger Saltsa"
       },
       "precio": 12.50,
-      "imagen": "assets/menu/clasica.jpg",
+      "imagen": "assets/clasica.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -524,7 +524,7 @@
       },
       "precio": 15.00,
       "precioPorKg": null,
-      "imagen": "assets/menu/ganbaraturbo.jpg",
+      "imagen": "assets/ganbaraturbo.jpg",
       "categoria": "chuleta",
       "disponible": true
     },
@@ -578,4 +578,3 @@
     }
   ]
 }
-

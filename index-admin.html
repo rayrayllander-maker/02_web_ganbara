@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS en migración · Ganbara</title>
+    <link rel="icon" type="image/png" href="assets/Logo_color_ganbara.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <main class="migration-shell">
+        <section class="migration-card">
+            <header class="migration-header">
+                <img class="migration-logo" src="assets/Logo_color_ganbara.png" alt="Ganbara">
+                <h1>Migrando el CMS a Netlify</h1>
+                <p class="migration-lead">Estamos retirando el panel basado en Firebase para preparar la nueva experiencia con Netlify CMS.</p>
+            </header>
+
+            <section class="migration-section">
+                <h2>¿Qué está pasando?</h2>
+                <p>El dashboard anterior ya no acepta ediciones. Todo el contenido público sigue cargándose desde los archivos estáticos del repositorio.</p>
+            </section>
+
+            <section class="migration-section">
+                <h2>Próximos pasos</h2>
+                <ol class="migration-steps">
+                    <li>Configuraremos Netlify CMS para gestionar los menús, hero e imágenes.</li>
+                    <li>Publicaremos un nuevo backend de autenticación con Netlify Identity.</li>
+                    <li>Conectaremos el CMS para que realice commits automáticos en GitHub.</li>
+                </ol>
+            </section>
+
+            <section class="migration-section" data-migration-notes>
+                <h2>Durante la transición</h2>
+                <ul>
+                    <li>Los cambios manuales al contenido pueden seguir haciéndose editando los archivos JSON en el repositorio.</li>
+                    <li>No elimines la cuenta o claves de Firebase hasta finalizar la migración.</li>
+                    <li>Si necesitas acceder al sitio público, visita <a href="index.html">index.html</a>.</li>
+                </ul>
+            </section>
+
+            <footer class="migration-footer">
+                <button class="migration-button" type="button" data-copy-plan>Copiar plan de migración</button>
+                <p class="migration-status" data-copy-feedback hidden>Plan copiado al portapapeles.</p>
+            </footer>
+        </section>
+    </main>
+
+    <script src="admin.js" defer></script>
+</body>
+</html>
