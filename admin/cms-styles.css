@@ -16,36 +16,37 @@
 }
 
 /* Global Overrides */
-body {
+* {
   font-family: 'Poppins', -apple-system, sans-serif !important;
+}
+
+body {
   background: var(--bg-main) !important;
 }
 
-/* Hide ALL duplicate logos in header */
+/* Hide ALL logos everywhere */
+img[src*="Logo"],
+img[src*="logo"],
+[class*="Logo"] img,
+svg[class*="Logo"],
 [data-testid="app-header"] img,
-header img,
+[data-testid="app-header"] svg,
+header img:not([alt*="card"]),
+header svg:first-child,
 [class*="AppHeader"] img,
-[class*="Header"] img {
+[class*="Header"] img,
+aside img:first-of-type {
   display: none !important;
-}
-
-/* Custom logo with pseudo-element */
-[data-testid="app-header"]::before,
-header[class*="AppHeader"]::before {
-  content: '';
-  display: inline-block;
-  width: 48px;
-  height: 48px;
-  background: url('../assets/Logo_color_ganbara.png') center/cover;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(33, 15, 4, 0.2);
-  margin-right: 1rem;
-  flex-shrink: 0;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 /* Header styling */
 [data-testid="app-header"],
-header[class*="AppHeader"] {
+header[class*="AppHeader"],
+header {
   background: var(--bg-white) !important;
   border-bottom: 1px solid var(--border-color) !important;
   box-shadow: var(--shadow) !important;
@@ -53,11 +54,22 @@ header[class*="AppHeader"] {
 }
 
 [data-testid="app-header"] h1,
-header h1 {
+header h1,
+h1 {
   font-family: 'Inknut Antiqua', serif !important;
   font-size: 1.5rem !important;
   color: var(--color-primary) !important;
   font-weight: 700 !important;
+}
+
+/* Collection Title */
+h2[class*="CollectionTop"],
+[class*="ViewControls"] h2 {
+  font-family: 'Inknut Antiqua', serif !important;
+  font-size: 2rem !important;
+  color: var(--color-primary) !important;
+  font-weight: 700 !important;
+  margin-bottom: 1.5rem !important;
 }
 
 /* Sidebar */
@@ -98,38 +110,70 @@ main[class*="MainContent"],
 
 /* Cards Grid */
 [class*="ListControl"],
-[class*="EntryListing"] {
+[class*="EntryListing"],
+ul[class*="ListControl"] {
   display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
   gap: 1.5rem !important;
   margin-top: 1rem !important;
+  padding: 0 !important;
+  list-style: none !important;
 }
 
 /* Individual Cards */
 [class*="EntryCard"],
-[class*="Card"] {
+[class*="Card"],
+li[class*="Card"] {
   background: var(--bg-white) !important;
   border: 1px solid var(--border-color) !important;
-  border-radius: 12px !important;
+  border-radius: 14px !important;
   padding: 1.5rem !important;
   box-shadow: var(--shadow) !important;
-  transition: all 0.3s !important;
+  transition: all 0.3s ease !important;
+  min-height: 180px !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 [class*="EntryCard"]:hover,
-[class*="Card"]:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(33, 15, 4, 0.16) !important;
+[class*="Card"]:hover,
+li[class*="Card"]:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 24px rgba(33, 15, 4, 0.18) !important;
   border-color: var(--color-accent) !important;
 }
 
+/* Card Content */
 [class*="EntryCard"] h2,
-[class*="Card"] h2 {
+[class*="Card"] h2,
+li[class*="Card"] h2,
+[class*="EntryCard"] [class*="Title"],
+[class*="Card"] [class*="Title"] {
   font-family: 'Playfair Display', serif !important;
-  font-size: 1.15rem !important;
+  font-size: 1.25rem !important;
   color: var(--color-primary) !important;
   font-weight: 600 !important;
+  margin-bottom: 0.75rem !important;
+  line-height: 1.3 !important;
+}
+
+[class*="EntryCard"] p,
+[class*="Card"] p,
+li[class*="Card"] p,
+[class*="EntryCard"] [class*="Description"],
+[class*="Card"] [class*="Description"] {
+  color: var(--text-secondary) !important;
+  font-size: 0.9rem !important;
+  line-height: 1.5 !important;
   margin-bottom: 0.5rem !important;
+}
+
+/* Card meta info */
+[class*="EntryCard"] span,
+[class*="Card"] span,
+[class*="Meta"] {
+  color: var(--text-secondary) !important;
+  font-size: 0.85rem !important;
 }
 
 /* Buttons */
