@@ -62,7 +62,7 @@ h1, h2, h3 {
     font-family: 'Inknut Antiqua', serif;
     font-weight: 700;
 }
-
+    
 .section-title {
     font-size: 2.5rem;
     text-align: center;
@@ -1234,6 +1234,32 @@ body.dark-mode .footer-hours-table td {
     color: rgba(255, 255, 255, 0.85);
 }
 
+.location-map {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    border: 2px solid var(--color-secondary);
+}
+
+.location-map h3 {
+    margin-bottom: 1.5rem;
+    color: var(--color-primary);
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.map-container {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.map-container iframe {
+    display: block;
+    width: 100%;
+}
+
 .reservation-form {
     background: white;
     padding: 2rem;
@@ -1810,7 +1836,8 @@ body.dark-mode .about-section,
 body.dark-mode .contact-section { background-color: rgba(45, 28, 20, 0.45); }
 
 body.dark-mode .menu-item,
-body.dark-mode .reservation-form { 
+body.dark-mode .reservation-form,
+body.dark-mode .location-map { 
     background: #3a2420; 
     border-color: rgba(205, 93, 103, 0.25); /* tono del color secundario */
     box-shadow: 0 5px 20px rgba(0,0,0,0.5);
