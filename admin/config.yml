@@ -2,241 +2,167 @@ backend:
   name: git-gateway
   branch: main
 
-local_backend: true
-
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
-publish_mode: editorial_workflow
-
 collections:
-  - name: menu
-    label: Menú
-    file: "menu-data.json"
+  - name: bocadillos
+    label: "Bocadillos"
+    folder: "content/bocadillos"
+    create: true
+    slug: "{{slug}}"
+    extension: json
     format: json
-    delete: false
     editor:
       preview: false
     fields:
-      - label: Bocadillos
-        name: bocadillos
-        widget: list
-        summary: "{{fields.nombre.es}} · €{{fields.precio}}"
+      - { label: ID, name: id, widget: number, min: 1 }
+      - label: Nombre
+        name: nombre
+        widget: object
         fields:
-          - label: ID
-            name: id
-            widget: number
-            value_type: int
-            min: 1
-          - label: Nombre
-            name: nombre
-            widget: object
-            fields:
-              - { label: Español, name: es, widget: string }
-              - { label: Euskera, name: eu, widget: string }
-          - label: Descripción
-            name: descripcion
-            widget: object
-            fields:
-              - { label: Español, name: es, widget: text }
-              - { label: Euskera, name: eu, widget: text }
-          - label: Precio
-            name: precio
-            widget: number
-            value_type: float
-            step: 0.1
-          - label: Imagen
-            name: imagen
-            widget: image
-            choose_url: true
-          - label: Disponible
-            name: disponible
-            widget: boolean
-            default: true
-          - label: Categoría
-            name: categoria
-            widget: hidden
-            default: bocadillos
-      - label: Raciones
-        name: raciones
-        widget: list
-        summary: "{{fields.nombre.es}} · €{{fields.precio}}"
+          - { label: Español, name: es, widget: string }
+          - { label: Euskera, name: eu, widget: string, required: false }
+      - label: Descripción
+        name: descripcion
+        widget: object
         fields:
-          - label: ID
-            name: id
-            widget: number
-            value_type: int
-            min: 1
-          - label: Nombre
-            name: nombre
-            widget: object
-            fields:
-              - { label: Español, name: es, widget: string }
-              - { label: Euskera, name: eu, widget: string }
-          - label: Descripción
-            name: descripcion
-            widget: object
-            fields:
-              - { label: Español, name: es, widget: text }
-              - { label: Euskera, name: eu, widget: text }
-          - label: Precio
-            name: precio
-            widget: number
-            value_type: float
-            step: 0.1
-          - label: Media Ración
-            name: mediaRacion
-            widget: number
-            value_type: float
-            step: 0.1
-            required: false
-          - label: Imagen
-            name: imagen
-            widget: image
-            choose_url: true
-          - label: Disponible
-            name: disponible
-            widget: boolean
-            default: true
-          - label: Categoría
-            name: categoria
-            widget: hidden
-            default: raciones
-      - label: Hamburguesas
-        name: hamburguesas
-        widget: list
-        summary: "{{fields.nombre.es}} · €{{fields.precio}}"
+          - { label: Español, name: es, widget: text }
+          - { label: Euskera, name: eu, widget: text, required: false }
+      - { label: Precio, name: precio, widget: number, step: 0.1 }
+      - { label: Imagen, name: imagen, widget: image }
+      - { label: Disponible, name: disponible, widget: boolean, default: true }
+      - { label: Categoría, name: categoria, widget: hidden, default: bocadillos }
+
+  - name: raciones
+    label: "Raciones"
+    folder: "content/raciones"
+    create: true
+    slug: "{{slug}}"
+    extension: json
+    format: json
+    editor:
+      preview: false
+    fields:
+      - { label: ID, name: id, widget: number, min: 1 }
+      - label: Nombre
+        name: nombre
+        widget: object
         fields:
-          - label: ID
-            name: id
-            widget: number
-            value_type: int
-            min: 1
-          - label: Nombre
-            name: nombre
-            widget: object
-            fields:
-              - { label: Español, name: es, widget: string }
-              - { label: Euskera, name: eu, widget: string }
-          - label: Descripción
-            name: descripcion
-            widget: object
-            fields:
-              - { label: Español, name: es, widget: text }
-              - { label: Euskera, name: eu, widget: text }
-          - label: Precio
-            name: precio
-            widget: number
-            value_type: float
-            step: 0.1
-          - label: Imagen
-            name: imagen
-            widget: image
-            choose_url: true
-          - label: Disponible
-            name: disponible
-            widget: boolean
-            default: true
-          - label: Categoría
-            name: categoria
-            widget: hidden
-            default: hamburguesas
-      - label: Chuleta Burgers
-        name: chuleta
-        widget: list
-        summary: "{{fields.nombre.es}} · €{{fields.precio}}"
+          - { label: Español, name: es, widget: string }
+          - { label: Euskera, name: eu, widget: string, required: false }
+      - label: Descripción
+        name: descripcion
+        widget: object
         fields:
-          - label: ID
-            name: id
-            widget: number
-            value_type: int
-            min: 1
-          - label: Nombre
-            name: nombre
-            widget: object
-            fields:
-              - { label: Español, name: es, widget: string }
-              - { label: Euskera, name: eu, widget: string }
-          - label: Descripción
-            name: descripcion
-            widget: object
-            fields:
-              - { label: Español, name: es, widget: text }
-              - { label: Euskera, name: eu, widget: text }
-          - label: Precio
-            name: precio
-            widget: number
-            value_type: float
-            step: 0.1
-          - label: Precio por Kg
-            name: precioPorKg
-            widget: number
-            value_type: float
-            step: 0.1
-            required: false
-          - label: Imagen
-            name: imagen
-            widget: image
-            choose_url: true
-          - label: Disponible
-            name: disponible
-            widget: boolean
-            default: true
-          - label: Categoría
-            name: categoria
-            widget: hidden
-            default: chuleta
-      - label: Postres
-        name: postres
-        widget: list
-        summary: "{{fields.nombre.es}} · €{{fields.precio}}"
+          - { label: Español, name: es, widget: text }
+          - { label: Euskera, name: eu, widget: text, required: false }
+      - { label: Precio, name: precio, widget: number, step: 0.1 }
+      - { label: Media ración, name: mediaRacion, widget: number, step: 0.1, required: false }
+      - { label: Imagen, name: imagen, widget: image }
+      - { label: Disponible, name: disponible, widget: boolean, default: true }
+      - { label: Categoría, name: categoria, widget: hidden, default: raciones }
+
+  - name: hamburguesas
+    label: "Hamburguesas"
+    folder: "content/hamburguesas"
+    create: true
+    slug: "{{slug}}"
+    extension: json
+    format: json
+    editor:
+      preview: false
+    fields:
+      - { label: ID, name: id, widget: number, min: 1 }
+      - label: Nombre
+        name: nombre
+        widget: object
         fields:
-          - label: ID
-            name: id
-            widget: number
-            value_type: int
-            min: 1
-          - label: Nombre
-            name: nombre
-            widget: object
-            fields:
-              - { label: Español, name: es, widget: string }
-              - { label: Euskera, name: eu, widget: string }
-          - label: Descripción
-            name: descripcion
-            widget: object
-            fields:
-              - { label: Español, name: es, widget: text }
-              - { label: Euskera, name: eu, widget: text }
-          - label: Precio
-            name: precio
-            widget: number
-            value_type: float
-            step: 0.1
-          - label: Imagen
-            name: imagen
-            widget: image
-            choose_url: true
-          - label: Disponible
-            name: disponible
-            widget: boolean
-            default: true
-          - label: Categoría
-            name: categoria
-            widget: hidden
-            default: postres
+          - { label: Español, name: es, widget: string }
+          - { label: Euskera, name: eu, widget: string, required: false }
+      - label: Descripción
+        name: descripcion
+        widget: object
+        fields:
+          - { label: Español, name: es, widget: text }
+          - { label: Euskera, name: eu, widget: text, required: false }
+      - { label: Precio, name: precio, widget: number, step: 0.1 }
+      - { label: Imagen, name: imagen, widget: image }
+      - { label: Disponible, name: disponible, widget: boolean, default: true }
+      - { label: Categoría, name: categoria, widget: hidden, default: hamburguesas }
+
+  - name: chuleta
+    label: "Chuleta"
+    folder: "content/chuleta"
+    create: true
+    slug: "{{slug}}"
+    extension: json
+    format: json
+    editor:
+      preview: false
+    fields:
+      - { label: ID, name: id, widget: number, min: 1 }
+      - label: Nombre
+        name: nombre
+        widget: object
+        fields:
+          - { label: Español, name: es, widget: string }
+          - { label: Euskera, name: eu, widget: string, required: false }
+      - label: Descripción
+        name: descripcion
+        widget: object
+        fields:
+          - { label: Español, name: es, widget: text }
+          - { label: Euskera, name: eu, widget: text, required: false }
+      - { label: Precio, name: precio, widget: number, step: 0.1 }
+      - { label: Precio por kg, name: precioPorKg, widget: number, step: 0.1, required: false }
+      - { label: Imagen, name: imagen, widget: image }
+      - { label: Disponible, name: disponible, widget: boolean, default: true }
+      - { label: Categoría, name: categoria, widget: hidden, default: chuleta }
+
+  - name: postres
+    label: "Postres"
+    folder: "content/postres"
+    create: true
+    slug: "{{slug}}"
+    extension: json
+    format: json
+    editor:
+      preview: false
+    fields:
+      - { label: ID, name: id, widget: number, min: 1 }
+      - label: Nombre
+        name: nombre
+        widget: object
+        fields:
+          - { label: Español, name: es, widget: string }
+          - { label: Euskera, name: eu, widget: string, required: false }
+      - label: Descripción
+        name: descripcion
+        widget: object
+        fields:
+          - { label: Español, name: es, widget: text }
+          - { label: Euskera, name: eu, widget: text, required: false }
+      - { label: Precio, name: precio, widget: number, step: 0.1 }
+      - { label: Imagen, name: imagen, widget: image }
+      - { label: Disponible, name: disponible, widget: boolean, default: true }
+      - { label: Categoría, name: categoria, widget: hidden, default: postres }
 
   - name: hero
-    label: Carrusel principal
-    file: "hero-carousel.json"
+    label: "Hero Carousel"
+    folder: "content/hero"
+    create: true
+    slug: "slide-{{slug}}"
+    extension: json
     format: json
     editor:
       preview: false
     fields:
-      - label: Slides
-        name: slides
-        widget: list
-        summary: "{{fields.category}} · {{fields.id}}"
-        fields:
-          - { label: Categoría, name: category, widget: string }
-          - { label: ID de plato, name: id, widget: number, value_type: int }
+      - { label: Título ES, name: title_es, widget: string }
+      - { label: Título EU, name: title_eu, widget: string, required: false }
+      - { label: Subtítulo ES, name: subtitle_es, widget: text, required: false }
+      - { label: Subtítulo EU, name: subtitle_eu, widget: text, required: false }
+      - { label: Imagen, name: image, widget: image }
+      - { label: Orden, name: order, widget: number, default: 1, min: 1 }
+      - { label: Activo, name: active, widget: boolean, default: true }
+

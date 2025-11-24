@@ -1,0 +1,16 @@
+﻿{
+    "id":  4,
+    "nombre":  {
+                   "es":  "Patata casera Brava o alioli",
+                   "eu":  "Etxeko patata Brava edo alliolia"
+               },
+    "descripcion":  {
+                        "es":  "Patata casera, salsa brava o alioli",
+                        "eu":  "Etxeko patata, saltsa brava edo allioli"
+                    },
+    "precio":  6.00,
+    "mediaRacion":  null,
+    "imagen":  "images/racion-4.jpg",
+    "categoria":  "raciones",
+    "disponible":  true
+}

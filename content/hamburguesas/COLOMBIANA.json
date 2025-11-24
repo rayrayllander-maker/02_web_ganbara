@@ -1,0 +1,15 @@
+﻿{
+    "id":  6,
+    "nombre":  {
+                   "es":  "COLOMBIANA",
+                   "eu":  "COLOMBIANA"
+               },
+    "descripcion":  {
+                        "es":  "180 gr. Angus, doble bacon, queso cheddar, hilos de patata, 70 gr. carne mechada, salsa de piÃ±a",
+                        "eu":  "180 gr. Angus, zirikatz bikoitza, cheddar gazta, patata hariak, 70 gr. haragia mechada, anana saltsa"
+                    },
+    "precio":  14.50,
+    "imagen":  "assets/colombiana.jpg",
+    "categoria":  "hamburguesas",
+    "disponible":  true
+}

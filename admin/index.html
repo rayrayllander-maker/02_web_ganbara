@@ -6,58 +6,257 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel CMS · Ganbara</title>
   <link rel="icon" type="image/png" href="../assets/Logo_color_ganbara.png">
-  <style>
-    /* Minimal shell so admins get immediate feedback while the CMS carga */
-    :root { color-scheme: light dark; }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      background: #0f172a;
-      color: #f8fafc;
-      display: grid;
-      place-items: center;
-      min-height: 100vh;
-      padding: 3rem 1.5rem;
-    }
-    .splash {
-      text-align: center;
-      max-width: 580px;
-    }
-    .splash h1 {
-      font-size: clamp(1.5rem, 3vw, 2.5rem);
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.04em;
-    }
-    .splash p {
-      margin: 0.25rem 0;
-      line-height: 1.6;
-      color: #cbd5f5;
-    }
-    .splash a {
-      color: #38bdf8;
-    }
-  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@700&family=Playfair+Display:wght@600;700&family=Texturina:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-  <main class="splash" aria-live="polite">
-    <h1>Administración de contenido</h1>
-    <p>Estamos cargando Netlify CMS. Si el panel no aparece, recarga la página o revisa la consola.</p>
-    <p>¿Necesitas ayuda? Contacta con <a href="mailto:info@ganbara.eus">info@ganbara.eus</a>.</p>
+  <main class="splash" aria-live="polite" role="status">
+    <header class="splash-header">
+      <img src="../assets/Logo_color_ganbara.png" alt="Logotipo Ganbara" class="splash-logo" width="84" height="84" loading="lazy">
+      <div class="splash-headings">
+        <p class="splash-subtitle">Ganbara CMS</p>
+        <h1>Panel de administración</h1>
+        <p class="splash-description">Gestiona el menú, las imágenes y el contenido público de la web.</p>
+      </div>
+    </header>
+    <section class="splash-card">
+      <h2>Conectando con el gestor…</h2>
+      <p>Estamos cargando Netlify CMS. Si el panel no aparece, recarga la página o revisa la consola.</p>
+      <div class="splash-progress" aria-hidden="true">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+      <div class="splash-actions">
+        <a href="/">Previsualizar sitio</a>
+        <a href="mailto:info@ganbara.eus">Contactar soporte</a>
+      </div>
+    </section>
   </main>
 
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js" defer></script>
   <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js" defer></script>
   <script>
-    // Redirige al panel tras iniciar sesión desde otra página
     if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", function(user) {
+      window.netlifyIdentity.on('init', function (user) {
         if (!user) {
-          window.netlifyIdentity.on("login", function() {
-            document.location.href = "/admin/";
+          window.netlifyIdentity.on('login', function () {
+            document.location.href = '/admin/';
           });
         }
       });
     }
+  </script>
+  <script>
+    window.addEventListener('load', function () {
+      var splash = document.querySelector('main.splash');
+
+      var collectionBranding = {
+        bocadillos: {
+          kicker: 'Menú',
+          title: 'Bocadillos',
+          description: 'Gestiona los bocadillos del restaurante.',
+          cta: 'Crear bocadillo'
+        },
+        raciones: {
+          kicker: 'Menú',
+          title: 'Raciones',
+          description: 'Gestiona las raciones del restaurante.',
+          cta: 'Crear ración'
+        },
+        hamburguesas: {
+          kicker: 'Menú',
+          title: 'Hamburguesas',
+          description: 'Gestiona las hamburguesas del restaurante.',
+          cta: 'Crear hamburguesa'
+        },
+        chuleta: {
+          kicker: 'Menú',
+          title: 'Chuleta',
+          description: 'Gestiona los platos de chuleta del restaurante.',
+          cta: 'Crear plato'
+        },
+        postres: {
+          kicker: 'Menú',
+          title: 'Postres',
+          description: 'Gestiona los postres del restaurante.',
+          cta: 'Crear postre'
+        },
+        hero: {
+          kicker: 'Carrusel destacado',
+          title: 'Hero Carousel',
+          description: 'Configura las diapositivas destacadas que aparecen en la portada.',
+          cta: 'Añadir diapositiva'
+        },
+        default: {
+          kicker: 'Ganbara CMS',
+          title: 'Panel de administración',
+          description: 'Gestiona el contenido del sitio Ganbara de forma sencilla.',
+          cta: 'Nuevo contenido'
+        }
+      };
+
+      var ensureMounted = function () {
+        if (!document.querySelector('#nc-root')) {
+          return false;
+        }
+        document.body.classList.add('cms-mounted');
+        if (splash) {
+          splash.classList.add('splash-hidden');
+          window.setTimeout(function () {
+            if (splash && splash.parentElement) {
+              splash.parentElement.removeChild(splash);
+              splash = null;
+            }
+          }, 420);
+        }
+        return true;
+      };
+
+      var getCollection = function () {
+        var hash = window.location.hash || '';
+        var match = hash.match(/collection\/([^\/]+)/);
+        return match ? match[1] : null;
+      };
+
+      var isEditorRoute = function () {
+        var hash = window.location.hash || '';
+        return /\/entry\//.test(hash) || /\/new$/.test(hash);
+      };
+
+      var heroSection;
+
+      var ensureHero = function (main) {
+        if (!heroSection) {
+          heroSection = document.createElement('section');
+          heroSection.className = 'ganbara-hero';
+          heroSection.innerHTML = [
+            '<div class="ganbara-hero-text">',
+            '  <p class="ganbara-hero-kicker"></p>',
+            '  <h2 class="ganbara-hero-title"></h2>',
+            '  <p class="ganbara-hero-desc"></p>',
+            '</div>',
+            '<div class="ganbara-hero-actions"></div>'
+          ].join('');
+          main.prepend(heroSection);
+        }
+        return heroSection;
+      };
+
+      var updateHeroContent = function (collection) {
+        if (!heroSection) {
+          return;
+        }
+        var info = collectionBranding[collection] || collectionBranding.default;
+        heroSection.querySelector('.ganbara-hero-kicker').textContent = info.kicker;
+        heroSection.querySelector('.ganbara-hero-title').textContent = info.title;
+        heroSection.querySelector('.ganbara-hero-desc').textContent = info.description;
+        heroSection.dataset.collection = collection || 'default';
+        return info;
+      };
+
+      var attachActionButton = function (main, info) {
+        if (!heroSection) {
+          return;
+        }
+        var actions = heroSection.querySelector('.ganbara-hero-actions');
+        if (!actions) {
+          return;
+        }
+        var toolbar = main.querySelector('[class*="Toolbar"]');
+        if (!toolbar) {
+          return;
+        }
+        toolbar.classList.add('ganbara-toolbar');
+        var primaryButton = toolbar.querySelector('button[data-testid*="create"], button[title*="New"], button[aria-label*="New"], button[title*="Crear"], button[aria-label*="Crear"], button[title*="Añadir"], button[aria-label*="Añadir"]');
+        if (!primaryButton) {
+          primaryButton = Array.from(toolbar.querySelectorAll('button')).find(function (btn) {
+            var text = (btn.textContent || '').toLowerCase();
+            return /nuevo|new|crear|añadir|add/.test(text);
+          });
+        }
+        if (primaryButton) {
+          primaryButton.classList.add('ganbara-hero-btn');
+          if (info && info.cta) {
+            primaryButton.innerHTML = '<span>+ ' + info.cta + '</span>';
+          }
+          if (primaryButton.parentElement !== actions) {
+            actions.innerHTML = '';
+            actions.appendChild(primaryButton);
+          }
+        }
+      };
+
+      var enhanceListing = function (main) {
+        var listing = main.querySelector('[class*="EntryListing"], [data-testid="collection-items"]');
+        if (!listing) {
+          return;
+        }
+        listing.classList.add('ganbara-card-grid');
+      };
+
+      var applyBranding = function () {
+        if (!ensureMounted()) {
+          return;
+        }
+
+        var main = document.querySelector('#nc-root main[class*="MainContent"]');
+        if (!main) {
+          return;
+        }
+
+        var collection = getCollection();
+        if (isEditorRoute()) {
+          if (heroSection) {
+            heroSection.classList.add('is-hidden');
+          }
+          return;
+        }
+
+        ensureHero(main);
+        if (heroSection) {
+          heroSection.classList.remove('is-hidden');
+        }
+        var info = updateHeroContent(collection);
+        attachActionButton(main, info);
+        enhanceListing(main);
+      };
+
+      if (!ensureMounted()) {
+        var bootObserver = new MutationObserver(function () {
+          if (ensureMounted()) {
+            bootObserver.disconnect();
+            applyBranding();
+          }
+        });
+        bootObserver.observe(document.body, { childList: true, subtree: true });
+      } else {
+        applyBranding();
+      }
+
+      var liveObserver = new MutationObserver(function () {
+        applyBranding();
+      });
+
+      var startObserver = function () {
+        var root = document.querySelector('#nc-root');
+        if (root) {
+          liveObserver.observe(root, { childList: true, subtree: true });
+        }
+      };
+
+      startObserver();
+
+      window.addEventListener('hashchange', function () {
+        setTimeout(applyBranding, 40);
+      });
+
+      if (window.CMS && typeof window.CMS.registerPreviewStyle === 'function') {
+        window.CMS.registerPreviewStyle('../styles.css');
+      }
+    });
   </script>
 </body>
 </html>

@@ -1,0 +1,15 @@
+﻿{
+    "id":  3,
+    "nombre":  {
+                   "es":  "FRANCESA",
+                   "eu":  "FRANCESA"
+               },
+    "descripcion":  {
+                        "es":  "180 gr. Angus, doble bacon, queso Camembert, champis laminados, cebolla",
+                        "eu":  "180 gr. Angus, zirikatz bikoitza, Camembert gazta, perretxiko laminatuak, tipula"
+                    },
+    "precio":  13.00,
+    "imagen":  "assets/francesa.jpg",
+    "categoria":  "hamburguesas",
+    "disponible":  true
+}

@@ -1,0 +1,15 @@
+﻿{
+    "id":  9,
+    "nombre":  {
+                   "es":  "Especial",
+                   "eu":  "Berezia"
+               },
+    "descripcion":  {
+                        "es":  "JamÃ³n, pimientos verdes, queso Idiazabal, setas",
+                        "eu":  "Urdaiazpia, piper berdeak, Idiazabal gazta, perretxikoak"
+                    },
+    "precio":  8.00,
+    "imagen":  "images/bocadillo-9.jpg",
+    "categoria":  "bocadillos",
+    "disponible":  true
+}

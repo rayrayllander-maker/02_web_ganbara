@@ -1,0 +1,16 @@
+﻿{
+    "id":  6,
+    "nombre":  {
+                   "es":  "Croquetas de jamÃ³n/hongos",
+                   "eu":  "Urdaiazpiko edo perretxikoen kroketak"
+               },
+    "descripcion":  {
+                        "es":  "Croquetas de jamÃ³n o de hongos",
+                        "eu":  "Urdaiazpiko edo perretxikoen kroketak"
+                    },
+    "precio":  9.50,
+    "mediaRacion":  null,
+    "imagen":  "assets/croquetas.png",
+    "categoria":  "raciones",
+    "disponible":  true
+}

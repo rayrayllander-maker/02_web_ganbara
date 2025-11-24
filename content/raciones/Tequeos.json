@@ -1,0 +1,16 @@
+﻿{
+    "id":  11,
+    "nombre":  {
+                   "es":  "TequeÃ±os",
+                   "eu":  "tekegnoak"
+               },
+    "descripcion":  {
+                        "es":  "TequeÃ±os rellenos de guayaba y queso",
+                        "eu":  "Guaiaba eta gaztaz betetako tekegnoak"
+                    },
+    "precio":  9.50,
+    "mediaRacion":  null,
+    "imagen":  "images/racion-11.jpg",
+    "categoria":  "raciones",
+    "disponible":  true
+}

@@ -1,0 +1,15 @@
+﻿{
+    "id":  10,
+    "nombre":  {
+                   "es":  "CLASICA",
+                   "eu":  "KLASIKOA"
+               },
+    "descripcion":  {
+                        "es":  "180 gr. Angus, doble bacon, queso cheddar, Salsa Burger",
+                        "eu":  "180 gr. Angus, zirikatz bikoitza, cheddar gazta, Burger Saltsa"
+                    },
+    "precio":  12.50,
+    "imagen":  "assets/clasica.jpg",
+    "categoria":  "hamburguesas",
+    "disponible":  true
+}

@@ -1,0 +1,15 @@
+﻿{
+    "id":  1,
+    "nombre":  {
+                   "es":  "GANBARA",
+                   "eu":  "GANBARA"
+               },
+    "descripcion":  {
+                        "es":  "180 gr. Angus, doble bacon, queso danÃ©s, cebolla caramelizada, huevo, tomate",
+                        "eu":  "180 gr. Angus, zirikatz bikoitza, daniar gazta, tipula karamelizatua, arraultza, tomatea"
+                    },
+    "precio":  13.50,
+    "imagen":  "assets/ganbara.jpg",
+    "categoria":  "hamburguesas",
+    "disponible":  true
+}

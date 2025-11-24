@@ -1,0 +1,16 @@
+﻿{
+    "id":  2,
+    "nombre":  {
+                   "es":  "Rabas",
+                   "eu":  "Rabak"
+               },
+    "descripcion":  {
+                        "es":  "Calamar rebozado",
+                        "eu":  "Txipiroi errebozatua"
+                    },
+    "precio":  9.50,
+    "mediaRacion":  5.50,
+    "imagen":  "assets/rabas.jpg",
+    "categoria":  "raciones",
+    "disponible":  true
+}

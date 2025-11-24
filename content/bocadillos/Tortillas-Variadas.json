@@ -1,0 +1,15 @@
+﻿{
+    "id":  2,
+    "nombre":  {
+                   "es":  "Tortillas Variadas",
+                   "eu":  "Tortilla desberdinak"
+               },
+    "descripcion":  {
+                        "es":  "Chorizo, patata, jamÃ³n o champis",
+                        "eu":  "Txorizo, patata, urdaiazpia edo perretxikoak"
+                    },
+    "precio":  6.50,
+    "imagen":  "images/bocadillo-2.jpg",
+    "categoria":  "bocadillos",
+    "disponible":  true
+}

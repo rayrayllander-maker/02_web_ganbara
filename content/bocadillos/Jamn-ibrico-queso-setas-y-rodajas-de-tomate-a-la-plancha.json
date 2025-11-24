@@ -1,0 +1,15 @@
+﻿{
+    "id":  7,
+    "nombre":  {
+                   "es":  "JamÃ³n ibÃ©rico, queso, setas y rodajas de tomate a la plancha",
+                   "eu":  "Iberiar urdaiazpia, gazta, perretxikoak eta tomate xaflak plantxan"
+               },
+    "descripcion":  {
+                        "es":  "JamÃ³n ibÃ©rico, queso, setas, tomate a la plancha",
+                        "eu":  "Iberiar urdaiazpia, gazta, perretxikoak, tomatea plantxan"
+                    },
+    "precio":  8.00,
+    "imagen":  "images/bocadillo-7.jpg",
+    "categoria":  "bocadillos",
+    "disponible":  true
+}

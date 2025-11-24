@@ -1,0 +1,15 @@
+﻿{
+    "id":  5,
+    "nombre":  {
+                   "es":  "EMMY",
+                   "eu":  "EMMY"
+               },
+    "descripcion":  {
+                        "es":  "180 gr. Angus, doble bacon, queso cheddar, cebolla caramelizada, pepinillos, huevo, salsa Emmy",
+                        "eu":  "180 gr. Angus, zirikatz bikoitza, cheddar gazta, tipula karamelizatua, pepiniloak, arraultza, Emmy saltsa"
+                    },
+    "precio":  13.50,
+    "imagen":  "assets/emmy.jpg",
+    "categoria":  "hamburguesas",
+    "disponible":  true
+}

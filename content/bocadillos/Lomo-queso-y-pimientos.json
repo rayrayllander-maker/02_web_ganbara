@@ -1,0 +1,15 @@
+﻿{
+    "id":  4,
+    "nombre":  {
+                   "es":  "Lomo, queso y pimientos",
+                   "eu":  "Bizkarreko, gazta eta piperrak"
+               },
+    "descripcion":  {
+                        "es":  "Lomo, queso, pimientos",
+                        "eu":  "Bizkarreko, gazta, piperrak"
+                    },
+    "precio":  7.00,
+    "imagen":  "images/bocadillo-4.jpg",
+    "categoria":  "bocadillos",
+    "disponible":  true
+}

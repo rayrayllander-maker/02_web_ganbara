@@ -1,0 +1,16 @@
+﻿{
+    "id":  9,
+    "nombre":  {
+                   "es":  "Pimientos verdes",
+                   "eu":  "Piper berdeak"
+               },
+    "descripcion":  {
+                        "es":  "Pimientos verdes a la plancha",
+                        "eu":  "Piper berdeak planxan"
+                    },
+    "precio":  8.50,
+    "mediaRacion":  null,
+    "imagen":  "assets/pimientos.jpg",
+    "categoria":  "raciones",
+    "disponible":  true
+}

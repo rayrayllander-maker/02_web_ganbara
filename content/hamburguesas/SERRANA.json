@@ -1,0 +1,15 @@
+﻿{
+    "id":  4,
+    "nombre":  {
+                   "es":  "SERRANA",
+                   "eu":  "SERRANA"
+               },
+    "descripcion":  {
+                        "es":  "180 gr. Angus, jamÃ³n, queso danÃ©s, cebolla morada, hilos de patata, salsa tÃ¡rtara",
+                        "eu":  "180 gr. Angus, urdaiazpiko, daniar gazta, tipula morea, patata hariak, saltsa tartara"
+                    },
+    "precio":  13.00,
+    "imagen":  "images/hamburguesa-4.jpg",
+    "categoria":  "hamburguesas",
+    "disponible":  true
+}

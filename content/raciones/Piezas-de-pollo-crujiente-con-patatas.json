@@ -1,0 +1,16 @@
+﻿{
+    "id":  8,
+    "nombre":  {
+                   "es":  "Piezas de pollo crujiente con patatas",
+                   "eu":  "Oilasko kurruskaria patatekin"
+               },
+    "descripcion":  {
+                        "es":  "Pollo crujiente y patatas",
+                        "eu":  "Oilasko kurruskaria eta patak"
+                    },
+    "precio":  9.50,
+    "mediaRacion":  null,
+    "imagen":  "images/racion-8.jpg",
+    "categoria":  "raciones",
+    "disponible":  true
+}

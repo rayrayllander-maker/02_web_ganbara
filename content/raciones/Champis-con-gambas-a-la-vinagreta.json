@@ -1,0 +1,16 @@
+﻿{
+    "id":  7,
+    "nombre":  {
+                   "es":  "Champis con gambas a la vinagreta",
+                   "eu":  "Perretxikoak ganbekin vinagretarekin"
+               },
+    "descripcion":  {
+                        "es":  "ChampiÃ±ones, gambas, vinagreta",
+                        "eu":  "Perretxikoak, ganbak, vinagreta"
+                    },
+    "precio":  8.50,
+    "mediaRacion":  null,
+    "imagen":  "images/racion-7.jpg",
+    "categoria":  "raciones",
+    "disponible":  true
+}

@@ -1,0 +1,15 @@
+﻿{
+    "id":  3,
+    "nombre":  {
+                   "es":  "Bacon, queso y pimientos",
+                   "eu":  "Zirikatz, gazta eta piperrak"
+               },
+    "descripcion":  {
+                        "es":  "Bacon, queso, pimientos",
+                        "eu":  "Zirikatz, gazta, piperrak"
+                    },
+    "precio":  7.00,
+    "imagen":  "images/bocadillo-3.jpg",
+    "categoria":  "bocadillos",
+    "disponible":  true
+}

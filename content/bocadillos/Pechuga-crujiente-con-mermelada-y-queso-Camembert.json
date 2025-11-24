@@ -1,0 +1,15 @@
+﻿{
+    "id":  10,
+    "nombre":  {
+                   "es":  "Pechuga crujiente con mermelada y queso Camembert",
+                   "eu":  "Bularreko kurruskaria mermelada eta Camembert gaztarekin"
+               },
+    "descripcion":  {
+                        "es":  "Pechuga crujiente, mermelada, queso Camembert",
+                        "eu":  "Bularreko kurruskaria, mermelada, Camembert gazta"
+                    },
+    "precio":  7.50,
+    "imagen":  "images/bocadillo-10.jpg",
+    "categoria":  "bocadillos",
+    "disponible":  true
+}
