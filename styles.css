@@ -62,7 +62,7 @@ h1, h2, h3 {
     font-family: 'Inknut Antiqua', serif;
     font-weight: 700;
 }
-    
+
 .section-title {
     font-size: 2.5rem;
     text-align: center;
@@ -1244,7 +1244,7 @@ body.dark-mode .footer-hours-table td {
 
 .location-map h3 {
     margin-bottom: 1.5rem;
-    color: var(--color-primary);
+    color: white;
     text-align: center;
     font-size: 1.8rem;
 }
