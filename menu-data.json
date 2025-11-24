@@ -195,7 +195,7 @@
       },
       "precio": 9.50,
       "mediaRacion": 5.50,
-      "imagen": "assets/rabas.jpg",
+      "imagen": "assets/rabas.png",
       "categoria": "raciones",
       "disponible": true
     },
@@ -307,7 +307,7 @@
       },
       "precio": 8.50,
       "mediaRacion": null,
-      "imagen": "images/racion-9.jpg",
+      "imagen": "assets/pimientos.jpg",
       "categoria": "raciones",
       "disponible": true
     },
