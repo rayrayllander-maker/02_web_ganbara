@@ -20,8 +20,8 @@ const STATIC_FILES = [
 ];
 
 const MINIFY_FILES = {
-    js: ['script.js', 'translations.js'],
-    css: ['styles.css']
+    js: ['src/script.js', 'src/translations.js'],
+    css: ['src/styles.css']
 };
 
 const DIRECTORIES = [

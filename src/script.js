@@ -1,4 +1,4 @@
-// Load and render menu from JSON
+﻿// Load and render menu from JSON
 let menuData = null;
 
 // Hero carousel state
@@ -247,35 +247,35 @@ function renderMenu() {
 
     const categoryIconAssets = {
         bocadillos: {
-            src: 'assets/bocadillos.svg',
+            src: 'assets/icons/bocadillos.svg',
             alt: {
                 es: 'Icono bocadillos',
                 eu: 'Ogitarteko ikonoa'
             }
         },
         raciones: {
-            src: 'assets/raciones.svg',
+            src: 'assets/icons/raciones.svg',
             alt: {
                 es: 'Icono raciones',
                 eu: 'Hasierako ikonoa'
             }
         },
         hamburguesas: {
-            src: 'assets/hamburguesas.svg',
+            src: 'assets/icons/hamburguesas.svg',
             alt: {
                 es: 'Icono hamburguesas',
                 eu: 'Hanburgesa ikonoa'
             }
         },
         chuleta: {
-            src: 'assets/h_chuleta.svg',
+            src: 'assets/icons/h_chuleta.svg',
             alt: {
                 es: 'Icono chuleta',
                 eu: 'Txuleta ikonoa'
             }
         },
         postres: {
-            src: 'assets/postre.svg',
+            src: 'assets/icons/postre.svg',
             alt: {
                 es: 'Icono postres',
                 eu: 'Postre ikonoa'
@@ -348,23 +348,23 @@ function renderMenu() {
 
             let priceHTML = '';
             if (typeof item?.precioPorKg === 'number') {
-                priceHTML = `<div class="menu-item-prices"><span class="menu-item-price numeric-font">${item.precioPorKg.toFixed(2)} €/kg</span></div>`;
+                priceHTML = `<div class="menu-item-prices"><span class="menu-item-price numeric-font">${item.precioPorKg.toFixed(2)} â‚¬/kg</span></div>`;
             } else if (typeof item?.precio === 'number') {
                 if (typeof item?.mediaRacion === 'number') {
                     priceHTML = `
                         <div class="menu-item-prices">
                             <div class="price-item">
-                                <span class="price-label" data-es="Ración" data-eu="Errazioa">Ración</span>
-                                <span class="menu-item-price numeric-font">${item.precio.toFixed(2)} €</span>
+                                <span class="price-label" data-es="RaciÃ³n" data-eu="Errazioa">RaciÃ³n</span>
+                                <span class="menu-item-price numeric-font">${item.precio.toFixed(2)} â‚¬</span>
                             </div>
                             <div class="price-item">
                                 <span class="price-label" data-es="Media" data-eu="Erdia">Media</span>
-                                <span class="menu-item-price numeric-font">${item.mediaRacion.toFixed(2)} €</span>
+                                <span class="menu-item-price numeric-font">${item.mediaRacion.toFixed(2)} â‚¬</span>
                             </div>
                         </div>
                     `;
                 } else {
-                    priceHTML = `<div class="menu-item-prices"><span class="menu-item-price numeric-font">${item.precio.toFixed(2)} €</span></div>`;
+                    priceHTML = `<div class="menu-item-prices"><span class="menu-item-price numeric-font">${item.precio.toFixed(2)} â‚¬</span></div>`;
                 }
             }
 
@@ -821,20 +821,20 @@ function buildHeroSlide(rawSlide) {
     if (needsMenuData && menuData) {
         const lookup = findMenuItemData(refCategory, refId, refName);
         if (!lookup) {
-            console.warn('Hero carousel: no se encontró el elemento referenciado en menu-data.json', rawSlide);
+            console.warn('Hero carousel: no se encontrÃ³ el elemento referenciado en menu-data.json', rawSlide);
             return null;
         }
         resolvedItem = lookup.item;
         resolvedCategory = lookup.category;
 
         if (resolvedItem && resolvedItem.disponible === false) {
-            console.warn('Hero carousel: el elemento referenciado está marcado como no disponible', rawSlide);
+            console.warn('Hero carousel: el elemento referenciado estÃ¡ marcado como no disponible', rawSlide);
         }
     }
 
     const image = overrides.image ?? (resolvedItem ? (resolvedItem.heroImage || resolvedItem.imagen) : null);
     if (!image) {
-        console.warn('Hero carousel: no se encontró imagen para la diapositiva', rawSlide);
+        console.warn('Hero carousel: no se encontrÃ³ imagen para la diapositiva', rawSlide);
         return null;
     }
 
@@ -1382,7 +1382,7 @@ if (reservationForm) {
         
         if (isValid) {
             // Show success message
-            showNotification('¡Reserva enviada con éxito! Te contactaremos pronto.', 'success');
+            showNotification('Â¡Reserva enviada con Ã©xito! Te contactaremos pronto.', 'success');
             this.reset();
         } else {
             showNotification('Por favor, completa todos los campos requeridos.', 'error');
@@ -1509,11 +1509,11 @@ window.addEventListener('scroll', () => {
     if (heroImage && hero) {
         const heroBottom = hero.offsetTop + hero.offsetHeight;
         
-        // Solo aplicar parallax cuando estamos dentro de la sección hero
+        // Solo aplicar parallax cuando estamos dentro de la secciÃ³n hero
         if (scrolled < heroBottom) {
             const parallaxValue = scrolled * 0.3;
             heroImage.style.transform = `translateY(${parallaxValue}px)`;
-            // Reducir opacidad al hacer scroll para transición suave
+            // Reducir opacidad al hacer scroll para transiciÃ³n suave
             const opacity = Math.max(0, 1 - (scrolled / heroBottom) * 0.5);
             heroImage.style.opacity = opacity;
         }
@@ -1547,13 +1547,13 @@ function validateField(field) {
     // Email validation
     if (field.type === 'email' && value && !isValidEmail(value)) {
         isValid = false;
-        errorMessage = 'Por favor, introduce un email válido';
+        errorMessage = 'Por favor, introduce un email vÃ¡lido';
     }
     
     // Phone validation
     if (field.type === 'tel' && value && !isValidPhone(value)) {
         isValid = false;
-        errorMessage = 'Por favor, introduce un teléfono válido';
+        errorMessage = 'Por favor, introduce un telÃ©fono vÃ¡lido';
     }
     
     // Date validation (not in the past)
@@ -1655,5 +1655,5 @@ function addMenuSearch() {
     });
 }
 
-// Initialize search functionality - DESACTIVADO (se usa navegación por scroll)
+// Initialize search functionality - DESACTIVADO (se usa navegaciÃ³n por scroll)
 // document.addEventListener('DOMContentLoaded', addMenuSearch);
