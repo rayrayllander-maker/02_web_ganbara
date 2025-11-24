@@ -2,6 +2,11 @@
 .env
 serviceAccount.json
 
+# Firebase
+firebase-init.js
+.firebaserc
+firebase.json
+
 # Node modules
 node_modules/
 
