@@ -219,8 +219,12 @@ body.cms-mounted #nc-root {
   gap: 1rem;
 }
 
+/* Mostrar el logo solo una vez: ocultar por defecto y reactivar en el primer header */
 #nc-root [class*="AppHeader"]::before,
-#nc-root header[class*="AppHeader"]::before {
+#nc-root header[class*="AppHeader"]::before { display: none; }
+
+#nc-root [class*="AppHeader"]:first-of-type::before,
+#nc-root header[class*="AppHeader"]:first-of-type::before {
   content: "";
   width: 54px;
   height: 54px;
@@ -228,9 +232,11 @@ body.cms-mounted #nc-root {
   border-radius: 18px;
   box-shadow: 0 4px 12px rgba(33, 15, 4, 0.2);
   flex-shrink: 0;
+  display: block;
 }
 
 /* Hide duplicate logos that Netlify CMS adds */
+/* Ocultar imágenes internas para evitar duplicados (solo usamos pseudo-elemento del primero) */
 #nc-root [class*="AppHeader"] img,
 #nc-root header[class*="AppHeader"] img {
   display: none !important;
