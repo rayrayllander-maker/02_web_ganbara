@@ -179,7 +179,7 @@
       },
       "precio": 17.00,
       "mediaRacion": 9.00,
-      "imagen": "images/racion-1.jpg",
+      "imagen": "assets/jamon.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -401,7 +401,7 @@
         "eu": "180 gr. Angus, urdaiazpiko, daniar gazta, tipula morea, patata hariak, saltsa tartara"
       },
       "precio": 13.00,
-      "imagen": "assets/jamon.jpg",
+      "imagen": "imagen/jamon.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
