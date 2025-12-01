@@ -418,7 +418,7 @@
         "eu": "180 gr. Angus, urdaiazpiko, daniar gazta, tipula morea, patata hariak, saltsa tartara"
       },
       "precio": 13.00,
-      "imagen": "",
+      "imagen": "assets/jamon.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
