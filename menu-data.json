@@ -26,7 +26,7 @@
         "eu": "Txorizo, patata, urdaiazpia edo perretxikoak"
       },
       "precio": 6.50,
-      "imagen": "images/bocadillo-2.jpg",
+      "imagen": "assets/bocadillo_02.jpg",
       "categoria": "bocadillos",
       "disponible": true
     },
@@ -101,7 +101,7 @@
         "eu": "Iberiar urdaiazpia, gazta, perretxikoak, tomatea plantxan"
       },
       "precio": 8.00,
-      "imagen": "images/bocadillo-7.jpg",
+      "imagen": "assets/bocadillo_07.jpg",
       "categoria": "bocadillos",
       "disponible": true
     },
@@ -146,7 +146,7 @@
         "eu": "Bularreko kurruskaria, mermelada, Camembert gazta"
       },
       "precio": 7.50,
-      "imagen": "images/bocadillo-10.jpg",
+      "imagen": "images/bocadillo_10.jpg",
       "categoria": "bocadillos",
       "disponible": true
     },
@@ -161,7 +161,7 @@
         "eu": "Kalabazin, piper berdeak, tipula morea, tomatea, guacamole, arrautza eta daniar gazta"
       },
       "precio": 7.50,
-      "imagen": "images/bocadillo-11.jpg",
+      "imagen": "assets/bocadillo_11.jpg",
       "categoria": "bocadillos",
       "disponible": true
     }
@@ -179,7 +179,7 @@
       },
       "precio": 17.00,
       "mediaRacion": 9.00,
-      "imagen": "images/racion-1.jpg",
+      "imagen": "assets/jamon.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -323,7 +323,7 @@
       },
       "precio": 7.50,
       "mediaRacion": null,
-      "imagen": "images/racion-10.jpg",
+      "imagen": "assets/patatas_ganbara.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -339,10 +339,27 @@
       },
       "precio": 9.50,
       "mediaRacion": null,
-      "imagen": "images/racion-11.jpg",
+      "imagen": "assets/tequenos.jpg",
+      "categoria": "raciones",
+      "disponible": true
+    },
+    {
+      "id": 12,
+      "nombre": {
+        "es": "Nachos Ganbara",
+        "eu": "Natxoz Ganbara"
+      },
+      "descripcion": {
+        "es": "Nachos con carne picada, salsa Cheddar, guacamole y jalapeños.",
+        "eu": "Natxoz haragi txikitua, Cheddar saltsa, guacamole eta jalapeñoekin."
+      },
+      "precio": 10.00,
+      "mediaRacion": null,
+      "imagen": "assets/nachos.jpg",
       "categoria": "raciones",
       "disponible": true
     }
+    
   ],
   "hamburguesas": [
     {
@@ -401,7 +418,7 @@
         "eu": "180 gr. Angus, urdaiazpiko, daniar gazta, tipula morea, patata hariak, saltsa tartara"
       },
       "precio": 13.00,
-      "imagen": "assets/jamon.jpg",
+      "imagen": "",
       "categoria": "hamburguesas",
       "disponible": true
     },
