@@ -146,7 +146,7 @@
         "eu": "Bularreko kurruskaria, mermelada, Camembert gazta"
       },
       "precio": 7.50,
-      "imagen": "images/bocadillo_10.jpg",
+      "imagen": "assets/bocadillo_10.jpg",
       "categoria": "bocadillos",
       "disponible": true
     },
