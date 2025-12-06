@@ -291,7 +291,7 @@
   },
   "precio": 9.50,
   "mediaRacion": null,
-  "imagen": "images/racion-8.jpg",
+  "imagen": "assets/pollo_crujiente.jpg",
   "categoria": "raciones",
   "disponible": true
 },
@@ -307,7 +307,7 @@
       },
       "precio": 8.50,
       "mediaRacion": null,
-      "imagen": "assets/pimientos.jpg",
+      "imagen": "assets/pimientos_verdes.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -355,7 +355,7 @@
       },
       "precio": 10.00,
       "mediaRacion": null,
-      "imagen": "assets/nachos.jpg",
+      "imagen": "assets/nachos_ganbara.jpg",
       "categoria": "raciones",
       "disponible": true
     }
