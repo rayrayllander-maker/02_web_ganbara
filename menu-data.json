@@ -4,11 +4,11 @@
       "id": 1,
       "nombre": {
         "es": "Vegetal de pollo",
-        "eu": "Oilasko begetala"
+        "eu": "Begetala oilaskoarekin"
       },
       "descripcion": {
         "es": "Pechuga, lechuga, tomate, york, queso, mayonesa, atún, huevo cocido",
-        "eu": "Bularreko, letxuga, tomatea, york, gazta, mayonesa, atuna, arrautza egosia"
+        "eu": "Paparra, letxuga, tomatea, york, gazta, mayonesa, hegaluzea eta arrautza egosia"
       },
       "precio": 8.00,
       "imagen": "assets/bocadillo_01.jpg",
@@ -19,11 +19,11 @@
       "id": 2,
       "nombre": {
         "es": "Tortillas Variadas",
-        "eu": "Tortilla desberdinak"
+        "eu": "Askotariko tortilak"
       },
       "descripcion": {
         "es": "Chorizo, patata, jamón o champis",
-        "eu": "Txorizo, patata, urdaiazpia edo perretxikoak"
+        "eu": "Txorizo, patata, urdaiazpikoa edo txanpiak"
       },
       "precio": 6.50,
       "imagen": "assets/bocadillo_02.jpg",
@@ -34,11 +34,11 @@
       "id": 3,
       "nombre": {
         "es": "Bacon, queso y pimientos",
-        "eu": "Zirikatz, gazta eta piperrak"
+        "eu": "Hirugiharra, gazta eta piparrak"
       },
       "descripcion": {
         "es": "Bacon, queso, pimientos",
-        "eu": "Zirikatz, gazta, piperrak"
+        "eu": "Hirugiharra, gazta, piparrak"
       },
       "precio": 7.00,
       "imagen": "assets/bocadillo_03.jpg",
@@ -49,11 +49,11 @@
       "id": 4,
       "nombre": {
         "es": "Lomo, queso y pimientos",
-        "eu": "Bizkarreko, gazta eta piperrak"
+        "eu": "Solomo, gazta eta piperrak"
       },
       "descripcion": {
         "es": "Lomo, queso, pimientos",
-        "eu": "Bizkarreko, gazta, piperrak"
+        "eu": "Solomo, gazta, piperrak"
       },
       "precio": 7.00,
       "imagen": "assets/bocadillo_04.jpg",
@@ -64,11 +64,11 @@
       "id": 5,
       "nombre": {
         "es": "Pechuga, queso y pimientos",
-        "eu": "Bularreko, gazta eta piperrak"
+        "eu": "Paparra, gazta eta piperrak"
       },
       "descripcion": {
         "es": "Pechuga, queso, pimientos",
-        "eu": "Bularreko, gazta, piperrak"
+        "eu": "Paparra, gazta, piperrak"
       },
       "precio": 7.00,
       "imagen": "assets/bocadillo_05.jpg",
@@ -79,11 +79,11 @@
       "id": 6,
       "nombre": {
         "es": "Pechuga rebozada con alioli, bacon y cebolla",
-        "eu": "Bularreko errebozatua alliolirekin, zirikatz eta tipula"
+        "eu": "Papar errebozatua alioli, hirugiharra eta tipilarekin"
       },
       "descripcion": {
         "es": "Pechuga rebozada, alioli, bacon, cebolla",
-        "eu": "Bularreko errebozatua, allioli, zirikatz, tipula"
+        "eu": "apar errebozatua alioli, hirugiharra, tipilarekin"
       },
       "precio": 7.50,
       "imagen": "assets/bocadillo_06.jpg",
@@ -94,11 +94,11 @@
       "id": 7,
       "nombre": {
         "es": "Jamón ibérico, queso, setas y rodajas de tomate a la plancha",
-        "eu": "Iberiar urdaiazpia, gazta, perretxikoak eta tomate xaflak plantxan"
+        "eu": "Urdaiapizko iberikoa, gazta, perretxikoak eta tomate xaflak plantxan"
       },
       "descripcion": {
         "es": "Jamón ibérico, queso, setas, tomate a la plancha",
-        "eu": "Iberiar urdaiazpia, gazta, perretxikoak, tomatea plantxan"
+        "eu": "Urdaiapizko iberikoa, gazta, perretxikoak, tomatea plantxan"
       },
       "precio": 8.00,
       "imagen": "assets/bocadillo_07.jpg",
@@ -113,7 +113,7 @@
       },
       "descripcion": {
         "es": "Jamón ibérico",
-        "eu": "Iberiar urdaiazpia"
+        "eu": "Urdaiapizko iberikoa"
       },
       "precio": 7.00,
       "imagen": "images/bocadillo-8.jpg",
@@ -128,7 +128,7 @@
       },
       "descripcion": {
         "es": "Jamón, pimientos verdes, queso Idiazabal, setas",
-        "eu": "Urdaiazpia, piper berdeak, Idiazabal gazta, perretxikoak"
+        "eu": "Urdaiazpia, piper berdeak, Idiazabal gazta, setak"
       },
       "precio": 8.00,
       "imagen": "images/bocadillo-9.jpg",
@@ -143,7 +143,7 @@
       },
       "descripcion": {
         "es": "Pechuga crujiente, mermelada, queso Camembert",
-        "eu": "Bularreko kurruskaria, mermelada, Camembert gazta"
+        "eu": "Karraskaridun oilasko paparra, mermelada, Camembert gazta"
       },
       "precio": 7.50,
       "imagen": "assets/bocadillo_10.jpg",
@@ -158,7 +158,7 @@
       },
       "descripcion": {
         "es": "Calabacín, pimientos verdes, cebolla morada, tomate, guacamole, huevo y queso danés",
-        "eu": "Kalabazin, piper berdeak, tipula morea, tomatea, guacamole, arrautza eta daniar gazta"
+        "eu": "Kalabazin, piper berdeak, tipula morea, tomatea, guakamolea, arrautza eta gazta daniarra"
       },
       "precio": 7.50,
       "imagen": "assets/bocadillo_11.jpg",
