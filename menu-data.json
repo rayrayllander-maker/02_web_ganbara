@@ -211,7 +211,7 @@
       },
       "precio": 10.00,
       "mediaRacion": null,
-      "imagen": "images/racion-3.jpg",
+      "imagen": "assets/rabas_alioli.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -275,7 +275,7 @@
       },
       "precio": 8.50,
       "mediaRacion": null,
-      "imagen": "images/racion-7.jpg",
+      "imagen": "assets/champis.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -388,7 +388,7 @@
         "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, eztia eta mostaza, letxuga, tomatea, tipula"
       },
       "precio": 13.00,
-      "imagen": "images/hamburguesa-2.jpg",
+      "imagen": "assets/golosa.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
