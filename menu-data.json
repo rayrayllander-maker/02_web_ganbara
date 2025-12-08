@@ -195,7 +195,7 @@
       },
       "precio": 9.50,
       "mediaRacion": 5.50,
-      "imagen": "assets/rabas.png",
+      "imagen": "assets/rabas.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -243,7 +243,7 @@
       },
       "precio": 7.00,
       "mediaRacion": null,
-      "imagen": "images/racion-5.jpg",
+      "imagen": "assets/bravioli.jpg",
       "categoria": "raciones",
       "disponible": true
     },
