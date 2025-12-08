@@ -41,7 +41,7 @@
         "eu": "Zirikatz, gazta, piperrak"
       },
       "precio": 7.00,
-      "imagen": "images/bocadillo-3.jpg",
+      "imagen": "assets/bocadillo_03.jpg",
       "categoria": "bocadillos",
       "disponible": true
     },
@@ -56,7 +56,7 @@
         "eu": "Bizkarreko, gazta, piperrak"
       },
       "precio": 7.00,
-      "imagen": "images/bocadillo-4.jpg",
+      "imagen": "assets/bocadillo_04.jpg",
       "categoria": "bocadillos",
       "disponible": true
     },
@@ -71,7 +71,7 @@
         "eu": "Bularreko, gazta, piperrak"
       },
       "precio": 7.00,
-      "imagen": "images/bocadillo-5.jpg",
+      "imagen": "assets/bocadillo_05.jpg",
       "categoria": "bocadillos",
       "disponible": true
     },
