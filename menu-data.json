@@ -370,7 +370,7 @@
       },
       "descripcion": {
         "es": "180 gr. Angus, doble bacon, queso danés, cebolla caramelizada, huevo, tomate",
-        "eu": "180 gr. Angus, zirikatz bikoitza, daniar gazta, tipula karamelizatua, arraultza, tomatea"
+        "eu": "180 gr. Angus haragia, letxuga, tomatea, Idiazabal gazta, hirugihar bikoitza, arrautza eta tipula karamelizatua"
       },
       "precio": 13.50,
       "imagen": "assets/ganbara.jpg",
@@ -385,7 +385,7 @@
       },
       "descripcion": {
         "es": "180 gr. Angus, doble bacon, queso cheddar, miel y mostaza, lechuga, tomate, cebolla",
-        "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, eztia eta mostaza, letxuga, tomatea, tipula"
+        "eu": "180 gr. Angus haragia, letxuga, tomatea, tipula, cheddar gazta, hirugihar bikoitza eta ezti-mostaza saltsa"
       },
       "precio": 13.00,
       "imagen": "assets/golosa.jpg",
@@ -400,7 +400,7 @@
       },
       "descripcion": {
         "es": "180 gr. Angus, doble bacon, queso Camembert, champis laminados, cebolla",
-        "eu": "180 gr. Angus, zirikatz bikoitza, Camembert gazta, perretxiko laminatuak, tipula"
+        "eu": "180 gr. Angus haragia, hirugihar bikoitza, tipula, txanpiak eta Camembert gazta"
       },
       "precio": 13.00,
       "imagen": "assets/francesa.jpg",
@@ -415,7 +415,7 @@
       },
       "descripcion": {
         "es": "180 gr. Angus, jamón, queso danés, cebolla morada, hilos de patata, salsa tártara",
-        "eu": "180 gr. Angus, urdaiazpiko, daniar gazta, tipula morea, patata hariak, saltsa tartara"
+        "eu": "180 gr. Angus haragia, tipula morea, gazta daniarra, urdaiazpikoa, patata hariak eta tartara saltsa"
       },
       "precio": 13.00,
       "imagen": "imagen/jamon.jpg",
@@ -430,7 +430,7 @@
       },
       "descripcion": {
         "es": "180 gr. Angus, doble bacon, queso cheddar, cebolla caramelizada, pepinillos, huevo, salsa Emmy",
-        "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, tipula karamelizatua, pepiniloak, arraultza, Emmy saltsa"
+        "eu": "180 gr. Angus haragia, cheddar gazta, hirugihar bikoitza, tipula karamelizatua, pepinilloa, arrautza eta Emmy saltsa"
       },
       "precio": 13.50,
       "imagen": "assets/emmy.jpg",
@@ -445,7 +445,7 @@
       },
       "descripcion": {
         "es": "180 gr. Angus, doble bacon, queso cheddar, hilos de patata, 70 gr. carne mechada, salsa de piña",
-        "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, patata hariak, 70 gr. haragia mechada, anana saltsa"
+        "eu": "180 gr. Angus haragia, hirugihar bikoitza, cheddar gazta, patata kateak, 70 gr. haragia xehatua eta anana saltsa"
       },
       "precio": 14.50,
       "imagen": "assets/colombiana.jpg",
@@ -460,7 +460,7 @@
       },
       "descripcion": {
         "es": "180 gr. Angus, doble queso danés, doble bacon, bacon crispy, cebolla crispy, huevo, salsa Bacón",
-        "eu": "180 gr. Angus, daniar gazta bikoitza, zirikatz bikoitza, zirikatz crispy, tipula crispy, arraultza, Bacón saltsa"
+        "eu": "180 gr. Angus haragia, gazta daniarra bikoitza, hirugihar bikoitza, hirugihar kurruskaria, tipula kurruskaria, arrautza eta hirugihar saltsa"
       },
       "precio": 14.00,
       "imagen": "assets/baconessa.jpg",
@@ -490,7 +490,7 @@
       },
       "descripcion": {
         "es": "180 gr. Angus, queso cheddar, cebolla crispy, jalapeño, guacamole, nachos, salsa de jalapeño asado",
-        "eu": "180 gr. Angus, cheddar gazta, tipula crispy, jalapeño, guacamole, nachos, jalapeño errearen saltsa"
+        "eu": "180 gr. Angus haragia, cheddar gazta, tipula kurruskaria, jalapeñoak, gucamolea, natxoak eta jalapeño errea saltsa"
       },
       "precio": 13.50,
       "imagen": "assets/azteca.jpg",
@@ -505,7 +505,7 @@
       },
       "descripcion": {
         "es": "180 gr. Angus, doble bacon, queso cheddar, Salsa Burger",
-        "eu": "180 gr. Angus, zirikatz bikoitza, cheddar gazta, Burger Saltsa"
+        "eu": "180 gr. Angus haragia, cheddar gazta, hirugihar bikoitza eta Burger saltsa"
       },
       "precio": 12.50,
       "imagen": "assets/clasica.jpg",
@@ -520,10 +520,10 @@
       },
       "descripcion": {
         "es": "Carne Eura (Vegetariana), queso cheddar, lechuga, tomate, cebolla morada, huevo",
-        "eu": "Eura haragia (Berdeetaria), cheddar gazta, letxuga, tomatea, tipula morea, arraultza"
+        "eu": "Eura haragia, letxuga, tomatea, tipula morea, arrautza eta cheddar gazta"
       },
       "precio": 12.50,
-      "imagen": "images/hamburguesa-11.jpg",
+      "imagen": "assets/vegetariana.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     }
@@ -537,7 +537,7 @@
       },
       "descripcion": {
         "es": "200 gr. Txuleta, doble bacon, queso cheddar, cebolla caramelizada, 70 gr. carne mechada, salsa guasacaca",
-        "eu": "200 gr. Txuleta, zirikatz bikoitza, cheddar gazta, tipula karamelizatua, 70 gr. haragia mechada, guasacaca saltsa"
+        "eu": "200 gr. txuleta haragia, cheddar gazta, tipula karamelizatua, hirugihar bikoitza, 70 gr. haragia xehatua eta guasacaca saltsa"
       },
       "precio": 15.00,
       "precioPorKg": null,
@@ -553,7 +553,7 @@
       },
       "descripcion": {
         "es": "200 gr. Txuleta, doble bacon, queso Idiazabal, huevo",
-        "eu": "200 gr. Txuleta, zirikatz bikoitza, Idiazabal gazta, arraultza"
+        "eu": "200 gr. txuleta haragia, Idiazabal gazta, hirugiharra eta arrautza"
       },
       "precio": 14.50,
       "precioPorKg": null,
