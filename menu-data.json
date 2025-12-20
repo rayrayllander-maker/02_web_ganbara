@@ -418,7 +418,7 @@
         "eu": "180 gr. Angus haragia, tipula morea, gazta daniarra, urdaiazpikoa, patata hariak eta tartara saltsa"
       },
       "precio": 13.00,
-      "imagen": "imagen/jamon.jpg",
+      "imagen": "assets/serrana.jpg",
       "categoria": "hamburguesas",
       "disponible": true
     },
@@ -557,7 +557,7 @@
       },
       "precio": 14.50,
       "precioPorKg": null,
-      "imagen": "images/chuleta-2.jpg",
+      "imagen": "assets/euskalduna.jpg",
       "categoria": "chuleta",
       "disponible": true
     }
