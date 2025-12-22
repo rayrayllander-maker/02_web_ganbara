@@ -171,11 +171,11 @@
       "id": 1,
       "nombre": {
         "es": "Paletilla de jamón ibérico",
-        "eu": "Iberiar urdaiazpiko sorbalda"
+        "eu": "Urdaiazpiko iberikoa"
       },
       "descripcion": {
         "es": "Paletilla de jamón ibérico",
-        "eu": "Iberiar urdaiazpiko sorbalda"
+        "eu": "Urdaiazpiko iberikoa"
       },
       "precio": 17.00,
       "mediaRacion": 9.00,
@@ -219,11 +219,11 @@
       "id": 4,
       "nombre": {
         "es": "Patata casera Brava o alioli",
-        "eu": "Etxeko patata Brava edo alliolia"
+        "eu": "Etxeko patatak Brava edo alliolia"
       },
       "descripcion": {
         "es": "Patata casera, salsa brava o alioli",
-        "eu": "Etxeko patata, saltsa brava edo allioli"
+        "eu": "Etxeko patatak, saltsa brava edo allioli"
       },
       "precio": 6.00,
       "mediaRacion": null,
@@ -239,7 +239,7 @@
       },
       "descripcion": {
         "es": "Patata casera, salsa brava y alioli",
-        "eu": "Etxeko patata, saltsa brava eta allioli"
+        "eu": "Etxeko patatak, saltsa brava eta allioli"
       },
       "precio": 7.00,
       "mediaRacion": null,
@@ -251,11 +251,11 @@
       "id": 6,
       "nombre": {
         "es": "Croquetas de jamón/hongos",
-        "eu": "Urdaiazpiko edo perretxikoen kroketak"
+        "eu": "Urdaiazpiko edo Onddo-kroketak"
       },
       "descripcion": {
         "es": "Croquetas de jamón o de hongos",
-        "eu": "Urdaiazpiko edo perretxikoen kroketak"
+        "eu": "Urdaiazpiko edo Onddo-kroketak"
       },
       "precio": 9.50,
       "mediaRacion": null,
@@ -267,11 +267,11 @@
       "id": 7,
       "nombre": {
         "es": "Champis con gambas a la vinagreta",
-        "eu": "Perretxikoak ganbekin vinagretarekin"
+        "eu": "Txanpiak ganbekin ozpin-oliotan"
       },
       "descripcion": {
-        "es": "Champiñones, gambas, vinagreta",
-        "eu": "Perretxikoak, ganbak, vinagreta"
+        "es": "Champiñones con gambas y vinagreta",
+        "eu": "Txanpiak ganbekin ozpin-oliotan"
       },
       "precio": 8.50,
       "mediaRacion": null,
@@ -287,7 +287,7 @@
   },
   "descripcion": {
     "es": "Pollo crujiente y patatas",
-    "eu": "Oilasko kurruskaria eta patak"
+    "eu": "Oilasko kurruskaria patatekin"
   },
   "precio": 9.50,
   "mediaRacion": null,
@@ -303,7 +303,7 @@
       },
       "descripcion": {
         "es": "Pimientos verdes a la plancha",
-        "eu": "Piper berdeak planxan"
+        "eu": "Piper berdeak"
       },
       "precio": 8.50,
       "mediaRacion": null,
@@ -318,8 +318,8 @@
         "eu": "Ganbara Patak"
       },
       "descripcion": {
-        "es": "Patatas especiales de la casa",
-        "eu": "Etxeko patata bereziak"
+        "es": "Patatas caseras, bacón crujiente y salsa cheddar",
+        "eu": "Etxeko patatak, hirugiharra kurruskatua eta saltsa cheddar"
       },
       "precio": 7.50,
       "mediaRacion": null,
