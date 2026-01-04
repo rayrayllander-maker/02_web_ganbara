@@ -259,7 +259,7 @@
       },
       "precio": 9.50,
       "mediaRacion": null,
-      "imagen": "assets/croquetas.png",
+      "imagen": "assets/croquetas.jpg",
       "categoria": "raciones",
       "disponible": true
     },
