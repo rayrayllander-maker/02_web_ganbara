@@ -227,7 +227,7 @@
       },
       "precio": 6.00,
       "mediaRacion": null,
-      "imagen": "images/racion-4.jpg",
+      "imagen": "assets/bravas.jpg",
       "categoria": "raciones",
       "disponible": true
     },
@@ -357,7 +357,7 @@
       "mediaRacion": null,
       "imagen": "assets/nachos_ganbara.jpg",
       "categoria": "raciones",
-      "disponible": true
+      "disponible": false
     }
     
   ],
