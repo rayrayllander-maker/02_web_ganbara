@@ -116,7 +116,7 @@
         "eu": "Urdaiapizko iberikoa"
       },
       "precio": 7.00,
-      "imagen": "images/bocadillo-8.jpg",
+      "imagen": "assets/bocadillo_08.jpg",
       "categoria": "bocadillos",
       "disponible": true
     },
@@ -131,7 +131,7 @@
         "eu": "Urdaiazpia, piper berdeak, Idiazabal gazta, setak"
       },
       "precio": 8.00,
-      "imagen": "images/bocadillo-9.jpg",
+      "imagen": "assets/bocadillo_09.jpg",
       "categoria": "bocadillos",
       "disponible": true
     },
@@ -589,7 +589,7 @@
         "eu": "Txokolate coulant izozkiarekin"
       },
       "precio": 6.00,
-      "imagen": "images/postre-2.jpg",
+      "imagen": "assets/coulant.jpg",
       "categoria": "postres",
       "disponible": true
     }
