@@ -19,20 +19,6 @@ const translations = {
         hoursText: "Lun-Dom: 13:00 - 23:00",
         emailTitle: "Email",
         
-        // Formulario de reserva
-        reservationTitle: "Hacer Reserva",
-        placeholderName: "Nombre completo",
-        placeholderEmail: "Email",
-        placeholderPhone: "Teléfono",
-        selectTime: "Hora",
-        selectPeople: "Número de personas",
-        person1: "1 persona",
-        person2: "2 personas",
-        person3: "3 personas",
-        person4: "4 personas",
-        person5: "5+ personas",
-        submitBtn: "Enviar Reserva",
-        
         // Footer
         footerTagline: "Tradición y sabor en cada plato",
         footerLinks: "Enlaces",
@@ -58,21 +44,7 @@ const translations = {
         hoursTitle: "Ordutegia",
         hoursText: "Al-Ig: 13:00 - 23:00",
         emailTitle: "Emaila",
-        
-        // Formulario de reserva
-        reservationTitle: "Erreserba Egin",
-        placeholderName: "Izen osoa",
-        placeholderEmail: "Emaila",
-        placeholderPhone: "Telefonoa",
-        selectTime: "Ordua",
-        selectPeople: "Pertsona kopurua",
-        person1: "1 pertsona",
-        person2: "2 pertsona",
-        person3: "3 pertsona",
-        person4: "4 pertsona",
-        person5: "5+ pertsona",
-        submitBtn: "Erreserba Bidali",
-        
+
         // Footer
         footerTagline: "Tradizioa eta zaporea plater bakoitzean",
         footerLinks: "Estekak",

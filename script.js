@@ -297,7 +297,7 @@ function renderMenu() {
         bocadillos: { es: 'Bocadillos', eu: 'Ogitartekoak' },
         raciones: { es: 'Raciones', eu: 'Hasierakoak' },
         hamburguesas: { es: 'Hamburguesas', eu: 'Hanburgesak' },
-        chuleta: { es: 'Chuleta', eu: 'Txuleta' },
+        chuleta: { es: 'Hamburguesa de Chuleta', eu: 'Hamburgesak Txuleta' },
         postres: { es: 'Postres', eu: 'Postreak' }
     };
 
